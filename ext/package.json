@@ -1,0 +1,17 @@
+{
+	"name": "emojit",
+	"version": "1.0.0",
+	"description": "Rate any webpage.",
+	"license": "BSD-3-Clause",
+	"scripts": {
+		"dev": "webextension-toolbox dev",
+		"build": "webextension-toolbox build"
+	},
+	"devDependencies": {
+		"webextension-toolbox": "latest"
+	},
+	"dependencies": {
+		"@joeattardi/emoji-button": "^4.1.0",
+		"jquery": "^3.5.1"
+	}
+}

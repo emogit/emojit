@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Emojit</title>
+	<meta charset='UTF-8' />
+	<style type="text/css">
+		#mainPopup {
+			padding: 3px;
+			height: 450px;
+			width: 250px;
+			max-height: 450px;
+			max-width: 400px;
+			font-family: Helvetica, Ubuntu, Arial, sans-serif;
+		}
+
+		.center {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#reactions {
+			height: 6em;
+			font-size: 1.5em;
+		}
+
+		.reaction-button {
+			background-color: inherit;
+			font-size: inherit;
+			cursor: pointer;
+			/* border: none; */
+			outline: none;
+			border-radius: 16px;
+			border-color: lightgrey;
+			padding: 4px;
+			margin: 2px;
+		}
+
+		.reaction-button-picked {
+			background-color: dodgerblue;
+		}
+
+		.reaction-count {
+			font-size: 1em;
+			color: grey;
+		}
+
+		.reaction-button-picked .reaction-count {
+			color: floralwhite;
+		}
+
+		#emoji-trigger {
+			background-color: inherit;
+			font-size: inherit;
+			cursor: pointer;
+			/* border: none; */
+			outline: none;
+			border-radius: 16px;
+			border-color: lightgrey;
+			padding: 4px;
+			margin: 2px;
+			font-size: 2em;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="mainPopup">
+		<div class="center" id="reactions"></div>
+		<div class="center">
+			<button id="emoji-trigger">🙂</button>
+		</div>
+		<script src="../scripts/browser_action.js"></script>
+</body>
+
+</html>
