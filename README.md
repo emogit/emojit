@@ -4,14 +4,10 @@ Rate any webpage.
 
 ## Install
 
-    cd ext/
-	yarn install
+    yarn install
 
 ## Development
-
-    cd ext/
-
-Then one of:
+Run one of:
 
     yarn dev chrome
     yarn dev firefox
@@ -19,10 +15,7 @@ Then one of:
     yarn dev edge
 
 ## Build
-
-    cd ext/
-
-Then one of:
+Run one of:
 
     yarn build chrome
     yarn build firefox
