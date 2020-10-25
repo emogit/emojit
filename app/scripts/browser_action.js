@@ -144,7 +144,7 @@ function clickReaction(event) {
 	} else {
 		// Validate
 		if (getSelectedEmojis().length >= MAX_NUM_EMOJIS) {
-			// TODO Indicate error.
+			// TODO Notify user.
 			console.warn("Maximum number of emojis selected.")
 			return
 		}
@@ -156,20 +156,28 @@ function clickReaction(event) {
 
 function addEmoji(emoji) {
 	if (getSelectedEmojis().length >= MAX_NUM_EMOJIS) {
-		// TODO Indicate error.
+		// TODO Notify user.
 		console.warn("Maximum number of emojis selected.")
 		return
 	}
+
+	// Update the UI before sending the request to the service to make the UI feel quick.
 	userReactions.push(emoji)
-	updateTopReactionButton({ emoji, count: 1, userPicked: true, updateCount: true })
-	react()
 	checkReactionCount()
+	updateTopReactionButton({ emoji, count: 1, userPicked: true, updateCount: true })
+
+	react([{ reaction: emoji, count: +1 }]).then((r) => {
+	}).catch(err => {
+		// TODO Notify user.
+		console.error("Error adding reaction", emoji, err)
+		// TODO Maybe update the UI?
+	})
 }
 
-function react() {
+function react(modifications) {
 	if (!userId || !pageUrl) {
 		console.error("userId or pageUrl have not been set yet. Will retry")
-		setTimeout(() => { react() }, 200)
+		setTimeout(() => { react(modifications) }, 200)
 	}
 	return $.ajax({
 		method: 'POST',
@@ -179,7 +187,7 @@ function react() {
 		data: JSON.stringify({
 			userId,
 			pageUrl,
-			reactions: userReactions,
+			modifications,
 		}),
 		success: function (response) {
 			console.debug("React response:", response)
@@ -196,7 +204,11 @@ function removeAllEmojiOccurrences(emoji) {
 	userReactions = userReactions.filter(e => e !== emoji)
 	const countDiff = userReactions.length - lengthBefore
 	updateTopReactionButton({ emoji, count: countDiff, userPicked: false, updateCount: true })
-	react()
+	react([{ reaction: emoji, count: countDiff }]).then(() => {
+	}).catch(err => {
+		// TODO Notify user.
+		console.error("Error adding reaction", emoji, err)
+	})
 	checkReactionCount()
 }
 
