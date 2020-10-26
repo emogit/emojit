@@ -21,6 +21,7 @@
 	"options_page": "pages/options.html",
 	"options_ui": {
 		"page": "pages/options.html",
+		"browser_style": true,
 		"chrome_style": true
 	},
 	"permissions": [

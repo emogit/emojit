@@ -20,6 +20,12 @@
 			align-items: center;
 		}
 
+		.end {
+			display: flex;
+			justify-content: flex-end;
+			align-items: flex-end;
+		}
+
 		#reactions {
 			height: 6em;
 			font-size: 1.5em;
@@ -62,11 +68,27 @@
 			margin: 2px;
 			font-size: 2em;
 		}
+
+		#options-button {
+			background-color: inherit;
+			font-size: inherit;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			border-radius: 16px;
+			border-color: lightgrey;
+			padding: 4px;
+			margin: 2px;
+			font-size: 2em;
+		}
 	</style>
 </head>
 
 <body>
 	<div id="mainPopup">
+		<div class="end">
+			<button id="options-button">⚙️</button>
+		</div>
 		<div class="center" id="reactions"></div>
 		<div class="center">
 			<button id="emoji-trigger">🙂</button>

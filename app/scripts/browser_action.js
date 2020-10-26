@@ -19,7 +19,12 @@ function uuidv4() {
 	)
 }
 
+function openOptions() {
+	browser.runtime.openOptionsPage()
+}
+
 function onPageLoad() {
+	$('#options-button')[0].onclick = openOptions
 	browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) {
 		pageUrl = tabs[0].url
 		setupUserSettings().then(() => {
