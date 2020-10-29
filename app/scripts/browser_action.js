@@ -1,23 +1,16 @@
 import { EmojiButton } from '@joeattardi/emoji-button'
 import $ from 'jquery'
+import { setupUserSettings } from './user'
 
 const MAX_NUM_EMOJIS = 5
 
-// TODO Get from options/config.
-const serviceUrl = 'https://api.emojit.site'
 const pickedClassName = 'reaction-button-picked'
 
-let userId
-let pageUrl
+let serviceUrl
+let emojit
+let userId, pageUrl
 
 let userReactions = []
-
-// From https://stackoverflow.com/a/2117523/1226799
-function uuidv4() {
-	return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-	)
-}
 
 function openOptions() {
 	browser.runtime.openOptionsPage()
@@ -27,7 +20,11 @@ function onPageLoad() {
 	$('#options-button')[0].onclick = openOptions
 	browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) {
 		pageUrl = tabs[0].url
-		setupUserSettings().then(() => {
+		setupUserSettings().then((userSettings) => {
+			emojit = userSettings.emojit
+			serviceUrl = userSettings.serviceUrl
+			userId = userSettings.userId
+
 			loadReactions()
 			setUpEmojiPicker()
 			// startEmojiPicker()
@@ -39,22 +36,6 @@ onPageLoad()
 
 function checkReactionCount() {
 	$('#emoji-trigger')[0].disabled = getSelectedEmojis().length >= MAX_NUM_EMOJIS
-}
-
-function setupUserSettings() {
-	return browser.storage.local.get(['userId']).then(function (results) {
-		userId = results.userId
-		if (!userId) {
-			browser.storage.sync.get(['userId']).then(function (results) {
-				userId = results.userId
-				if (!userId) {
-					userId = uuidv4()
-					browser.storage.local.set({ userId })
-					browser.storage.sync.set({ userId })
-				}
-			})
-		}
-	})
 }
 
 // TODO Make sure max num emojis is respected.
