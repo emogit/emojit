@@ -75,29 +75,13 @@ function updateTopReactionButton({ emoji, count, userPicked, updateCount }) {
 function loadReactions() {
 	console.debug("Loading reactions...")
 
-	$.ajax({
-		method: 'GET',
-		url: `${serviceUrl}/pageReactions?pageUrl=${encodeURIComponent(pageUrl)}`,
-		success: function (response) {
-			console.debug("Page reactions response:", response)
-			const { reactions } = response
-			for (const reaction of reactions) {
-				updateTopReactionButton(reaction)
-			}
-			loadUserReactions()
-		},
-		error: function (error) {
-			console.error("Error getting page reactions.", error.status, error.responseJSON)
+	const userPageReactions = emojit.getUserPageReactions(userId, pageUrl)
+	emojit.getPageReactions(pageUrl).then(response => {
+		const { reactions } = response
+		for (const reaction of reactions) {
+			updateTopReactionButton(reaction)
 		}
-	})
-}
-
-function loadUserReactions() {
-	$.ajax({
-		method: 'GET',
-		url: `${serviceUrl}/userPageReaction?userId=${encodeURIComponent(userId)}&pageUrl=${encodeURIComponent(pageUrl)}`,
-		success: function (response) {
-			console.debug("User reactions:", response)
+		userPageReactions.then(response => {
 			const { reactions } = response
 			if (reactions) {
 				for (const emoji of reactions) {
@@ -106,10 +90,7 @@ function loadUserReactions() {
 				userReactions = reactions
 				checkReactionCount()
 			}
-		},
-		error: function (error) {
-			console.error("Error getting user reactions.", error.status, error.responseJSON)
-		}
+		})
 	})
 }
 
@@ -163,23 +144,10 @@ function react(modifications) {
 		console.error("userId or pageUrl have not been set yet. Will retry")
 		setTimeout(() => { react(modifications) }, 200)
 	}
-	return $.ajax({
-		method: 'POST',
-		dataType: 'json',
-		contentType: 'application/json',
-		url: `${serviceUrl}/react`,
-		data: JSON.stringify({
-			userId,
-			pageUrl,
-			modifications,
-		}),
-		success: function (response) {
-			console.debug("React response:", response)
-			return response
-		},
-		error: function (error) {
-			console.error("Error reacting.", error.status, error.responseJSON)
-		}
+	return emojit.react({
+		userId,
+		pageUrl,
+		modifications,
 	})
 }
 
