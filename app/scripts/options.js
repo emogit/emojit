@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { setupUserSettings } from './user'
 
 let emojit, userId
@@ -9,9 +8,8 @@ function onPageLoad() {
 		userId = userSettings.userId
 	})
 
-	$('#delete-all-user-data')[0].onclick = function () {
-		// TODO Use string from localization.
-		const doDeleteUser = browser.extension.getBackgroundPage().confirm("Delete all of your data? (this cannot be undone)")
+	document.getElementById('delete-all-user-data').onclick = function () {
+		const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
 		if (doDeleteUser) {
 			emojit.deleteUser({ userId }).catch(err => {
 				// TODO Display error.

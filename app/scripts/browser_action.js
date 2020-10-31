@@ -38,8 +38,6 @@ function checkReactionCount() {
 	$('#emoji-trigger')[0].disabled = getSelectedEmojis().length >= MAX_NUM_EMOJIS
 }
 
-// TODO Make sure max num emojis is respected.
-
 function updateTopReactionButton({ emoji, count, userPicked, updateCount }) {
 	if (!emoji) {
 		return

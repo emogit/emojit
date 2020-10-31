@@ -5,7 +5,7 @@
   },
   "appShortName": {
     "message": "Emojit",
-    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
+    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name"
   },
   "appDescription": {
     "message": "Rate any webpage.",
@@ -14,5 +14,13 @@
   "browserActionTitle": {
     "message": "Emojit",
     "description": "The title of the browser action button"
+  },
+  "deleteAllUserDataButton": {
+    "message": "Delete all my data",
+    "description": "Text for the button to request all user data be deleted"
+  },
+  "deleteAllUserDataConfirmation": {
+    "message": "Delete all of your data? (this cannot be undone)",
+    "description": "Confirm if all of the user's data should be deleted"
   }
 }
