@@ -10,7 +10,7 @@ let serviceUrl
 let emojit
 let userId, pageUrl
 
-let userReactions = []
+let currentUserReactions = []
 
 function openOptions() {
 	browser.runtime.openOptionsPage()
@@ -38,14 +38,14 @@ function checkReactionCount() {
 	$('#emoji-trigger')[0].disabled = getSelectedEmojis().length >= MAX_NUM_EMOJIS
 }
 
-function updateTopReactionButton({ emoji, count, userPicked, updateCount }) {
-	if (!emoji) {
+function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
+	if (!reaction) {
 		return
 	}
 	const reactionsDiv = document.getElementById('reactions')
-	const existingSpan = $(`.reaction-button[emoji=${emoji}] span`)[0]
+	const existingSpan = $(`.reaction-button[emoji=${reaction}] span`)[0]
 	if (existingSpan) {
-		const button = $(`.reaction-button[emoji=${emoji}]`)[0]
+		const button = $(`.reaction-button[emoji=${reaction}]`)[0]
 		if (userPicked) {
 			$(button).addClass(pickedClassName)
 		} else {
@@ -65,33 +65,27 @@ function updateTopReactionButton({ emoji, count, userPicked, updateCount }) {
 		if (userPicked) {
 			button.className += ` ${pickedClassName}`
 		}
-		button.setAttribute('emoji', emoji)
-		button.innerHTML = `${emoji} <span class="reaction-count">${count}</span>`
+		button.setAttribute('emoji', reaction)
+		button.innerHTML = `${reaction} <span class="reaction-count">${count}</span>`
 		button.onclick = clickReaction
 		reactionsDiv.appendChild(button)
 	}
 }
 
-function loadReactions() {
+async function loadReactions() {
 	console.debug("Loading reactions...")
 
-	const userPageReactions = emojit.getUserPageReactions(userId, pageUrl)
-	emojit.getPageReactions(pageUrl).then(response => {
-		const { reactions } = response
-		for (const reaction of reactions) {
-			updateTopReactionButton(reaction)
+	const { userReactions, pageReactions } = await emojit.getUserPageReactions(userId, pageUrl)
+	for (const reaction of pageReactions) {
+		updateTopReactionButton(reaction)
+	}
+	if (userReactions) {
+		for (const reaction of userReactions) {
+			updateTopReactionButton({ reaction, count: 1, userPicked: true })
 		}
-		userPageReactions.then(response => {
-			const { reactions } = response
-			if (reactions) {
-				for (const emoji of reactions) {
-					updateTopReactionButton({ emoji, count: 1, userPicked: true })
-				}
-				userReactions = reactions
-				checkReactionCount()
-			}
-		})
-	})
+		currentUserReactions = userReactions
+		checkReactionCount()
+	}
 }
 
 function clickReaction(event) {
@@ -127,7 +121,7 @@ function addEmoji(emoji) {
 	}
 
 	// Update the UI before sending the request to the service to make the UI feel quick.
-	userReactions.push(emoji)
+	currentUserReactions.push(emoji)
 	checkReactionCount()
 	updateTopReactionButton({ emoji, count: 1, userPicked: true, updateCount: true })
 
@@ -152,9 +146,9 @@ function react(modifications) {
 }
 
 function removeAllEmojiOccurrences(emoji) {
-	const lengthBefore = userReactions.length
-	userReactions = userReactions.filter(e => e !== emoji)
-	const countDiff = userReactions.length - lengthBefore
+	const lengthBefore = currentUserReactions.length
+	currentUserReactions = currentUserReactions.filter(e => e !== emoji)
+	const countDiff = currentUserReactions.length - lengthBefore
 	updateTopReactionButton({ emoji, count: countDiff, userPicked: false, updateCount: true })
 	react([{ reaction: emoji, count: countDiff }]).then(() => {
 	}).catch(err => {
@@ -192,5 +186,5 @@ function startEmojiPicker() {
 }
 
 function getSelectedEmojis() {
-	return userReactions
+	return currentUserReactions
 }
