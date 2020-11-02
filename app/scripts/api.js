@@ -35,11 +35,13 @@ export default class EmojitApi {
 	}
 
 	getUserPageReactions(userId, pageUrl) {
+		const startTime = new Date()
 		return $.ajax({
 			method: 'GET',
 			url: `${this.url}/userPageReaction?userId=${encodeURIComponent(userId)}&pageUrl=${encodeURIComponent(pageUrl)}`,
 			success: function (response) {
-				console.debug("User reactions:", response)
+				console.debug("Page reactions:", response)
+				console.debug("Getting page reactions took", new Date() - startTime, "millis.")
 			},
 			error: function (error) {
 				console.error("Error getting user reactions.", error.status, error.responseJSON)
