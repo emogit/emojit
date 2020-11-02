@@ -27,7 +27,7 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"<all_urls>"
+		"https://api.emojit.site/*"
 	],
 	"commands": {
 		"_execute_browser_action": {
