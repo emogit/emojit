@@ -1,7 +1,7 @@
 {
 	"name": "emojit",
 	"version": "0.2.0",
-	"description": "Rate any webpage.",
+	"description": "Rate any web page.",
 	"license": "BSD-3-Clause",
 	"scripts": {
 		"dev": "webextension-toolbox dev",

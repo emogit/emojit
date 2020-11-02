@@ -1,6 +1,6 @@
 # Emojit Extension
 
-Rate any webpage.
+Rate any web page.
 
 ## Install
 
