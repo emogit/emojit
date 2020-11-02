@@ -26,10 +26,10 @@ function onPageLoad() {
 			userId = userSettings.userId
 
 			loadReactions()
-			setUpEmojiPicker()
 			// startEmojiPicker()
 		})
 	})
+	setUpEmojiPicker()
 }
 
 onPageLoad()
@@ -42,7 +42,6 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 	if (!reaction) {
 		return
 	}
-	const reactionsDiv = document.getElementById('reactions')
 	const existingSpan = $(`.reaction-button[emoji=${reaction}] span`)[0]
 	if (existingSpan) {
 		const button = $(`.reaction-button[emoji=${reaction}]`)[0]
@@ -68,6 +67,7 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 		button.setAttribute('emoji', reaction)
 		button.innerHTML = `${reaction} <span class="reaction-count">${count}</span>`
 		button.onclick = clickReaction
+		const reactionsDiv = document.getElementById('reactions')
 		reactionsDiv.appendChild(button)
 	}
 }
@@ -113,7 +113,7 @@ function clickReaction(event) {
 	}
 }
 
-function addEmoji(emoji) {
+function addEmoji(reaction) {
 	if (getSelectedEmojis().length >= MAX_NUM_EMOJIS) {
 		// TODO Notify user.
 		console.warn("Maximum number of emojis selected.")
@@ -121,11 +121,11 @@ function addEmoji(emoji) {
 	}
 
 	// Update the UI before sending the request to the service to make the UI feel quick.
-	currentUserReactions.push(emoji)
+	currentUserReactions.push(reaction)
 	checkReactionCount()
-	updateTopReactionButton({ emoji, count: 1, userPicked: true, updateCount: true })
+	updateTopReactionButton({ reaction, count: 1, userPicked: true, updateCount: true })
 
-	react([{ reaction: emoji, count: +1 }]).then((r) => {
+	react([{ reaction, count: +1 }]).then((r) => {
 	}).catch(err => {
 		// TODO Notify user.
 		console.error("Error adding reaction", emoji, err)
@@ -145,15 +145,15 @@ function react(modifications) {
 	})
 }
 
-function removeAllEmojiOccurrences(emoji) {
+function removeAllEmojiOccurrences(reaction) {
 	const lengthBefore = currentUserReactions.length
-	currentUserReactions = currentUserReactions.filter(e => e !== emoji)
+	currentUserReactions = currentUserReactions.filter(e => e !== reaction)
 	const countDiff = currentUserReactions.length - lengthBefore
-	updateTopReactionButton({ emoji, count: countDiff, userPicked: false, updateCount: true })
-	react([{ reaction: emoji, count: countDiff }]).then(() => {
+	updateTopReactionButton({ reaction, count: countDiff, userPicked: false, updateCount: true })
+	react([{ reaction, count: countDiff }]).then(() => {
 	}).catch(err => {
 		// TODO Notify user.
-		console.error("Error adding reaction", emoji, err)
+		console.error("Error adding reaction", reaction, err)
 	})
 	checkReactionCount()
 }
