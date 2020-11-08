@@ -9,10 +9,30 @@
 
 <body>
 	<!-- <label>
-		<input type="checkbox" id="like">
+		<input type="checkbox" id="iconTopReaction">
 		Change this extension's icon to the top emoji for the current page.
 	</label> -->
-	<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton">Delete all my data</button>
+	<div>
+		<label data-i18n="userIdLabel">
+			User ID:
+			<input type="text" id="userId">
+		</label>
+		<button id="set-userId" data-i18n="setUserId">
+			Set user ID
+		</button>
+	</div>
+
+	<div>
+		<button id="export-data" data-i18n="exportMyData">
+			Export my data
+		</button>
+	</div>
+
+	<div>
+		<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton">
+			Delete all my data
+		</button>
+	</div>
 	<script src="../scripts/i18n-helper.js"></script>
 	<script src="../scripts/api.js"></script>
 	<script src="../scripts/user.js"></script>

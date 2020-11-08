@@ -1,26 +1,36 @@
 {
-  "appName": {
-    "message": "Emojit (Beta)",
-    "description": "The name of the application"
-  },
-  "appShortName": {
-    "message": "Emojit (Beta)",
-    "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name"
-  },
-  "appDescription": {
-    "message": "Rate any web page.",
-    "description": "The description of the application"
-  },
-  "browserActionTitle": {
-    "message": "Emojit",
-    "description": "The title of the browser action button"
-  },
-  "deleteAllUserDataButton": {
-    "message": "Delete all my data",
-    "description": "Text for the button to request all user data be deleted"
-  },
-  "deleteAllUserDataConfirmation": {
-    "message": "Delete all of your data? (this cannot be undone)",
-    "description": "Confirm if all of the user's data should be deleted"
-  }
+	"appName": {
+		"message": "Emojit (Beta)",
+		"description": "The name of the application"
+	},
+	"appShortName": {
+		"message": "Emojit (Beta)",
+		"description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name"
+	},
+	"appDescription": {
+		"message": "Rate any web page.",
+		"description": "The description of the application"
+	},
+	"browserActionTitle": {
+		"message": "Emojit",
+		"description": "The title of the browser action button"
+	},
+	"deleteAllUserDataButton": {
+		"message": "Delete all my data",
+		"description": "Text for the button to request all user data be deleted"
+	},
+	"userIdLabel": {
+		"message": "User ID:",
+		"description": "Label for asking for the user's ID"
+	},
+	"setUserId": {
+		"message": "Set User ID"
+	},
+	"exportMyData": {
+		"message": "Export my data"
+	},
+	"deleteAllUserDataConfirmation": {
+		"message": "Delete all of your data? (this cannot be undone)",
+		"description": "Confirm if all of the user's data should be deleted"
+	}
 }

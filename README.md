@@ -2,6 +2,12 @@
 
 Rate any web page.
 
+# Downloads
+You can 
+* [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
+
+# Dev
+
 ## Install
 
     yarn install

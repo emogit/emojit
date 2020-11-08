@@ -22,6 +22,15 @@ function onPageLoad() {
 			})
 		}
 	}
+
+	document.getElementById('set-userId').onclick = function () {
+		const newUserId = document.getElementById('userId').value
+		// TODO
+	}
+
+	document.getElementById('export-data').onclick = function () {
+		// TODO
+	}
 }
 
 onPageLoad()
