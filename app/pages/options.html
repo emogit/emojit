@@ -5,6 +5,11 @@
 	<meta charset="utf-8" />
 	<title>Options</title>
 	<link rel="stylesheet" type="text/css" href="../styles/options.css">
+
+	<script src="../scripts/i18n-helper.js"></script>
+	<script src="../scripts/api.js"></script>
+	<script src="../scripts/user.js"></script>
+	<script src="../scripts/options.js"></script>
 </head>
 
 <body>
@@ -17,26 +22,22 @@
 			User ID:
 			<input type="text" id="userId">
 		</label>
-		<button id="set-userId" data-i18n="setUserId">
+		<button id="set-userId" data-i18n="setUserId" onclick="setUserId()">
 			Set user ID
 		</button>
 	</div>
 
 	<div>
-		<button id="export-data" data-i18n="exportMyData">
+		<button id="export-data" data-i18n="exportMyData" onclick="exportData()">
 			Export my data
 		</button>
 	</div>
 
 	<div>
-		<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton">
+		<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton" onclick="deleteAllUserData()">
 			Delete all my data
 		</button>
 	</div>
-	<script src="../scripts/i18n-helper.js"></script>
-	<script src="../scripts/api.js"></script>
-	<script src="../scripts/user.js"></script>
-	<script src="../scripts/options.js"></script>
 </body>
 
 </html>

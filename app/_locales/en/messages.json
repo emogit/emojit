@@ -23,6 +23,9 @@
 		"message": "User ID:",
 		"description": "Label for asking for the user's ID"
 	},
+	"invalidUserId": {
+		"message": "The user ID is not valid. It must be a valid UUID v4."
+	},
 	"setUserId": {
 		"message": "Set User ID"
 	},
