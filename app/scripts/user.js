@@ -15,7 +15,6 @@ export function isValidUserId(userId) {
 
 export function setupUserSettings() {
 	const defaultServiceUrl = 'https://api.emojit.site'
-	// const defaultServiceUrl = 'http://localhost:3000'
 
 	const keys = {
 		serviceUrl: defaultServiceUrl,

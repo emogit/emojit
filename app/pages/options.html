@@ -5,12 +5,9 @@
 	<meta charset="utf-8" />
 	<title>Options</title>
 	<link rel="stylesheet" type="text/css" href="../styles/options.css">
-
-	<script src="../scripts/i18n-helper.js"></script>
-	<script src="../scripts/api.js"></script>
-	<script src="../scripts/user.js"></script>
-	<script src="../scripts/options.js"></script>
 </head>
+
+<!-- TODO Add option for each one to reset to default. -->
 
 <body>
 	<!-- <label>
@@ -18,26 +15,43 @@
 		Change this extension's icon to the top emoji for the current page.
 	</label> -->
 	<div>
-		<label data-i18n="userIdLabel">
-			User ID:
-			<input type="text" id="userId">
+		<label>
+			<span data-i18n="userIdLabel">User ID:</span>
+			<input type="text" id="user-id">
 		</label>
-		<button id="set-userId" data-i18n="setUserId" onclick="setUserId()">
+		<button data-i18n="setUserId" id="set-user-id">
 			Set user ID
 		</button>
 	</div>
 
+	<!-- TODO Make toggle so that data cannot be deleted by accident as easily. -->
 	<div>
-		<button id="export-data" data-i18n="exportMyData" onclick="exportData()">
+		<button data-i18n="exportMyData" id="export-data">
 			Export my data
 		</button>
 	</div>
 
 	<div>
-		<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton" onclick="deleteAllUserData()">
+		<button data-i18n="deleteAllUserDataButton" id="delete-all-user-data">
 			Delete all my data
 		</button>
 	</div>
+
+	<!-- TODO Add Advanced toggle. -->
+	<div>
+		<label>
+			<span data-i18n="serviceUrlLabel">Service URL:</span>
+			<input type="text" id="service-url">
+		</label>
+		<button data-i18n="setServiceUrl" id="set-service-url">
+			Set service URL
+		</button>
+	</div>
+
+	<script src="../scripts/i18n-helper.js"></script>
+	<script src="../scripts/api.js"></script>
+	<script src="../scripts/user.js"></script>
+	<script src="../scripts/options.js"></script>
 </body>
 
 </html>
