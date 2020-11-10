@@ -19,6 +19,12 @@
 		"message": "Delete all my data",
 		"description": "Text for the button to request all user data be deleted"
 	},
+	"userIdSectionTitle": {
+		"message": "User ID"
+	},
+	"userIdExplanation": {
+		"message": "Your user ID is also your password. Do not share it. You can copy your user ID to another device or browser to import your account to that device or browser."
+	},
 	"userIdLabel": {
 		"message": "User ID:",
 		"description": "Label for asking for the user's ID"
@@ -29,8 +35,14 @@
 	"setUserId": {
 		"message": "Set User ID"
 	},
+	"yourDataSectionTitle": {
+		"message": "Your Data"
+	},
 	"exportMyData": {
 		"message": "Export my data"
+	},
+	"advancedSectionTitle": {
+		"message": "Advanced"
 	},
 	"serviceUrlLabel": {
 		"message": "Service URL:"
