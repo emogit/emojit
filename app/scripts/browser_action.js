@@ -42,16 +42,17 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 	if (!reaction) {
 		return
 	}
-	const existingSpan = $(`.reaction-button[emoji=${reaction}] span`)[0]
+	const existingSpan = $(`.reaction-button[emoji="${reaction}"] span`)[1]
 	if (existingSpan) {
-		const button = $(`.reaction-button[emoji=${reaction}]`)[0]
+		const button = $(`.reaction-button[emoji="${reaction}"]`)[0]
 		if (userPicked) {
 			$(button).addClass(pickedClassName)
 		} else {
 			$(button).removeClass(pickedClassName)
 		}
 		if (updateCount) {
-			const newCount = parseInt(existingSpan.innerText) + count
+
+			const newCount = parseInt(existingSpan.innerText, 10) + count
 			if (newCount > 0) {
 				existingSpan.innerText = newCount
 			} else {
@@ -65,7 +66,13 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 			button.className += ` ${pickedClassName}`
 		}
 		button.setAttribute('emoji', reaction)
-		button.innerHTML = `${reaction} <span class="reaction-count">${count}</span>`
+		const reactionElement = document.createElement('span')
+		reactionElement.textContent = reaction
+		const countElement = document.createElement('span')
+		countElement.className = 'reaction-count'
+		countElement.textContent = count
+		button.appendChild(reactionElement)
+		button.appendChild(countElement)
 		button.onclick = clickReaction
 		const reactionsDiv = document.getElementById('reactions')
 		reactionsDiv.appendChild(button)
