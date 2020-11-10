@@ -13,6 +13,20 @@ function onPageLoad() {
 	})
 }
 
+// From https://stackoverflow.com/a/18197341/1226799
+function download(filename, text) {
+	const element = document.createElement('a')
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+	element.setAttribute('download', filename)
+
+	element.style.display = 'none'
+	document.body.appendChild(element)
+
+	element.click()
+
+	document.body.removeChild(element)
+}
+
 document.getElementById('delete-all-user-data').onclick = function () {
 	const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
 	if (doDeleteUser) {
@@ -35,9 +49,8 @@ document.getElementById('set-user-id').onclick = function () {
 		console.error(browser.i18n.getMessage('invalidUserId'))
 		return
 	}
-	const keys = {
-		userId: newUserId
-	}
+	userId = newUserId
+	const keys = { userId }
 	browser.storage.local.set(keys).catch(err => {
 		console.error(err)
 	})
@@ -51,9 +64,10 @@ document.getElementById('set-service-url').onclick = function () {
 	const keys = {
 		serviceUrl,
 	}
-	browser.storage.local.set(keys).catch(err => {
-		console.error(err)
-	})
+	browser.storage.local.set(keys).then(onPageLoad)
+		.catch(err => {
+			console.error(err)
+		})
 	browser.storage.sync.set(keys).catch(err => {
 		console.error(err)
 	})
@@ -61,7 +75,7 @@ document.getElementById('set-service-url').onclick = function () {
 
 document.getElementById('export-data').onclick = function () {
 	emojit.getAllData(userId).then(response => {
-		// TODO Export to a file.
+		download('my_data.json', JSON.stringify(response))
 	}).catch(err => {
 		// Already logged.
 		// TODO Display error message.
