@@ -7,12 +7,52 @@
 	<link rel="stylesheet" type="text/css" href="../styles/options.css">
 </head>
 
+<!-- TODO Add option for each one to reset to default. -->
+
 <body>
 	<!-- <label>
-		<input type="checkbox" id="like">
+		<input type="checkbox" id="iconTopReaction">
 		Change this extension's icon to the top emoji for the current page.
 	</label> -->
-	<button id="delete-all-user-data" data-i18n="deleteAllUserDataButton">Delete all my data</button>
+	<div class="section">
+		<h3 data-i18n="userIdSectionTitle">User ID</h3>
+		<p data-i18n="userIdExplanation">
+			Your user ID is also your password.
+			Do not share it.
+			You can copy your user ID to another device or browser to import your account to that device or browser.
+		</p>
+		<label>
+			<span data-i18n="userIdLabel">User ID:</span>
+			<input type="text" id="user-id" size="40">
+		</label>
+		<button data-i18n="setUserId" id="set-user-id">
+			Set user ID
+		</button>
+	</div>
+
+	<!-- TODO Make toggle so that data cannot be deleted by accident as easily. -->
+	<div class="section">
+		<h3 data-i18n="yourDataSectionTitle">Your Data</h3>
+		<button data-i18n="exportMyData" id="export-data">
+			Export my data
+		</button>
+		<button data-i18n="deleteAllUserDataButton" id="delete-all-user-data">
+			Delete all my data
+		</button>
+	</div>
+
+	<!-- TODO Add Advanced toggle. -->
+	<div class="section">
+		<h3 data-i18n="advancedSectionTitle">Advanced</h3>
+		<label>
+			<span data-i18n="serviceUrlLabel">Service URL:</span>
+			<input type="text" id="service-url">
+		</label>
+		<button data-i18n="setServiceUrl" id="set-service-url">
+			Set service URL
+		</button>
+	</div>
+
 	<script src="../scripts/i18n-helper.js"></script>
 	<script src="../scripts/api.js"></script>
 	<script src="../scripts/user.js"></script>

@@ -64,4 +64,17 @@ export default class EmojitApi {
 			}
 		})
 	}
+
+	getAllData(userId) {
+		return $.ajax({
+			method: 'GET',
+			url: `${this.url}/getAllUserData?userId=${encodeURIComponent(userId)}`,
+			success: function (response) {
+				console.debug("All data:", response)
+			},
+			error: function (error) {
+				console.error("Error getting all data.", error.status, error.responseJSON)
+			}
+		})
+	}
 }
