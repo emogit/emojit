@@ -26,9 +26,12 @@
 			align-items: flex-end;
 		}
 
-		#reactions {
+		#reactions-section {
 			min-height: 6em;
-			font-size: 1.5em;
+			font-size: 1.5em;			
+		}
+
+		#reactions {
 			display: inline-block;
 		}
 
@@ -84,6 +87,7 @@
 			font-size: 1.5em;
 		}
 	</style>
+	<link rel="stylesheet" href="../styles/loader.css">
 </head>
 
 <body>
@@ -91,7 +95,13 @@
 		<div class="end">
 			<button id="options-button">⚙️</button>
 		</div>
-		<div id="reactions"></div>
+		<div id="reactions-section">
+			<!-- Put loading in #reactions div because #reaction div has a min-height so the experience is less jumpy. -->
+			<div id="reactions-loader" class="center">
+				<div class="loader"></div>
+			</div>
+			<div id="reactions"></div>
+		</div>
 		<div class="center">
 			<button id="emoji-trigger">🙂</button>
 		</div>

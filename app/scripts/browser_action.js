@@ -83,6 +83,7 @@ async function loadReactions() {
 	console.debug("Loading reactions...")
 
 	const { userReactions, pageReactions } = await emojit.getUserPageReactions(userId, pageUrl)
+	document.getElementById('reactions-loader').style.display = 'none'
 	for (const reaction of pageReactions) {
 		updateTopReactionButton(reaction)
 	}

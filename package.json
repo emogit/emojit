@@ -1,6 +1,6 @@
 {
 	"name": "emojit",
-	"version": "0.2.0",
+	"version": "0.4.0",
 	"description": "Rate any web page.",
 	"license": "BSD-3-Clause",
 	"scripts": {
