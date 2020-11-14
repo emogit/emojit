@@ -3,7 +3,7 @@
 Rate any web page.
 
 # Downloads
-You can 
+You can download the extension for various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 
 # Dev
