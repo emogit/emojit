@@ -1,13 +1,16 @@
 import { EmojiButton } from '@joeattardi/emoji-button'
 import $ from 'jquery'
+import { ErrorHandler } from './error_handler'
 import { setupUserSettings } from './user'
 
 const MAX_NUM_EMOJIS = 5
 
 const pickedClassName = 'reaction-button-picked'
 
+const errorHandler = new ErrorHandler(document.getElementById('error-text'))
+
 let serviceUrl
-let emojit
+let emojit, picker
 let userId, pageUrl
 
 let currentUserReactions = []
@@ -111,8 +114,8 @@ function clickReaction(event) {
 	} else {
 		// Validate
 		if (getSelectedEmojis().length >= MAX_NUM_EMOJIS) {
-			// TODO Notify user.
-			console.warn("Maximum number of emojis selected.")
+			const errorMsg = "Maximum number of emojis selected."
+			errorHandler.showError({ errorMsg })
 			return
 		}
 		// Select reaction.
@@ -123,8 +126,11 @@ function clickReaction(event) {
 
 function addEmoji(reaction) {
 	if (getSelectedEmojis().length >= MAX_NUM_EMOJIS) {
-		// TODO Notify user.
-		console.warn("Maximum number of emojis selected.")
+		if (picker.isPickerVisible()) {
+			picker.hidePicker()
+		}
+		const errorMsg = "Maximum number of emojis selected."
+		errorHandler.showError({ errorMsg })
 		return
 	}
 
@@ -168,7 +174,7 @@ function removeAllEmojiOccurrences(reaction) {
 
 function setUpEmojiPicker() {
 	// Docs https://emoji-button.js.org/docs/api/
-	const picker = new EmojiButton(
+	picker = new EmojiButton(
 		{
 			autoHide: false,
 			emojiSize: '1.5em',
@@ -179,8 +185,8 @@ function setUpEmojiPicker() {
 			rows: 4,
 			theme: 'auto',
 		}
-	);
-	const trigger = document.querySelector('#emoji-trigger');
+	)
+	const trigger = document.getElementById('emoji-trigger')
 
 	picker.on('emoji', selection => {
 		addEmoji(selection.emoji)

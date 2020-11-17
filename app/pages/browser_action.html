@@ -88,12 +88,16 @@
 		}
 	</style>
 	<link rel="stylesheet" href="../styles/loader.css">
+	<link rel="stylesheet" href="../styles/error.css">
 </head>
 
 <body>
 	<div id="mainPopup">
 		<div class="end">
 			<button id="options-button">⚙️</button>
+		</div>
+		<div class="error-section">
+			<p id="error-text"></p>
 		</div>
 		<div id="reactions-section">
 			<!-- Put loading in #reactions div because #reaction div has a min-height so the experience is less jumpy. -->
@@ -105,7 +109,7 @@
 		<div class="center">
 			<button id="emoji-trigger">🙂</button>
 		</div>
-		<script src="../scripts/i18n-helper.js"></script>
+		<script src="../scripts/i18n_helper.js"></script>
 		<script src="../scripts/api.js"></script>
 		<script src="../scripts/user.js"></script>
 		<script src="../scripts/browser_action.js"></script>
