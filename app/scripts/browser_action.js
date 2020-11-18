@@ -85,7 +85,14 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 async function loadReactions() {
 	console.debug("Loading reactions...")
 
-	const { userReactions, pageReactions } = await emojit.getUserPageReactions(userId, pageUrl)
+	let userReactions, pageReactions
+	try {
+		response = await emojit.getUserPageReactions(userId, pageUrl)
+		userReactions = response.userReactions
+		pageReactions = response.pageReactions 
+	} catch (err) {
+		errorHandler.showError({ serviceError: err, errorMsg: err })
+	}
 	document.getElementById('reactions-loader').style.display = 'none'
 	for (const reaction of pageReactions) {
 		updateTopReactionButton(reaction)
@@ -141,9 +148,7 @@ function addEmoji(reaction) {
 
 	react([{ reaction, count: +1 }]).then((r) => {
 	}).catch(err => {
-		// TODO Notify user.
-		console.error("Error adding reaction", emoji, err)
-		// TODO Maybe update the UI?
+		errorHandler.showError({ serviceError: err })
 	})
 }
 
@@ -166,8 +171,7 @@ function removeAllEmojiOccurrences(reaction) {
 	updateTopReactionButton({ reaction, count: countDiff, userPicked: false, updateCount: true })
 	react([{ reaction, count: countDiff }]).then(() => {
 	}).catch(err => {
-		// TODO Notify user.
-		console.error("Error adding reaction", reaction, err)
+		errorHandler.showError({ serviceError: err })
 	})
 	checkReactionCount()
 }

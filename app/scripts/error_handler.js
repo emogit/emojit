@@ -3,8 +3,13 @@ export class ErrorHandler {
 		this.errorTextElement = errorTextElement
 	}
 
-	showError({ errorMsg, clearAfterMs }) {
+	showError({ serviceError, errorMsg, clearAfterMs }) {
 		clearTimeout(this.lastTimeout)
+		if (!serviceError !== undefined) {
+			const { errorCode, message } = serviceError
+			errorMsg = browser.i18n.getMessage(`errorCode-${errorCode}`) || message
+		}
+		console.error(errorMsg)
 		clearAfterMs = clearAfterMs || (10 * 1000)
 		this.errorTextElement.innerText = errorMsg
 		this.lastTimeout = setTimeout(() => {
