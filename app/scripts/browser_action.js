@@ -9,7 +9,6 @@ const pickedClassName = 'reaction-button-picked'
 
 const errorHandler = new ErrorHandler(document.getElementById('error-text'))
 
-let serviceUrl
 let emojit, picker
 let userId, pageUrl
 
@@ -25,7 +24,6 @@ function onPageLoad() {
 		pageUrl = tabs[0].url
 		setupUserSettings().then((userSettings) => {
 			emojit = userSettings.emojit
-			serviceUrl = userSettings.serviceUrl
 			userId = userSettings.userId
 
 			loadReactions()
@@ -89,9 +87,9 @@ async function loadReactions() {
 	try {
 		response = await emojit.getUserPageReactions(userId, pageUrl)
 		userReactions = response.userReactions
-		pageReactions = response.pageReactions 
-	} catch (err) {
-		errorHandler.showError({ serviceError: err, errorMsg: err })
+		pageReactions = response.pageReactions
+	} catch (serviceError) {
+		errorHandler.showError({ serviceError })
 	}
 	document.getElementById('reactions-loader').style.display = 'none'
 	for (const reaction of pageReactions) {
@@ -147,14 +145,14 @@ function addEmoji(reaction) {
 	updateTopReactionButton({ reaction, count: 1, userPicked: true, updateCount: true })
 
 	react([{ reaction, count: +1 }]).then((r) => {
-	}).catch(err => {
-		errorHandler.showError({ serviceError: err })
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
 	})
 }
 
 function react(modifications) {
 	if (!userId || !pageUrl) {
-		console.error("userId or pageUrl have not been set yet. Will retry")
+		console.warn("userId or pageUrl have not been set yet. Will retry")
 		setTimeout(() => { react(modifications) }, 200)
 	}
 	return emojit.react({
@@ -170,8 +168,8 @@ function removeAllEmojiOccurrences(reaction) {
 	const countDiff = currentUserReactions.length - lengthBefore
 	updateTopReactionButton({ reaction, count: countDiff, userPicked: false, updateCount: true })
 	react([{ reaction, count: countDiff }]).then(() => {
-	}).catch(err => {
-		errorHandler.showError({ serviceError: err })
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
 	})
 	checkReactionCount()
 }
