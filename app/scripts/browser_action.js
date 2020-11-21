@@ -85,7 +85,7 @@ async function loadReactions() {
 
 	let userReactions, pageReactions
 	try {
-		response = await emojit.getUserPageReactions(userId, pageUrl)
+		const response = await emojit.getUserPageReactions(userId, pageUrl)
 		userReactions = response.userReactions
 		pageReactions = response.pageReactions
 	} catch (serviceError) {
