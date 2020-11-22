@@ -1,4 +1,7 @@
+import { ErrorHandler } from './error_handler'
 import { isValidUserId, setupUserSettings } from './user'
+
+const errorHandler = new ErrorHandler()
 
 let emojit, userId
 
@@ -31,13 +34,11 @@ document.getElementById('delete-all-user-data').onclick = function () {
 	const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
 	if (doDeleteUser) {
 		emojit.deleteUser({ userId })
-			.then(response => {
-				// TODO Display success.
-				console.debug("Successfully deleted all of your data.")
-				console.debug(response)
-			}).catch(err => {
-				// TODO Display error.
-				console.error(err)
+			.then(_response => {
+				const errorMsg = "Successfully deleted all of your data."
+				errorHandler.showError({ errorMsg })
+			}).catch(serviceError => {
+				errorHandler.showError({ serviceError })
 			})
 	}
 }
@@ -45,17 +46,17 @@ document.getElementById('delete-all-user-data').onclick = function () {
 document.getElementById('set-user-id').onclick = function () {
 	const newUserId = document.getElementById('user-id').value
 	if (!isValidUserId(newUserId)) {
-		// TODO Display error message.
-		console.error(browser.i18n.getMessage('invalidUserId'))
+		const errorMsg = browser.i18n.getMessage('invalidUserId')
+		errorHandler.showError({ errorMsg })
 		return
 	}
 	userId = newUserId
 	const keys = { userId }
-	browser.storage.local.set(keys).catch(err => {
-		console.error(err)
+	browser.storage.local.set(keys).catch(errorMsg => {
+		errorHandler.showError({ errorMsg })
 	})
-	browser.storage.sync.set(keys).catch(err => {
-		console.error(err)
+	browser.storage.sync.set(keys).catch(errorMsg => {
+		errorHandler.showError({ errorMsg })
 	})
 }
 
@@ -65,20 +66,19 @@ document.getElementById('set-service-url').onclick = function () {
 		serviceUrl,
 	}
 	browser.storage.local.set(keys).then(onPageLoad)
-		.catch(err => {
-			console.error(err)
+		.catch(errorMsg => {
+			errorHandler.showError({ errorMsg })
 		})
 	browser.storage.sync.set(keys).catch(err => {
-		console.error(err)
+		errorHandler.showError({ errorMsg })
 	})
 }
 
 document.getElementById('export-data').onclick = function () {
 	emojit.getAllData(userId).then(response => {
-		download('my_data.json', JSON.stringify(response))
-	}).catch(err => {
-		// Already logged.
-		// TODO Display error message.
+		download('my_emojit_data.json', JSON.stringify(response))
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
 	})
 }
 

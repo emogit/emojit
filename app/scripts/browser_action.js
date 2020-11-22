@@ -9,7 +9,6 @@ const pickedClassName = 'reaction-button-picked'
 
 const errorHandler = new ErrorHandler(document.getElementById('error-text'))
 
-let serviceUrl
 let emojit, picker
 let userId, pageUrl
 
@@ -25,7 +24,6 @@ function onPageLoad() {
 		pageUrl = tabs[0].url
 		setupUserSettings().then((userSettings) => {
 			emojit = userSettings.emojit
-			serviceUrl = userSettings.serviceUrl
 			userId = userSettings.userId
 
 			loadReactions()
@@ -85,7 +83,14 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 async function loadReactions() {
 	console.debug("Loading reactions...")
 
-	const { userReactions, pageReactions } = await emojit.getUserPageReactions(userId, pageUrl)
+	let userReactions, pageReactions
+	try {
+		const response = await emojit.getUserPageReactions(userId, pageUrl)
+		userReactions = response.userReactions
+		pageReactions = response.pageReactions
+	} catch (serviceError) {
+		errorHandler.showError({ serviceError })
+	}
 	document.getElementById('reactions-loader').style.display = 'none'
 	for (const reaction of pageReactions) {
 		updateTopReactionButton(reaction)
@@ -140,16 +145,14 @@ function addEmoji(reaction) {
 	updateTopReactionButton({ reaction, count: 1, userPicked: true, updateCount: true })
 
 	react([{ reaction, count: +1 }]).then((r) => {
-	}).catch(err => {
-		// TODO Notify user.
-		console.error("Error adding reaction", emoji, err)
-		// TODO Maybe update the UI?
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
 	})
 }
 
 function react(modifications) {
 	if (!userId || !pageUrl) {
-		console.error("userId or pageUrl have not been set yet. Will retry")
+		console.warn("userId or pageUrl have not been set yet. Will retry")
 		setTimeout(() => { react(modifications) }, 200)
 	}
 	return emojit.react({
@@ -165,9 +168,8 @@ function removeAllEmojiOccurrences(reaction) {
 	const countDiff = currentUserReactions.length - lengthBefore
 	updateTopReactionButton({ reaction, count: countDiff, userPicked: false, updateCount: true })
 	react([{ reaction, count: countDiff }]).then(() => {
-	}).catch(err => {
-		// TODO Notify user.
-		console.error("Error adding reaction", reaction, err)
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
 	})
 	checkReactionCount()
 }
