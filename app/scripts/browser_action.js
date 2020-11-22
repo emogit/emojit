@@ -204,7 +204,14 @@ function setUpEmojiPicker() {
 		addEmoji(selection.emoji)
 	})
 
-	trigger.addEventListener('click', () => picker.togglePicker(trigger))
+	picker.on('hidden', () => {
+		condensePopup()
+	})
+
+	trigger.addEventListener('click', () => {
+		expandPopup()
+		picker.togglePicker(trigger)
+	})
 }
 
 function startEmojiPicker() {
@@ -225,4 +232,12 @@ function showReactingLoader() {
 
 function hideReactingLoader() {
 	document.getElementById('reacting-loader').style.display = 'none'
+}
+
+function condensePopup() {
+	document.getElementById('main-popup').style.height = '250px'
+}
+
+function expandPopup() {
+	document.getElementById('main-popup').style.height = '450px'
 }
