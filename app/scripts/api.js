@@ -1,8 +1,10 @@
 import $ from 'jquery'
 
-export default class EmojitApi {
+export const defaultServiceUrl = 'https://api.emojit.site'
+
+export class EmojitApi {
 	constructor(url) {
-		this.url = url || 'https://api.emojit.site'
+		this.url = url || defaultServiceUrl
 	}
 
 	deleteUser(request) {

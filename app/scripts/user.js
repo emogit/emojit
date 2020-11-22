@@ -1,4 +1,4 @@
-import EmojitApi from './api'
+import { defaultServiceUrl, EmojitApi } from './api'
 
 // From https://stackoverflow.com/a/2117523/1226799
 function uuidv4() {
@@ -14,8 +14,6 @@ export function isValidUserId(userId) {
 }
 
 export function setupUserSettings() {
-	const defaultServiceUrl = 'https://api.emojit.site'
-
 	const keys = {
 		serviceUrl: defaultServiceUrl,
 		userId: undefined,

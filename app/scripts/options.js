@@ -1,3 +1,4 @@
+import { defaultServiceUrl } from './api'
 import { ErrorHandler } from './error_handler'
 import { isValidUserId, setupUserSettings } from './user'
 
@@ -64,6 +65,20 @@ document.getElementById('set-service-url').onclick = function () {
 	const serviceUrl = document.getElementById('service-url').value
 	const keys = {
 		serviceUrl,
+	}
+	browser.storage.local.set(keys).then(onPageLoad)
+		.catch(errorMsg => {
+			errorHandler.showError({ errorMsg })
+		})
+	browser.storage.sync.set(keys).catch(err => {
+		errorHandler.showError({ errorMsg })
+	})
+}
+
+document.getElementById('reset-service-url').onclick = function () {
+	console.debug("resting service URL to:", defaultServiceUrl)
+	const keys = {
+		serviceUrl: defaultServiceUrl,
 	}
 	browser.storage.local.set(keys).then(onPageLoad)
 		.catch(errorMsg => {

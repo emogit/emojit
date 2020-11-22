@@ -50,6 +50,9 @@
 	"setServiceUrl": {
 		"message": "Set service URL"
 	},
+	"resetServiceUrl": {
+		"message": "Reset service URL"
+	},
 	"deleteAllUserDataConfirmation": {
 		"message": "Delete all of your data? (this cannot be undone)",
 		"description": "Confirm if all of the user's data should be deleted"
