@@ -91,7 +91,7 @@ async function loadReactions() {
 	} catch (serviceError) {
 		errorHandler.showError({ serviceError })
 	}
-	document.getElementById('reactions-loader').style.display = 'none'
+	hideLoader()
 	for (const reaction of pageReactions) {
 		updateTopReactionButton(reaction)
 	}
@@ -144,9 +144,14 @@ function addEmoji(reaction) {
 	checkReactionCount()
 	updateTopReactionButton({ reaction, count: 1, userPicked: true, updateCount: true })
 
-	react([{ reaction, count: +1 }]).then((r) => {
+	showReactingLoader()
+	react([{ reaction, count: +1 }]).then(() => {
 	}).catch(serviceError => {
 		errorHandler.showError({ serviceError })
+		// Remove the reaction.
+		updateTopReactionButton({ reaction, count: -1, userPicked: true, updateCount: true })
+	}).always(() => {
+		hideReactingLoader()
 	})
 }
 
@@ -167,9 +172,14 @@ function removeAllEmojiOccurrences(reaction) {
 	currentUserReactions = currentUserReactions.filter(e => e !== reaction)
 	const countDiff = currentUserReactions.length - lengthBefore
 	updateTopReactionButton({ reaction, count: countDiff, userPicked: false, updateCount: true })
+	showReactingLoader()
 	react([{ reaction, count: countDiff }]).then(() => {
 	}).catch(serviceError => {
 		errorHandler.showError({ serviceError })
+		// Add back the reactions.
+		updateTopReactionButton({ reaction, count: Math.abs(countDiff), userPicked: true, updateCount: true })
+	}).always(() => {
+		hideReactingLoader()
 	})
 	checkReactionCount()
 }
@@ -203,4 +213,16 @@ function startEmojiPicker() {
 
 function getSelectedEmojis() {
 	return currentUserReactions
+}
+
+function hideLoader() {
+	document.getElementById('reactions-loader').style.display = 'none'
+}
+
+function showReactingLoader() {
+	document.getElementById('reacting-loader').style.display = ''
+}
+
+function hideReactingLoader() {
+	document.getElementById('reacting-loader').style.display = 'none'
 }

@@ -1,13 +1,22 @@
 /* Modified from https://www.w3schools.com/howto/howto_css_loader.asp */
 .loader {
-	border: 6px solid #f3f3f3; /* Light grey */
+	border: 6px solid #f6f6f6;
 	border-top: 6px solid dodgerblue;
 	border-radius: 50%;
 	width: 50px;
 	height: 50px;
 	animation: spin 2s ease-out infinite;
 }
-  
+
+.small-loader {
+	border: 3px solid #f6f6f6;
+	border-top: 3px solid dodgerblue;
+	border-radius: 50%;
+	width: 1.3em;
+	height: 1.3em;
+	animation: spin 2s ease-out infinite;
+}
+
 @keyframes spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
