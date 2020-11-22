@@ -9,8 +9,8 @@ export class ErrorHandler {
 	showError({ serviceError, errorMsg, clearAfterMs }) {
 		if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
-		} else if (serviceError !== undefined) {
-			const { errorCode, message } = serviceError
+		} else if (serviceError && serviceError.responseJSON && serviceError.responseJSON.error) {
+			const { errorCode, message } = serviceError.responseJSON.error
 			errorMsg = browser.i18n.getMessage(`errorCode-${errorCode}`) || message
 		}
 		console.error(errorMsg)

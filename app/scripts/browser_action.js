@@ -92,8 +92,10 @@ async function loadReactions() {
 		errorHandler.showError({ serviceError })
 	}
 	hideLoader()
-	for (const reaction of pageReactions) {
-		updateTopReactionButton(reaction)
+	if (pageReactions) {
+		for (const reaction of pageReactions) {
+			updateTopReactionButton(reaction)
+		}
 	}
 	if (userReactions) {
 		for (const reaction of userReactions) {
