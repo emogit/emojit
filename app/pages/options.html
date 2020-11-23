@@ -10,10 +10,6 @@
 <!-- TODO Add option for each one to reset to default. -->
 
 <body>
-	<!-- <label>
-		<input type="checkbox" id="iconTopReaction">
-		Change this extension's icon to the top emoji for the current page.
-	</label> -->
 	<div class="section">
 		<h3 data-i18n="userIdSectionTitle">User ID</h3>
 		<p data-i18n="userIdExplanation">
@@ -30,6 +26,21 @@
 				Set user ID
 			</button>
 		</div>
+	</div>
+
+	<div class="section">
+		<h3>Options</h3>
+		<label>
+			<input type="checkbox" id="icon-top-reaction">
+			<b>Show the top emoji for the page on top of the extension icon without clicking on the extension icon</b>
+		</label>
+		<p>
+			This sends the page's URL address to a server every time you change the tab in your browser.
+			This is disabled by default because it could make it look like we are trying to record your browsing history
+			even though we are not.
+			Currently, your user ID will not be sent with this request but this may change it the future for
+			authentication purposes to prevent spam requests.
+		</p>
 	</div>
 
 	<!-- TODO Make toggle so that data cannot be deleted by accident as easily. -->

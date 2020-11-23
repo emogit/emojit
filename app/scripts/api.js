@@ -14,7 +14,7 @@ export class EmojitApi {
 		return new Promise((resolve, reject) => {
 			if (url.length > this.urlMaxLength) {
 				console.log("URL TOO long")
-				reject(browser.i18n.getMessage('urlTooLong') || "The URL is too long. It might contain private information.")
+				reject(browser.i18n.getMessage('errorCode-URL_TOO_LONG'))
 			}
 			resolve()
 		})

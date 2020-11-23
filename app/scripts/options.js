@@ -10,10 +10,11 @@ function onPageLoad() {
 	setupUserSettings().then((userSettings) => {
 		emojit = userSettings.emojit
 		userId = userSettings.userId
-		const { serviceUrl } = userSettings
+		const { serviceUrl, updateIconTextWithTopPageReaction } = userSettings
 
 		document.getElementById('user-id').value = userId
 		document.getElementById('service-url').value = serviceUrl
+		document.getElementById('icon-top-reaction').checked = updateIconTextWithTopPageReaction === true
 	})
 }
 
@@ -29,19 +30,6 @@ function download(filename, text) {
 	element.click()
 
 	document.body.removeChild(element)
-}
-
-document.getElementById('delete-all-user-data').onclick = function () {
-	const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
-	if (doDeleteUser) {
-		emojit.deleteUser()
-			.then(_response => {
-				const errorMsg = "Successfully deleted all of your data."
-				errorHandler.showError({ errorMsg })
-			}).catch(serviceError => {
-				errorHandler.showError({ serviceError })
-			})
-	}
 }
 
 document.getElementById('set-user-id').onclick = function () {
@@ -61,6 +49,40 @@ document.getElementById('set-user-id').onclick = function () {
 	})
 }
 
+
+document.getElementById('icon-top-reaction').onclick = function () {
+	const keys = {
+		updateIconTextWithTopPageReaction: this.checked,
+	}
+	browser.storage.local.set(keys).catch(errorMsg => {
+		errorHandler.showError({ errorMsg })
+	})
+	browser.storage.sync.set(keys).catch(errorMsg => {
+		errorHandler.showError({ errorMsg })
+	})
+}
+
+document.getElementById('export-data').onclick = function () {
+	emojit.getAllData().then(response => {
+		download('my_emojit_data.json', JSON.stringify(response))
+	}).catch(serviceError => {
+		errorHandler.showError({ serviceError })
+	})
+}
+
+document.getElementById('delete-all-user-data').onclick = function () {
+	const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
+	if (doDeleteUser) {
+		emojit.deleteUser()
+			.then(_response => {
+				const errorMsg = "Successfully deleted all of your data."
+				errorHandler.showError({ errorMsg })
+			}).catch(serviceError => {
+				errorHandler.showError({ serviceError })
+			})
+	}
+}
+
 document.getElementById('set-service-url').onclick = function () {
 	const serviceUrl = document.getElementById('service-url').value
 	const keys = {
@@ -70,7 +92,7 @@ document.getElementById('set-service-url').onclick = function () {
 		.catch(errorMsg => {
 			errorHandler.showError({ errorMsg })
 		})
-	browser.storage.sync.set(keys).catch(err => {
+	browser.storage.sync.set(keys).catch(errorMsg => {
 		errorHandler.showError({ errorMsg })
 	})
 }
@@ -83,16 +105,8 @@ document.getElementById('reset-service-url').onclick = function () {
 		.catch(errorMsg => {
 			errorHandler.showError({ errorMsg })
 		})
-	browser.storage.sync.set(keys).catch(err => {
+	browser.storage.sync.set(keys).catch(errorMsg => {
 		errorHandler.showError({ errorMsg })
-	})
-}
-
-document.getElementById('export-data').onclick = function () {
-	emojit.getAllData().then(response => {
-		download('my_emojit_data.json', JSON.stringify(response))
-	}).catch(serviceError => {
-		errorHandler.showError({ serviceError })
 	})
 }
 

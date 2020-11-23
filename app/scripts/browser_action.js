@@ -92,10 +92,16 @@ async function loadReactions() {
 	}
 	hideLoader()
 	if (pageReactions) {
+		if (pageReactions.length > 0) {
+			browser.browserAction.setBadgeText({ text: pageReactions[0].reaction })
+		} else {
+			browser.browserAction.setBadgeText({ text: null })
+		}
 		for (const reaction of pageReactions) {
 			updateTopReactionButton(reaction)
 		}
 	}
+
 	if (userReactions) {
 		for (const reaction of userReactions) {
 			updateTopReactionButton({ reaction, count: 1, userPicked: true })

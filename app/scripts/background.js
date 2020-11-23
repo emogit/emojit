@@ -2,11 +2,10 @@
 //   console.log('previousVersion', details.previousVersion)
 // })
 
-// browser.browserAction.setBadgeText({
-//   text: `'Allo`
-// })
+import { setupUserSettings } from "./user"
 
 browser.tabs.onActiveChanged.addListener((_tabId, _selectInfo) => {
+	browser.browserAction.setBadgeText({ text: null })
 	setupUserSettings().then(({ emojit, updateIconTextWithTopPageReaction }) => {
 		if (!updateIconTextWithTopPageReaction) {
 			return
@@ -15,7 +14,7 @@ browser.tabs.onActiveChanged.addListener((_tabId, _selectInfo) => {
 			if (tabs.length === 0) {
 				return
 			}
-			pageUrl = tabs[0].url
+			const pageUrl = tabs[0].url
 			if (!pageUrl) {
 				return
 			}
