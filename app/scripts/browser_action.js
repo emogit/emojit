@@ -10,7 +10,7 @@ const pickedClassName = 'reaction-button-picked'
 const errorHandler = new ErrorHandler(document.getElementById('error-text'))
 
 let emojit, picker
-let userId, pageUrl
+let pageUrl
 
 let currentUserReactions = []
 
@@ -24,7 +24,6 @@ function onPageLoad() {
 		pageUrl = tabs[0].url
 		setupUserSettings().then((userSettings) => {
 			emojit = userSettings.emojit
-			userId = userSettings.userId
 
 			loadReactions()
 			// startEmojiPicker()
@@ -85,7 +84,7 @@ async function loadReactions() {
 
 	let userReactions, pageReactions
 	try {
-		const response = await emojit.getUserPageReactions(userId, pageUrl)
+		const response = await emojit.getUserPageReactions(pageUrl)
 		userReactions = response.userReactions
 		pageReactions = response.pageReactions
 	} catch (serviceError) {
@@ -152,20 +151,22 @@ function addEmoji(reaction) {
 		errorHandler.showError({ serviceError })
 		// Remove the reaction.
 		updateTopReactionButton({ reaction, count: -1, userPicked: true, updateCount: true })
-	}).always(() => {
+	}).finally(() => {
 		hideReactingLoader()
 	})
 }
 
 function react(modifications) {
-	if (!userId || !pageUrl) {
-		console.warn("userId or pageUrl have not been set yet. Will retry")
+	if (!pageUrl) {
+		console.warn("pageUrl has not been set yet. Will retry")
 		setTimeout(() => { react(modifications) }, 200)
 	}
 	return emojit.react({
-		userId,
 		pageUrl,
 		modifications,
+	}).then(r => {
+		errorHandler.clear()
+		return r
 	})
 }
 
@@ -180,7 +181,7 @@ function removeAllEmojiOccurrences(reaction) {
 		errorHandler.showError({ serviceError })
 		// Add back the reactions.
 		updateTopReactionButton({ reaction, count: Math.abs(countDiff), userPicked: true, updateCount: true })
-	}).always(() => {
+	}).finally(() => {
 		hideReactingLoader()
 	})
 	checkReactionCount()

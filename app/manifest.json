@@ -27,6 +27,7 @@
 	"permissions": [
 		"storage",
 		"activeTab",
+		"tabs",
 		"https://api.emojit.site/*"
 	],
 	"commands": {

@@ -1,4 +1,4 @@
-import { defaultServiceUrl, EmojitApi } from './api'
+import { DEFAULT_SERVICE_URL, EmojitApi } from './api'
 
 // From https://stackoverflow.com/a/2117523/1226799
 function uuidv4() {
@@ -15,17 +15,16 @@ export function isValidUserId(userId) {
 
 export function setupUserSettings() {
 	const keys = {
-		serviceUrl: defaultServiceUrl,
+		serviceUrl: DEFAULT_SERVICE_URL,
 		userId: undefined,
+		updateIconTextWithTopPageReaction: undefined,
 	}
 
 	return browser.storage.local.get(keys).then(async (results) => {
 		const { serviceUrl } = results
-		let { userId } = results
-		const emojit = new EmojitApi(serviceUrl)
-
+		let { userId, updateIconTextWithTopPageReaction } = results
 		if (!userId) {
-			await browser.storage.sync.get(['userId']).then(async (results) => {
+			await browser.storage.sync.get(['userId']).then((results) => {
 				userId = results.userId
 				if (!userId) {
 					userId = uuidv4()
@@ -34,6 +33,17 @@ export function setupUserSettings() {
 				}
 			})
 		}
-		return { emojit, serviceUrl, userId, }
+
+		if (updateIconTextWithTopPageReaction === undefined) {
+			await browser.storage.sync.get(['updateIconTextWithTopPageReaction']).then((results) => {
+				updateIconTextWithTopPageReaction = results.updateIconTextWithTopPageReaction
+				if (updateIconTextWithTopPageReaction !== undefined) {
+					browser.storage.local.set({ updateIconTextWithTopPageReaction })
+					browser.storage.sync.set({ updateIconTextWithTopPageReaction })
+				}
+			})
+		}
+		const emojit = new EmojitApi(serviceUrl, userId)
+		return { emojit, serviceUrl, userId, updateIconTextWithTopPageReaction, }
 	})
 }

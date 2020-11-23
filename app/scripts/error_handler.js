@@ -20,11 +20,17 @@ export class ErrorHandler {
 			this.errorTextElement.innerText = errorMsg
 			this.lastTimeout = setTimeout(() => {
 				if (this.errorTextElement.innerText === errorMsg) {
-					this.errorTextElement.innerText = ""
+					this.clear()
 				}
 			}, clearAfterMs)
 		} else {
 			alert(errorMsg)
+		}
+	}
+
+	clear() {
+		if (this.errorTextElement) {
+			this.errorTextElement.innerText = ""
 		}
 	}
 }

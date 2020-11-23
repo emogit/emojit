@@ -1,4 +1,4 @@
-import { defaultServiceUrl } from './api'
+import { DEFAULT_SERVICE_URL } from './api'
 import { ErrorHandler } from './error_handler'
 import { isValidUserId, setupUserSettings } from './user'
 
@@ -34,7 +34,7 @@ function download(filename, text) {
 document.getElementById('delete-all-user-data').onclick = function () {
 	const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
 	if (doDeleteUser) {
-		emojit.deleteUser({ userId })
+		emojit.deleteUser()
 			.then(_response => {
 				const errorMsg = "Successfully deleted all of your data."
 				errorHandler.showError({ errorMsg })
@@ -76,9 +76,8 @@ document.getElementById('set-service-url').onclick = function () {
 }
 
 document.getElementById('reset-service-url').onclick = function () {
-	console.debug("resting service URL to:", defaultServiceUrl)
 	const keys = {
-		serviceUrl: defaultServiceUrl,
+		serviceUrl: DEFAULT_SERVICE_URL,
 	}
 	browser.storage.local.set(keys).then(onPageLoad)
 		.catch(errorMsg => {
@@ -90,7 +89,7 @@ document.getElementById('reset-service-url').onclick = function () {
 }
 
 document.getElementById('export-data').onclick = function () {
-	emojit.getAllData(userId).then(response => {
+	emojit.getAllData().then(response => {
 		download('my_emojit_data.json', JSON.stringify(response))
 	}).catch(serviceError => {
 		errorHandler.showError({ serviceError })
