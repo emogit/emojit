@@ -57,7 +57,10 @@
 		"message": "Delete all of your data? (this cannot be undone)",
 		"description": "Confirm if all of the user's data should be deleted"
 	},
-	"errorCode-URL_TOO_LONG": {
+	"errorCode_INVALID_URL": {
+		"message": "The URL is not valid."
+	},
+	"errorCode_URL_TOO_LONG": {
 		"message": "The URL is too long. It might contain private information."
 	}
 }

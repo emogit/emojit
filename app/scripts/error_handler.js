@@ -11,7 +11,7 @@ export class ErrorHandler {
 			errorMsg = serviceError
 		} else if (serviceError && serviceError.responseJSON && serviceError.responseJSON.error) {
 			const { errorCode, message } = serviceError.responseJSON.error
-			errorMsg = browser.i18n.getMessage(`errorCode-${errorCode}`) || message
+			errorMsg = browser.i18n.getMessage(`errorCode_${errorCode}`) || message
 		}
 		console.error(errorMsg)
 		if (this.errorTextElement) {

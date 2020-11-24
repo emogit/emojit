@@ -13,8 +13,10 @@ export class EmojitApi {
 	checkUrl(url) {
 		return new Promise((resolve, reject) => {
 			if (url.length > this.urlMaxLength) {
-				console.log("URL TOO long")
-				reject(browser.i18n.getMessage('errorCode-URL_TOO_LONG'))
+				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
+			}
+			if (!/^https?:\/\//i.test(url)) {
+				reject(browser.i18n.getMessage('errorCode_INVALID_URL'))
 			}
 			resolve()
 		})
@@ -39,11 +41,13 @@ export class EmojitApi {
 
 	getPageReactions(pageUrl) {
 		return this.checkUrl(pageUrl).then(() => {
+			const startTime = new Date()
 			return $.ajax({
 				method: 'GET',
 				url: `${this.url}/pageReactions?pageUrl=${encodeURIComponent(pageUrl)}`,
 				success: function (response) {
 					console.debug("Page reactions response:", response)
+					console.debug("Getting page reactions took", new Date() - startTime, "millis.")
 				},
 				error: function (error) {
 					console.error("Error getting page reactions.", error.status, error.responseJSON)
@@ -60,7 +64,7 @@ export class EmojitApi {
 				url: `${this.url}/userPageReaction?userId=${encodeURIComponent(this.userId)}&pageUrl=${encodeURIComponent(pageUrl)}`,
 				success: function (response) {
 					console.debug("Page reactions:", response)
-					console.debug("Getting page reactions took", new Date() - startTime, "millis.")
+					console.debug("Getting user and page reactions took", new Date() - startTime, "millis.")
 				},
 				error: function (error) {
 					console.error("Error getting user reactions.", error.status, error.responseJSON)

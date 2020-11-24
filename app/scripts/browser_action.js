@@ -22,10 +22,11 @@ function onPageLoad() {
 	$('#options-button')[0].onclick = openOptions
 	browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) {
 		pageUrl = tabs[0].url
+		const tabId = tabs[0].id
 		setupUserSettings().then((userSettings) => {
 			emojit = userSettings.emojit
 
-			loadReactions()
+			loadReactions(tabId)
 			// startEmojiPicker()
 		})
 	})
@@ -79,7 +80,7 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 	}
 }
 
-async function loadReactions() {
+async function loadReactions(tabId) {
 	console.debug("Loading reactions...")
 
 	let userReactions, pageReactions
@@ -93,9 +94,9 @@ async function loadReactions() {
 	hideLoader()
 	if (pageReactions) {
 		if (pageReactions.length > 0) {
-			browser.browserAction.setBadgeText({ text: pageReactions[0].reaction })
+			browser.browserAction.setBadgeText({ tabId, text: pageReactions[0].reaction })
 		} else {
-			browser.browserAction.setBadgeText({ text: null })
+			browser.browserAction.setBadgeText({ tabId, text: null })
 		}
 		for (const reaction of pageReactions) {
 			updateTopReactionButton(reaction)
