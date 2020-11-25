@@ -9,13 +9,14 @@ const tabInfos = {}
 
 const cacheTimeMs = 10 * 60 * 1000
 
-// FIXME Doesn't show badge text on page refresh.
+// FIXME Reaction on icon is not correct if it gets cached (even as not set), then the top one changes (user reacts), then you switch back to the tab (cached one gets used).
+// Fix is to not use the cache here but to use a cache in a shared cache between the background and the browser action (maybe use storage.local).
 
 browser.tabs.onActivated.addListener(async ({ tabId, _windowId }) => {
 	// Tab changed.
-	// console.debug("onActivated tabId:", tabId)
+	console.debug("onActivated tabId:", tabId)
 	setupUserSettings().then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
-		const currentBadgeText = await browser.browserAction.getBadgeText({ tabId })
+		// const currentBadgeText = await browser.browserAction.getBadgeText({ tabId })
 		// console.debug("onActivated: updateIconTextWithTopPageReaction:", updateIconTextWithTopPageReaction)
 		if (!updateIconTextWithTopPageReaction) {
 			return
@@ -34,17 +35,14 @@ browser.tabs.onActivated.addListener(async ({ tabId, _windowId }) => {
 			if (!url) {
 				return
 			}
-			// Somehow the topReaction is set even though it isn't visible at first.
 			tabInfo = { url, lastUpdated: 0 }
 		}
 		const { url, lastUpdated } = tabInfo
 
 		let topReaction
-		if (new Date() - lastUpdated < cacheTimeMs) {
+		// console.debug("onActivated tabInfo:", tabInfo)
+		if (new Date() - lastUpdated < cacheTimeMs && tabInfo.topReaction !== undefined) {
 			topReaction = tabInfo.topReaction
-			if (topReaction === undefined) {
-				topReaction = currentBadgeText
-			}
 		} else {
 			let reactions
 			try {
@@ -60,7 +58,7 @@ browser.tabs.onActivated.addListener(async ({ tabId, _windowId }) => {
 			}
 			tabInfos[tabId] = { url, topReaction, lastUpdated: new Date() }
 		}
-		console.debug("setBadgeText:", topReaction)
+		// console.debug("setBadgeText:", topReaction)
 		browser.browserAction.setBadgeText({ tabId, text: topReaction })
 	})
 })
@@ -71,20 +69,23 @@ browser.tabs.onRemoved.addListener(tabId => {
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	// console.debug("onUpdated tabId:", tabId)
-	const { url } = changeInfo
-	// console.debug("changeInfo:", changeInfo)
-	if (url === undefined) {
+	console.debug("onUpdated changeInfo:", changeInfo, "tab:", tab)
+	// Needs "tabs" permission.
+	const { status } = changeInfo
+	const { url } = tab
+	// Sometimes the status: 'complete' can come in multiple times.
+	if (status !== 'complete' || url === undefined) {
 		return
 	}
-	// Set immediately to 
-	tabInfos[tabId] = { url }
-	// console.debug("changeInfo:", changeInfo)
-	// console.debug("tab:", tab)
+
+	// The URL changed so we should clear the top reaction.
+	browser.browserAction.setBadgeText({ tabId, text: null })
 
 	setupUserSettings().then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
 		if (!updateIconTextWithTopPageReaction) {
 			return
 		}
+
 		let reactions
 		try {
 			// TODO Add flag to use local cache and limit to 1.
@@ -99,7 +100,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		if (reactions && reactions.length) {
 			topReaction = reactions[0].reaction
 		}
-		console.debug("setBadgeText:", topReaction)
+		// console.debug("setBadgeText:", topReaction)
 		browser.browserAction.setBadgeText({ tabId, text: topReaction })
 		tabInfos[tabId] = { url, topReaction, lastUpdated: new Date() }
 	})

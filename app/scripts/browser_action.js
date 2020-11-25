@@ -43,6 +43,9 @@ function updateTopReactionButton({ reaction, count, userPicked, updateCount }) {
 	if (!reaction) {
 		return
 	}
+	// TODO Make another method that accepts all the page and user reactions, then updates the UI (like you would do in React).
+	// TODO setBadgeText if needed.
+
 	const existingSpan = $(`.reaction-button[emoji="${reaction}"] span`)[1]
 	if (existingSpan) {
 		const button = $(`.reaction-button[emoji="${reaction}"]`)[0]
