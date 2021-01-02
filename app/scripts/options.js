@@ -12,15 +12,6 @@ let emojit, userId
 function onPageLoad() {
 	const domContainer = document.getElementById('app-div')
 	ReactDOM.render(React.createElement(App), domContainer)
-	setupUserSettings().then((userSettings) => {
-		emojit = userSettings.emojit
-		userId = userSettings.userId
-		const { serviceUrl, updateIconTextWithTopPageReaction } = userSettings
-
-		document.getElementById('user-id').value = userId
-		document.getElementById('service-url').value = serviceUrl
-		document.getElementById('icon-top-reaction').checked = updateIconTextWithTopPageReaction === true
-	})
 }
 
 // From https://stackoverflow.com/a/18197341/1226799
@@ -37,18 +28,6 @@ function download(filename, text) {
 	document.body.removeChild(element)
 }
 
-// FIXME Move to React
-// document.getElementById('icon-top-reaction').onclick = function () {
-// 	const keys = {
-// 		updateIconTextWithTopPageReaction: this.checked,
-// 	}
-// 	browser.storage.local.set(keys).catch(errorMsg => {
-// 		errorHandler.showError({ errorMsg })
-// 	})
-// 	browser.storage.sync.set(keys).catch(errorMsg => {
-// 		errorHandler.showError({ errorMsg })
-// 	})
-// }
 
 // document.getElementById('export-data').onclick = function () {
 // 	emojit.getAllData().then(response => {

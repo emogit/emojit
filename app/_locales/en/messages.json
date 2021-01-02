@@ -25,10 +25,6 @@
 	"userIdExplanation": {
 		"message": "Your user ID is also your password. Do not share it. You can copy your user ID to another device or browser to import your account to that device or browser."
 	},
-	"userIdLabel": {
-		"message": "User ID:",
-		"description": "Label for asking for the user's ID"
-	},
 	"invalidUserId": {
 		"message": "The user ID is not valid. It must be a valid UUID v4."
 	},
