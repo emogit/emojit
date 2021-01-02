@@ -8,6 +8,8 @@
 		"build": "webextension-toolbox build"
 	},
 	"devDependencies": {
+		"ts-loader": "^8.0.13",
+		"typescript": "^4.1.3",
 		"webextension-toolbox": "latest"
 	},
 	"dependencies": {
