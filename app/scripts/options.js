@@ -1,4 +1,7 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { DEFAULT_SERVICE_URL } from './api'
+import App from './App'
 import { ErrorHandler } from './error_handler'
 import { isValidUserId, setupUserSettings } from './user'
 
@@ -7,6 +10,8 @@ const errorHandler = new ErrorHandler()
 let emojit, userId
 
 function onPageLoad() {
+	const domContainer = document.getElementById('app-div')
+	ReactDOM.render(React.createElement(App), domContainer)
 	setupUserSettings().then((userSettings) => {
 		emojit = userSettings.emojit
 		userId = userSettings.userId

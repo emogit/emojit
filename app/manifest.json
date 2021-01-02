@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"short_name": "__MSG_appShortName__",
 	"description": "__MSG_appDescription__",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"manifest_version": 2,
 	"default_locale": "en",
 	"icons": {
@@ -21,6 +21,7 @@
 	"options_page": "pages/options.html",
 	"options_ui": {
 		"page": "pages/options.html",
+		"open_in_tab": true,
 		"browser_style": true,
 		"chrome_style": true
 	},
