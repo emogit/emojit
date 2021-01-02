@@ -1,15 +1,29 @@
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
 import Container from '@material-ui/core/Container'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
-import { isValidUserId, setupUserSettings } from '../user'
-import { ErrorHandler } from '../error_handler'
 import { browser } from 'webextension-polyfill-ts'
-import { EmojitApi } from '../api'
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox'
+import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
+import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
+import { isValidUserId, setupUserSettings } from '../user'
 
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+// Modified from https://stackoverflow.com/a/18197341/1226799
+function download(filename: string, text: string) {
+	const element = document.createElement('a')
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+	element.setAttribute('download', filename)
+
+	element.style.display = 'none'
+	document.body.appendChild(element)
+
+	element.click()
+
+	document.body.removeChild(element)
+}
 
 export default class Options extends React.Component<any, {
 	emojit: EmojitApi | undefined,
@@ -28,7 +42,11 @@ export default class Options extends React.Component<any, {
 			userId: "",
 		}
 
+		this.deleteAllUserData = this.deleteAllUserData.bind(this)
+		this.exportData = this.exportData.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.resetServiceUrl = this.resetServiceUrl.bind(this)
+		this.setServiceUrl = this.setServiceUrl.bind(this)
 		this.setUserId = this.setUserId.bind(this)
 	}
 
@@ -43,9 +61,6 @@ export default class Options extends React.Component<any, {
 				updateIconTextWithTopPageReaction,
 				userId,
 			})
-
-			// document.getElementById('service-url').value = serviceUrl
-			// document.getElementById('icon-top-reaction').checked = updateIconTextWithTopPageReaction === true
 		})
 	}
 
@@ -78,6 +93,44 @@ export default class Options extends React.Component<any, {
 		})
 	}
 
+	exportData(): void {
+		this.state.emojit!.getAllData().then((response: any) => {
+			download('my_emojit_data.json', JSON.stringify(response))
+		}).catch((serviceError: any) => {
+			this.errorHandler.showError({ serviceError })
+		})
+	}
+
+	deleteAllUserData(): void {
+		const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
+		if (doDeleteUser) {
+			this.state.emojit!.deleteUser()
+				.then((_response: any) => {
+					const errorMsg = "Successfully deleted all of your data."
+					this.errorHandler.showError({ errorMsg })
+				}).catch((serviceError: any) => {
+					this.errorHandler.showError({ serviceError })
+				})
+		}
+	}
+
+	setServiceUrl(): void {
+		const { serviceUrl } = this.state
+		const keys = { serviceUrl, }
+		browser.storage.local.set(keys)
+			.catch(errorMsg => {
+				this.errorHandler.showError({ errorMsg })
+			})
+		browser.storage.sync.set(keys).catch(errorMsg => {
+			this.errorHandler.showError({ errorMsg })
+		})
+	}
+
+	resetServiceUrl(): void {
+		this.setState({ serviceUrl: DEFAULT_SERVICE_URL },
+			this.setServiceUrl)
+	}
+
 	handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
 		const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
 		this.setState<never>({
@@ -91,11 +144,11 @@ export default class Options extends React.Component<any, {
 
 	render(): React.ReactNode {
 		return <Container>
-			<Typography component="h1">
+			< Typography component="h4" variant="h4">
 				Options
-		 	</Typography>
+		 	</Typography >
 			<div className="section">
-				<Typography component="h2">
+				<Typography component="h5" variant="h5">
 					{getMessage('userIdSectionTitle') || "User ID"}
 				</Typography>
 				<Typography component="p">
@@ -110,14 +163,14 @@ export default class Options extends React.Component<any, {
 					style={{ width: 320 }}
 				/>
 				<div className="button-holder">
-					<button data-i18n="setUserId" onClick={this.setUserId}>
-						Set user ID
-					</button>
+					<Button onClick={this.setUserId}>
+						{getMessage('setUserId') || "Set user ID"}
+					</Button>
 				</div>
 			</div>
 
 			<div className="section">
-				<Typography component="h2">
+				<Typography component="h5" variant="h5">
 					{getMessage('iconOptionsSectionTitle') || "Icon Options"}
 				</Typography>
 				<FormControlLabel
@@ -138,32 +191,40 @@ export default class Options extends React.Component<any, {
 			</div>
 
 			{/* Make toggle so that data cannot be deleted by accident as easily. */}
-			<div className="section">
-				<h3 data-i18n="yourDataSectionTitle">Your Data</h3>
-				<button data-i18n="exportMyData" id="export-data">
-					Export my data
-		</button>
-				<button data-i18n="deleteAllUserDataButton" id="delete-all-user-data">
-					Delete all my data
-		</button>
-			</div>
+			<div className="section" >
+				<Typography component="h5" variant="h5">
+					{getMessage('yourDataSectionTitle') || "Your Data"}
+				</Typography>
+				<Button onClick={this.exportData}
+					style={{ marginRight: 5 }}>
+					{getMessage('downloadYourDataButton') || "Download all"}
+				</Button>
+				<Button onClick={this.deleteAllUserData}>
+					{getMessage('deleteAllUserDataButton') || "Delete all"}
+				</Button>
+			</div >
 
 			{/* Add Advanced toggle. */}
-			<div className="section">
-				<h3 data-i18n="advancedSectionTitle">Advanced</h3>
-				<label>
-					<span data-i18n="serviceUrlLabel">Service URL:</span>
-					<input type="text" id="service-url" />
-				</label>
-				<button data-i18n="setServiceUrl" id="set-service-url">
-					Set service URL
-				</button>
+			<div className="section" >
+				<Typography component="h5" variant="h5">
+					{getMessage('advancedSectionTitle') || "Advanced"}
+				</Typography>
+				<TextField name='serviceUrl'
+					label={getMessage('serviceUrlLabel') || "Service URL"}
+					value={this.state.serviceUrl}
+					onChange={this.handleChange}
+					style={{ width: 320 }}
+				/>
 				<div className="button-holder">
-					<button data-i18n="resetServiceUrl" id="reset-service-url">
-						Reset service URL
-			</button>
+					<Button onClick={this.setServiceUrl}
+						style={{ marginRight: 5 }}>
+						{getMessage('setServiceUrl') || "Set service URL"}
+					</Button>
+					<Button onClick={this.resetServiceUrl}>
+						{getMessage('resetServiceUrl') || "Reset service URL"}
+					</Button>
 				</div>
-			</div>
-		</Container>
+			</div >
+		</Container >
 	}
 }

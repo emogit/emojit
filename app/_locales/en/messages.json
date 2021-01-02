@@ -16,7 +16,7 @@
 		"description": "The title of the browser action button"
 	},
 	"deleteAllUserDataButton": {
-		"message": "Delete all my data",
+		"message": "Delete all",
 		"description": "Text for the button to request all user data be deleted"
 	},
 	"userIdSectionTitle": {
@@ -34,14 +34,14 @@
 	"yourDataSectionTitle": {
 		"message": "Your Data"
 	},
-	"exportMyData": {
-		"message": "Export my data"
+	"downloadYourDataButton": {
+		"message": "Download all"
 	},
 	"advancedSectionTitle": {
 		"message": "Advanced"
 	},
 	"serviceUrlLabel": {
-		"message": "Service URL:"
+		"message": "Service URL"
 	},
 	"setServiceUrl": {
 		"message": "Set service URL"
