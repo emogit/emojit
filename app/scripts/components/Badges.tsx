@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class App extends React.Component<any, {
+export default class Badges extends React.Component<any, {
 }> {
 	constructor(props: any) {
 		super(props)
@@ -9,7 +9,6 @@ export default class App extends React.Component<any, {
 	}
 
 	render() {
-		// TODO 
 		return <div>
 		</div>
 	}

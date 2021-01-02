@@ -6,7 +6,7 @@ export class ErrorHandler {
 		this.errorTextElement = errorTextElement
 	}
 
-	showError({ serviceError, errorMsg, clearAfterMs }) {
+	showError({ serviceError = undefined, errorMsg = undefined, clearAfterMs = undefined }) {
 		if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
 		} else if (serviceError && serviceError.responseJSON && serviceError.responseJSON.error) {
