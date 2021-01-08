@@ -144,9 +144,9 @@ export default class Options extends React.Component<any, {
 
 	render(): React.ReactNode {
 		return <Container>
-			< Typography component="h4" variant="h4">
+			<Typography component="h4" variant="h4">
 				Options
-		 	</Typography >
+		 	</Typography>
 			<div className="section">
 				<Typography component="h5" variant="h5">
 					{getMessage('userIdSectionTitle') || "User ID"}

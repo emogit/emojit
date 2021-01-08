@@ -1,21 +1,21 @@
 import $ from 'jquery'
+import { browser } from 'webextension-polyfill-ts'
 
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
 
 export class EmojitApi {
 	urlMaxLength = 256
 
-	constructor(url, userId) {
+	constructor(public url: string, public userId: string) {
 		this.url = url || DEFAULT_SERVICE_URL
-		this.userId = userId
 	}
 
-	checkUrl(url) {
-		return new Promise((resolve, reject) => {
+	checkUrl(url: string) {
+		return new Promise<void>((resolve, reject) => {
 			if (url.length > this.urlMaxLength) {
 				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
 			}
-			if (!/^https?:\/\//i.test(url)) {
+			if (!/^(chrome-extension|extension|https?):\/\//i.test(url)) {
 				reject(browser.i18n.getMessage('errorCode_INVALID_URL'))
 			}
 			resolve()
@@ -39,7 +39,7 @@ export class EmojitApi {
 		})
 	}
 
-	getPageReactions(pageUrl) {
+	getPageReactions(pageUrl: string) {
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return $.ajax({
@@ -47,7 +47,7 @@ export class EmojitApi {
 				url: `${this.url}/pageReactions?pageUrl=${encodeURIComponent(pageUrl)}`,
 				success: function (response) {
 					console.debug("Page reactions response:", response)
-					console.debug("Getting page reactions took", new Date() - startTime, "millis.")
+					console.debug("Getting page reactions took", new Date().getTime() - startTime.getTime(), "millis.")
 				},
 				error: function (error) {
 					console.error("Error getting page reactions.", error.status, error.responseJSON)
@@ -56,7 +56,7 @@ export class EmojitApi {
 		})
 	}
 
-	getUserPageReactions(pageUrl) {
+	getUserPageReactions(pageUrl: string) {
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return $.ajax({
@@ -64,7 +64,7 @@ export class EmojitApi {
 				url: `${this.url}/userPageReaction?userId=${encodeURIComponent(this.userId)}&pageUrl=${encodeURIComponent(pageUrl)}`,
 				success: function (response) {
 					console.debug("Page reactions:", response)
-					console.debug("Getting user and page reactions took", new Date() - startTime, "millis.")
+					console.debug("Getting user and page reactions took", new Date().getTime() - startTime.getTime(), "millis.")
 				},
 				error: function (error) {
 					console.error("Error getting user reactions.", error.status, error.responseJSON)
@@ -73,7 +73,7 @@ export class EmojitApi {
 		})
 	}
 
-	react(request) {
+	react(request: any) {
 		return this.checkUrl(request.pageUrl).then(() => {
 			request.userId = this.userId
 			return $.ajax({
@@ -95,12 +95,25 @@ export class EmojitApi {
 	getAllData() {
 		return $.ajax({
 			method: 'GET',
-			url: `${this.url}/getAllUserData?userId=${encodeURIComponent(this.userId)}`,
+			url: `${this.url}/userData?userId=${encodeURIComponent(this.userId)}`,
 			success: function (response) {
 				console.debug("All data:", response)
 			},
 			error: function (error) {
 				console.error("Error getting all data.", error.status, error.responseJSON)
+			}
+		})
+	}
+
+	getBadges() {
+		return $.ajax({
+			method: 'GET',
+			url: `${this.url}/badges?userId=${encodeURIComponent(this.userId)}`,
+			success: function (response) {
+				console.debug("Badges:", response)
+			},
+			error: function (error) {
+				console.error("Error getting user's badges.", error.status, error.responseJSON)
 			}
 		})
 	}
