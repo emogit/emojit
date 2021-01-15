@@ -1,18 +1,19 @@
-import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import React from 'react'
 import Badges from './Badges'
 import Options from './Options'
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles'
 
-const styles = () => createStyles({
+const styles = (theme: Theme) => createStyles({
+	headerSection: {
+		marginBottom: theme.spacing(1),
+	},
 	pageButton: {
-		// TODO Figure out how to actually make the button transparent.
-		backgroundColor: 'inherit',
-		border: 'none',
-		outline: 'none',
+		// Make it look like a button since I couldn't figure out how to remove the background color of a Button.
+		cursor: 'pointer',
+		textDecoration: 'none',
 		padding: '4px',
-		margin: '2px',
+		marginRight: theme.spacing(2),
 		fontSize: '1.5em',
 	},
 })
@@ -42,12 +43,16 @@ class App extends React.Component<WithStyles<typeof styles>, {
 		const { classes } = this.props
 		return <div>
 			<Container>
-				<Button className={classes.pageButton} onClick={this.showBadges} >
-					🏆
-				</Button>
-				<Button className={classes.pageButton} onClick={this.showOptions}>
-					⚙️
-				</Button>
+				<div className={classes.headerSection}>
+					<a className={classes.pageButton}
+						onClick={this.showBadges}>
+						🏆
+					</a>
+					<a className={classes.pageButton}
+						onClick={this.showOptions}>
+						⚙️
+					</a>
+				</div>
 			</Container>
 			{this.page()}
 		</div>
