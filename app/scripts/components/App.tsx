@@ -19,12 +19,14 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class App extends React.Component<WithStyles<typeof styles>, {
-	page: 'badges' | 'options'
+	page: string
 }> {
 	constructor(props: any) {
 		super(props)
+		const urlParams = new URLSearchParams(window.location.search)
+		const page: string = urlParams.get('page') || 'options'
 		this.state = {
-			page: 'options',
+			page,
 		}
 
 		this.showBadges = this.showBadges.bind(this)
