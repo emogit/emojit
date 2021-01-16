@@ -12,14 +12,77 @@ import { setupUserSettings } from '../user'
 
 const MAX_NUM_EMOJIS = 5
 
-const styles = (_theme: Theme) => createStyles({
+const styles = (theme: Theme) => createStyles({
+	end: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		alignItems: 'flex-end',
+	},
+	reactingLoader: {
+		position: 'relative',
+		top: '-5px',
+		paddingRight: '2px',
+	},
+	optionsButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		borderRadius: '16px',
+		borderColor: 'lightgrey',
+		padding: '4px',
+		margin: '2px',
+		fontSize: '1.5em',
+	},
 	loadingSpinner: {
 	},
-	badgeGrid: {
+	reactionGrid: {
 		flexGrow: 1,
+		minHeight: '6em',
+		fontSize: '1.5em',
 	},
-	card: {
+	reactionButton: {
+		// FIXME Get good spacing but make sure the grid is centered.
+		backgroundColor: 'inherit',
+		fontSize: 'inherit',
+		cursor: 'pointer',
+		outline: 'none',
+		borderRadius: '16px',
+		borderColor: 'lightgrey',
+		minWidth: 'max-content',
+		padding: '4px',
+		// margin: '16px',
 	},
+	reactionButtonPicked: {
+		backgroundColor: 'dodgerblue',
+	},
+	reactionCount: {
+		fontSize: '1em',
+		color: 'grey',
+		paddingLeft: '0.5em',
+	},
+	reactionPickedCount: {
+		color: 'floralwhite',
+	},
+	errorSection: {
+		color: 'red',
+		fontSize: '1.2em',
+	},
+	center: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	emojiTrigger: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		outline: 'none',
+		borderRadius: '16px',
+		borderColor: 'lightgrey',
+		padding: '4px',
+		margin: '2px',
+		fontSize: '2em',
+	}
 })
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
@@ -29,7 +92,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	pageReactions: PageReaction[] | undefined,
 	showReactingLoader: boolean
 }> {
-	private errorHandler = new ErrorHandler(document.getElementById('error-text'))
+	private errorHandler: ErrorHandler | undefined
 	private picker = new EmojiButton(
 		{
 			autoHide: false,
@@ -64,6 +127,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				this.loadReactions(tabs[0])
 			})
 		})
+		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
 		this.setUpEmojiPicker()
 	}
 
@@ -107,7 +171,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			pageReactions = response.pageReactions
 			this.setState({ userReactions, pageReactions })
 		} catch (serviceError) {
-			this.errorHandler.showError({ serviceError })
+			this.errorHandler!.showError({ serviceError })
 		}
 
 		if (pageReactions) {
@@ -120,7 +184,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	hasMaxReactions(): boolean {
-		return !this.state.userReactions || this.state.userReactions.length < MAX_NUM_EMOJIS
+		return !this.state.userReactions || this.state.userReactions.length >= MAX_NUM_EMOJIS
 	}
 
 	addEmoji(reaction: string): void {
@@ -129,7 +193,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				this.picker.hidePicker()
 			}
 			const errorMsg = "Maximum number of emojis selected."
-			this.errorHandler.showError({ errorMsg })
+			this.errorHandler!.showError({ errorMsg })
 			return
 		}
 
@@ -142,7 +206,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 		this.react([{ reaction, count: +1 }]).then(() => {
 		}).catch((serviceError: any) => {
-			this.errorHandler.showError({ serviceError })
+			this.errorHandler!.showError({ serviceError })
 			// Remove the reaction.
 
 			const index = this.state.userReactions!.indexOf(reaction)
@@ -167,7 +231,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			pageUrl,
 			modifications,
 		}).then(r => {
-			this.errorHandler.clear()
+			this.errorHandler!.clear()
 			return r
 		})
 	}
@@ -179,7 +243,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		} else {
 			if (this.hasMaxReactions()) {
 				const errorMsg = "Maximum number of emojis selected."
-				this.errorHandler.showError({ errorMsg })
+				this.errorHandler!.showError({ errorMsg })
 				return
 			}
 			this.addEmoji(reaction)
@@ -187,10 +251,10 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	removeAllEmojiOccurrences(reaction: string): void {
-		// TODO Repeat
 		const indicesToRemove = []
 		while (true) {
-			const index = this.state.userReactions!.indexOf(reaction)
+			const fromIndex = indicesToRemove.length === 0 ? 0 : indicesToRemove[indicesToRemove.length - 1] + 1
+			const index = this.state.userReactions!.indexOf(reaction, fromIndex)
 			if (index > -1) {
 				indicesToRemove.push(index)
 			} else {
@@ -207,7 +271,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 			this.react([{ reaction, count: countDiff }]).then(() => {
 			}).catch((serviceError: any) => {
-				this.errorHandler.showError({ serviceError })
+				this.errorHandler!.showError({ serviceError })
 				// Add back the reactions.
 				// TODO Update pageReactions.
 				this.setState({
@@ -222,20 +286,51 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 	render(): React.ReactNode {
 		const { classes } = this.props
+
+		// TODO Combine user and page reactions.
+		// Make sure to count user reactions that are not in the page reactions.
+
 		return <Container>
-			{this.state.pageReactions === undefined && <div>
-				<CircularProgress className={classes.loadingSpinner} />
+			<div className={classes.end}>
+				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={2} />}
+				<button
+					className={classes.optionsButton}
+					onClick={this.openOptions}>
+					⚙️
+				</button>
+			</div>
+			{this.state.pageReactions === undefined && <div className={classes.center}>
+				<CircularProgress size={60} className={classes.loadingSpinner} />
 			</div>}
-			<Grid container className={classes.badgeGrid} spacing={2}>
+			<Grid container className={`${classes.reactionGrid} ${classes.center}`}>
 				{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-					// TODO Check if reaction is in the user reactions.
-					return <Grid key={`reaction-${pageReaction.reaction}`} item xs={2}>
-						{/* TODO Display */}
+					const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+					return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
+						<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
+							<span>
+								{pageReaction.reaction}
+							</span>
+							<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
+								{pageReaction.count}
+							</span>
+						</button>
 					</Grid>
 				}
 				)}
 			</Grid>
-			{/* TODO Add emoji picker and disable if this.hasMaxReactions() */}
+			<div className={classes.errorSection}>
+				<p id="error-text"></p>
+			</div>
+			<div className={classes.center}>
+				<button
+					id="emoji-trigger"
+					className={classes.emojiTrigger}
+					disabled={this.hasMaxReactions()}
+				>
+					🙂
+				</button>
+			</div>
+
 		</Container>
 	}
 }

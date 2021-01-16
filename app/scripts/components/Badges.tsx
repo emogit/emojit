@@ -61,6 +61,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 			<Grid container className={classes.badgeGrid} spacing={2}>
 				{this.state.badges !== undefined && this.state.badges.badges.map(badge =>
 					<Grid key={`badge-${badge.key}`} item xs={12} md={6}>
+						{/* FIXME Make sure they're the same height. */}
 						<Card className={classes.card} variant="outlined">
 							<CardContent>
 								<Typography className={classes.badgeName}>

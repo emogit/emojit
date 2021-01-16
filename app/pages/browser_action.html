@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title data-i18n="appName">Emojit</title>
+	<title>Emojit</title>
 	<meta charset='UTF-8' />
 	<style type="text/css">
 		#main-popup {
@@ -13,117 +13,15 @@
 			max-width: 400px;
 			font-family: Helvetica, Ubuntu, Arial, sans-serif;
 		}
-
-		.center {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.end {
-			display: flex;
-			justify-content: flex-end;
-			align-items: flex-end;
-		}
-
-		#reactions-section {
-			min-height: 6em;
-			font-size: 1.5em;
-		}
-
-		#reactions {
-			text-align: center;
-		}
-
-		.reaction-button {
-			background-color: inherit;
-			font-size: inherit;
-			cursor: pointer;
-			/* border: none; */
-			outline: none;
-			border-radius: 16px;
-			border-color: lightgrey;
-			padding: 4px;
-			margin: 2px;
-		}
-
-		.reaction-button-picked {
-			background-color: dodgerblue;
-		}
-
-		.reaction-count {
-			font-size: 1em;
-			color: grey;
-			padding-left: 0.5em;
-		}
-
-		.reaction-button-picked .reaction-count {
-			color: floralwhite;
-		}
-
-		#emoji-trigger {
-			background-color: inherit;
-			font-size: inherit;
-			cursor: pointer;
-			/* border: none; */
-			outline: none;
-			border-radius: 16px;
-			border-color: lightgrey;
-			padding: 4px;
-			margin: 2px;
-			font-size: 2em;
-		}
-
-		#options-button {
-			background-color: inherit;
-			font-size: inherit;
-			cursor: pointer;
-			border: none;
-			outline: none;
-			border-radius: 16px;
-			border-color: lightgrey;
-			padding: 4px;
-			margin: 2px;
-			font-size: 1.5em;
-		}
-
-		#reacting-loader {
-			position: relative;
-			top: -5px;
-			padding-right: 2px;
-		}
 	</style>
-	<link rel="stylesheet" href="../styles/loader.css">
-	<link rel="stylesheet" href="../styles/error.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 </head>
 
 <body>
 	<div id="main-popup">
-		<div class="end">
-			<div id="reacting-loader" style="display: none;">
-				<div class="small-loader"></div>
-			</div>
-			<button id="options-button">⚙️</button>
-		</div>
-		<div id="reactions-section">
-			<!-- Put loading in #reactions div because #reaction div has a min-height so the experience is less jumpy. -->
-			<div id="reactions-loader" class="center">
-				<div class="loader"></div>
-			</div>
-			<div id="reactions"></div>
-		</div>
-		<div class="error-section">
-			<p id="error-text"></p>
-		</div>
-		<div class="center">
-			<button id="emoji-trigger">🙂</button>
-		</div>
-		<script src="../scripts/i18n_helper.js"></script>
-		<script src="../scripts/api.js"></script>
-		<script src="../scripts/user.js"></script>
+		<div id="app-div"></div>
+
 		<script src="../scripts/browser_action.js"></script>
+	</div>
 </body>
 
 </html>

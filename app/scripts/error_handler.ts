@@ -15,7 +15,9 @@ export class ErrorHandler {
 	constructor(private errorTextElement: HTMLElement | undefined | null) {
 	}
 
-	showError({ serviceError = undefined, errorMsg = undefined, clearAfterMs = undefined }: ShowErrorInput) {
+	showError(input: Partial<ShowErrorInput>) {
+		const { serviceError, clearAfterMs } = input
+		let { errorMsg } = input
 		if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
 		} else if (serviceError !== undefined && serviceError.responseJSON && serviceError!.responseJSON.error) {
@@ -24,14 +26,13 @@ export class ErrorHandler {
 		}
 		console.error(errorMsg)
 		if (this.errorTextElement && errorMsg) {
-			clearAfterMs = clearAfterMs || (10 * 1000)
 			clearTimeout(this.lastTimeout)
 			this.errorTextElement.innerText = errorMsg
 			this.lastTimeout = setTimeout(() => {
 				if (this.errorTextElement!.innerText === errorMsg) {
 					this.clear()
 				}
-			}, clearAfterMs)
+			}, clearAfterMs || (10 * 1000))
 		} else if (errorMsg) {
 			alert(errorMsg)
 		}
