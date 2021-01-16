@@ -3,6 +3,11 @@ import { browser } from 'webextension-polyfill-ts'
 
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
 
+export interface PageReaction {
+	reaction: string
+	count: number
+}
+
 export class EmojitApi {
 	urlMaxLength = 256
 
@@ -39,7 +44,10 @@ export class EmojitApi {
 		})
 	}
 
-	getPageReactions(pageUrl: string) {
+	getPageReactions(pageUrl: string): Promise<{
+		userReactions: string[],
+		pageReactions: PageReaction[],
+	}> {
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return $.ajax({
