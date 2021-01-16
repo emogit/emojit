@@ -65,7 +65,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 						<Card className={classes.card} variant="outlined">
 							<CardContent>
 								<Typography className={classes.badgeName}>
-									{getMessage(badge.name) || badge.name}
+									{getMessage(`badge-${badge.name}`) || badge.name}
 								</Typography>
 								{badge.pageUrl && <Typography variant="body2" color="textSecondary" component="p">
 									<Link href={badge.pageUrl} target="_blank">{badge.pageUrl}</Link>

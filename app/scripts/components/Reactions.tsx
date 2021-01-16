@@ -13,6 +13,9 @@ import { setupUserSettings } from '../user'
 const MAX_NUM_EMOJIS = 5
 
 const styles = (theme: Theme) => createStyles({
+	header: {
+		marginBottom: theme.spacing(1),
+	},
 	end: {
 		display: 'flex',
 		justifyContent: 'flex-end',
@@ -20,7 +23,7 @@ const styles = (theme: Theme) => createStyles({
 	},
 	reactingLoader: {
 		position: 'relative',
-		top: '-5px',
+		top: '-2px',
 		paddingRight: '2px',
 	},
 	optionsButton: {
@@ -28,21 +31,17 @@ const styles = (theme: Theme) => createStyles({
 		cursor: 'pointer',
 		border: 'none',
 		outline: 'none',
-		borderRadius: '16px',
-		borderColor: 'lightgrey',
-		padding: '4px',
-		margin: '2px',
+		// Make sure it align with the right side.
+		paddingRight: 0,
 		fontSize: '1.5em',
-	},
-	loadingSpinner: {
 	},
 	reactionGrid: {
 		flexGrow: 1,
+		marginTop: theme.spacing(1.5),
 		minHeight: '6em',
 		fontSize: '1.5em',
 	},
 	reactionButton: {
-		// FIXME Get good spacing but make sure the grid is centered.
 		backgroundColor: 'inherit',
 		fontSize: 'inherit',
 		cursor: 'pointer',
@@ -51,7 +50,6 @@ const styles = (theme: Theme) => createStyles({
 		borderColor: 'lightgrey',
 		minWidth: 'max-content',
 		padding: '4px',
-		// margin: '16px',
 	},
 	reactionButtonPicked: {
 		backgroundColor: 'dodgerblue',
@@ -84,6 +82,8 @@ const styles = (theme: Theme) => createStyles({
 		fontSize: '2em',
 	}
 })
+
+const progressSpinnerColor = 'dodgerblue'
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
 	emojit: EmojitApi | undefined,
@@ -290,19 +290,23 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		// TODO Combine user and page reactions.
 		// Make sure to count user reactions that are not in the page reactions.
 
-		return <Container>
-			<div className={classes.end}>
-				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={2} />}
+		return <div>
+			<div className={`${classes.header} ${classes.end}`}>
+				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
 				<button
 					className={classes.optionsButton}
 					onClick={this.openOptions}>
 					⚙️
 				</button>
 			</div>
-			{this.state.pageReactions === undefined && <div className={classes.center}>
-				<CircularProgress size={60} className={classes.loadingSpinner} />
-			</div>}
-			<Grid container className={`${classes.reactionGrid} ${classes.center}`}>
+			<Grid container
+				className={`${classes.reactionGrid} ${classes.center}`}
+				spacing={1}
+			>
+				{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
+				{this.state.pageReactions === undefined && <div>
+					<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
+				</div>}
 				{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
 					const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
 					return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
@@ -330,8 +334,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 					🙂
 				</button>
 			</div>
-
-		</Container>
+		</div>
 	}
 }
 

@@ -58,5 +58,11 @@
 	},
 	"errorCode_URL_TOO_LONG": {
 		"message": "The URL is too long. It might contain private information."
+	},
+	"badge-FIRST_REACTION": {
+		"message": "🥇 1st Reaction"
+	},
+	"badge-ONE_YEAR": {
+		"message": "1 Year Anniversary"
 	}
 }
