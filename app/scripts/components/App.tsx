@@ -1,12 +1,18 @@
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import React from 'react'
+import { updateUrl } from '../url-helper'
 import Badges from './Badges'
 import Options from './Options'
 
 const styles = (theme: Theme) => createStyles({
 	headerSection: {
 		marginBottom: theme.spacing(1),
+	},
+	end: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		alignItems: 'flex-end',
 	},
 	pageButton: {
 		// Make it look like a button since I couldn't figure out how to remove the background color of a Button.
@@ -15,6 +21,10 @@ const styles = (theme: Theme) => createStyles({
 		padding: '4px',
 		marginRight: theme.spacing(2),
 		fontSize: '1.5em',
+		opacity: 0.4,
+	},
+	selectedPageButton: {
+		opacity: 1,
 	},
 })
 
@@ -34,23 +44,27 @@ class App extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	showBadges() {
-		this.setState({ page: 'badges' })
+		const page = 'badges'
+		this.setState({ page })
+		updateUrl({ page })
 	}
 
 	showOptions() {
-		this.setState({ page: 'options' })
+		const page = 'options'
+		this.setState({ page })
+		updateUrl({ page })
 	}
 
 	render() {
 		const { classes } = this.props
 		return <div>
 			<Container>
-				<div className={classes.headerSection}>
-					<a className={classes.pageButton}
+				<div className={`${classes.headerSection} ${classes.end}`}>
+					<a className={`${classes.pageButton} ${this.state.page === 'badges' ? classes.selectedPageButton : ''}`}
 						onClick={this.showBadges}>
 						🏆
 					</a>
-					<a className={classes.pageButton}
+					<a className={`${classes.pageButton} ${this.state.page === 'options' ? classes.selectedPageButton : ''}`}
 						onClick={this.showOptions}>
 						⚙️
 					</a>

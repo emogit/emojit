@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { getMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
+import { progressSpinnerColor } from './constants'
 
 interface Badge {
 	key: number
@@ -20,7 +21,13 @@ interface Badge {
 }
 
 const styles = (theme: Theme) => createStyles({
-	loadingSpinner: {
+	title: {
+		marginBottom: theme.spacing(1),
+	},
+	center: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	badgeGrid: {
 		flexGrow: 1,
@@ -51,17 +58,19 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 
 	render(): React.ReactNode {
 		const { classes } = this.props
+
 		return <Container>
-			<Typography component="h4" variant="h4">
-				Badges
-		 	</Typography>
-			{this.state.badges === undefined && <div>
-				<CircularProgress className={classes.loadingSpinner} />
+			<Typography className={classes.title} component="h4" variant="h4">
+				{getMessage("badgesPageTitle") || "🏆 Badges"}
+			</Typography>
+			{this.state.badges === undefined && <div className={classes.center}>
+				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
+				/>
 			</div>}
 			{/* TODO Add summary. */}
 			<Grid container className={classes.badgeGrid} spacing={2}>
-				{this.state.badges !== undefined && this.state.badges.badges.map(badge =>
-					<Grid key={`badge-${badge.key}`} item xs={12} md={6}>
+				{this.state.badges !== undefined && this.state.badges.badges.map((badge, index) =>
+					<Grid key={`badge-${index}`} item xs={12} md={6}>
 						{/* FIXME Make sure they're the same height. */}
 						<Card className={classes.card} variant="outlined">
 							<CardContent>

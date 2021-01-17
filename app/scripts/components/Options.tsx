@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import Container from '@material-ui/core/Container'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
@@ -10,6 +11,7 @@ import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
 import { isValidUserId, setupUserSettings } from '../user'
+
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -25,7 +27,19 @@ function download(filename: string, text: string) {
 	document.body.removeChild(element)
 }
 
-export default class Options extends React.Component<any, {
+const styles = (theme: Theme) => createStyles({
+	title: {
+		marginBottom: theme.spacing(1),
+	},
+	section: {
+		marginBottom: '1em',
+	},
+	buttonHolder: {
+		paddingTop: '4px',
+	},
+})
+
+class Options extends React.Component<WithStyles<typeof styles>, {
 	emojit: EmojitApi | undefined,
 	serviceUrl: string,
 	updateIconTextWithTopPageReaction: boolean | undefined,
@@ -143,10 +157,12 @@ export default class Options extends React.Component<any, {
 	}
 
 	render(): React.ReactNode {
+		const { classes } = this.props
+
 		return <Container>
-			<Typography component="h4" variant="h4">
-				Options
-		 	</Typography>
+			<Typography className={classes.title} component="h4" variant="h4">
+				{getMessage("optionsPageTitle") || "⚙️ Options"}
+			</Typography>
 			<div className="section">
 				<Typography component="h5" variant="h5">
 					{getMessage('userIdSectionTitle') || "User ID"}
@@ -162,7 +178,7 @@ export default class Options extends React.Component<any, {
 					onChange={this.handleChange}
 					style={{ width: 320 }}
 				/>
-				<div className="button-holder">
+				<div className={classes.buttonHolder}>
 					<Button onClick={this.setUserId}>
 						{getMessage('setUserId') || "Set user ID"}
 					</Button>
@@ -215,7 +231,7 @@ export default class Options extends React.Component<any, {
 					onChange={this.handleChange}
 					style={{ width: 320 }}
 				/>
-				<div className="button-holder">
+				<div className={classes.buttonHolder}>
 					<Button onClick={this.setServiceUrl}
 						style={{ marginRight: 5 }}>
 						{getMessage('setServiceUrl') || "Set service URL"}
@@ -228,3 +244,5 @@ export default class Options extends React.Component<any, {
 		</Container >
 	}
 }
+
+export default withStyles(styles)(Options)

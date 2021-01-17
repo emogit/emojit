@@ -1,6 +1,5 @@
 import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import update from 'immutability-helper'
@@ -9,6 +8,7 @@ import { browser, Tabs } from 'webextension-polyfill-ts'
 import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { setupUserSettings } from '../user'
+import { progressSpinnerColor } from './constants'
 
 const MAX_NUM_EMOJIS = 5
 
@@ -25,6 +25,14 @@ const styles = (theme: Theme) => createStyles({
 		position: 'relative',
 		top: '-2px',
 		paddingRight: '2px',
+	},
+	badgesButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		marginRight: theme.spacing(0.5),
+		fontSize: '1.5em',
 	},
 	optionsButton: {
 		backgroundColor: 'inherit',
@@ -82,8 +90,6 @@ const styles = (theme: Theme) => createStyles({
 		fontSize: '2em',
 	}
 })
-
-const progressSpinnerColor = 'dodgerblue'
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
 	emojit: EmojitApi | undefined,
@@ -147,6 +153,10 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			this.expandPopup()
 			this.picker.togglePicker(trigger!)
 		})
+	}
+
+	openBadges(): void {
+		browser.tabs.create({ url: 'pages/home.html?page=badges' })
 	}
 
 	openOptions(): void {
@@ -286,11 +296,19 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 	updatePageReactions(modification: PageReaction): void {
 		const pageReactions = this.state.pageReactions || []
+		let found = false
 		pageReactions.forEach(r => {
 			if (r.reaction === modification.reaction) {
+				found = true
 				// Even keep 0 in case they want to redo the reaction.
 				r.count += modification.count
 			}
+		})
+		if (!found && modification.count > 0) {
+			pageReactions.push(modification)
+		}
+		pageReactions.sort((pr1, pr2) => {
+			return pr2.count - pr1.count
 		})
 		this.setState({ pageReactions })
 	}
@@ -298,12 +316,15 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	render(): React.ReactNode {
 		const { classes } = this.props
 
-		// Page reactions already include the user's reactions.
+		// `pageReactions` already include the user's reactions.
 
 		return <div>
 			<div className={`${classes.header} ${classes.end}`}>
 				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
-				{/* TODO Link to badges. */}
+				<button className={classes.badgesButton}
+					onClick={this.openBadges}>
+					🏆
+				</button>
 				<button
 					className={classes.optionsButton}
 					onClick={this.openOptions}>
