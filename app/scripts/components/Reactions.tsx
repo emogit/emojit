@@ -307,9 +307,8 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		if (!found && modification.count > 0) {
 			pageReactions.push(modification)
 		}
-		pageReactions.sort((pr1, pr2) => {
-			return pr2.count - pr1.count
-		})
+		// Purposely do not re-sort to avoid jumpiness.
+
 		this.setState({ pageReactions })
 	}
 
