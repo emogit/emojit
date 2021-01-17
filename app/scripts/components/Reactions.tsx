@@ -174,22 +174,19 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	async loadReactions(tab: Tabs.Tab): Promise<void> {
 		console.debug("Loading reactions...")
 
-		let userReactions, pageReactions
 		try {
-			const response = await this.state.emojit!.getUserPageReactions(this.state.pageUrl!)
-			userReactions = response.userReactions
-			pageReactions = response.pageReactions
+			const { userReactions, pageReactions } = await this.state.emojit!.getUserPageReactions(this.state.pageUrl!)
 			this.setState({ userReactions, pageReactions })
+			if (pageReactions) {
+				if (pageReactions.length > 0) {
+					browser.browserAction.setBadgeText({ tabId: tab.id, text: pageReactions[0].reaction })
+				} else {
+					browser.browserAction.setBadgeText({ tabId: tab.id, text: null })
+				}
+			}
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
-		}
-
-		if (pageReactions) {
-			if (pageReactions.length > 0) {
-				browser.browserAction.setBadgeText({ tabId: tab.id, text: pageReactions[0].reaction })
-			} else {
-				browser.browserAction.setBadgeText({ tabId: tab.id, text: null })
-			}
+			this.setState({ userReactions: [], pageReactions: [] })
 		}
 	}
 

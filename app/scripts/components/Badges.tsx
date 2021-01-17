@@ -17,12 +17,12 @@ interface Badge {
 	time: Date | null | undefined
 	progress: number
 	pageUrl: string | null | undefined
-	reactions: string[]
+	currentReactions: string[] | null | undefined
 }
 
 const styles = (theme: Theme) => createStyles({
 	title: {
-		marginBottom: theme.spacing(1),
+		marginBottom: theme.spacing(2),
 	},
 	center: {
 		display: 'flex',
@@ -63,26 +63,33 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
-				{getMessage("badgesPageTitle") || "🏆 Badges"}
+				{getMessage('badgesPageTitle') || "🏆 Badges 🎉"}
 			</Typography>
 			{this.state.badges === undefined && <div className={classes.center}>
 				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
 				/>
 			</div>}
+			{this.state.badges !== undefined && this.state.badges.badges.length === 0 && <div>
+				<Typography variant="body2" component="p" >
+					{getMessage("noBadges") || "You don't have any badges yet."}
+				</Typography>
+			</div>}
 			{/* TODO Add summary. */}
-			<Grid container className={classes.badgeGrid} spacing={2}>
+			<Grid container className={classes.badgeGrid} spacing={3}>
 				{this.state.badges !== undefined && this.state.badges.badges.map((badge, index) =>
-					<Grid key={`badge-${index}`} item xs={12} md={4}>
-						<Card className={classes.card} variant="outlined">
+					<Grid key={`badge-${index}`} item xs={12} sm={6} md={4}>
+						<Card className={classes.card} raised={true}>
 							<CardContent>
 								<Typography className={classes.badgeName}>
 									{getMessage(`badge_${badge.name}`) || badge.name}
 								</Typography>
 								{badge.pageUrl && <Typography variant="body2" color="textSecondary" component="p">
-									<Link href={badge.pageUrl} target="_blank">{badge.pageUrl}</Link>
+									<Link href={badge.pageUrl} target="_blank">
+										{badge.pageUrl}
+									</Link>
 								</Typography>}
-								{badge.reactions && <Typography variant="body2" component="p">
-									{badge.reactions.join(" ")}
+								{badge.currentReactions && <Typography variant="body2" component="p">
+									{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}{badge.currentReactions.join("")}
 								</Typography>}
 							</CardContent>
 						</Card>

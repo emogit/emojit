@@ -20,7 +20,7 @@ export class EmojitApi {
 			if (url.length > this.urlMaxLength) {
 				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
 			}
-			if (!/^(chrome-extension|extension|https?):\/\//i.test(url)) {
+			if (!/^(chrome-extension|extension|https?):\/\/.{8,}/i.test(url)) {
 				reject(browser.i18n.getMessage('errorCode_INVALID_URL'))
 			}
 			resolve()

@@ -32,7 +32,7 @@ const styles = (theme: Theme) => createStyles({
 		marginBottom: theme.spacing(1),
 	},
 	section: {
-		marginBottom: '1em',
+		marginBottom: theme.spacing(2),
 	},
 	buttonHolder: {
 		paddingTop: '4px',
@@ -161,9 +161,9 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
-				{getMessage("optionsPageTitle") || "⚙️ Options"}
+				{getMessage('optionsPageTitle') || "⚙️ Options"}
 			</Typography>
-			<div className="section">
+			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
 					{getMessage('userIdSectionTitle') || "User ID"}
 				</Typography>
@@ -185,7 +185,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				</div>
 			</div>
 
-			<div className="section">
+			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
 					{getMessage('iconOptionsSectionTitle') || "Icon Options"}
 				</Typography>
@@ -207,7 +207,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 			</div>
 
 			{/* Make toggle so that data cannot be deleted by accident as easily. */}
-			<div className="section" >
+			<div className={classes.section} >
 				<Typography component="h5" variant="h5">
 					{getMessage('yourDataSectionTitle') || "Your Data"}
 				</Typography>
@@ -221,7 +221,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 			</div >
 
 			{/* Add Advanced toggle. */}
-			<div className="section" >
+			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
 					{getMessage('advancedSectionTitle') || "Advanced"}
 				</Typography>

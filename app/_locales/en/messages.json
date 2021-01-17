@@ -20,7 +20,7 @@
 		"description": "Text for the button to request all user data be deleted"
 	},
 	"userIdSectionTitle": {
-		"message": "User ID"
+		"message": "👤 User ID"
 	},
 	"userIdExplanation": {
 		"message": "Your user ID is also your password. Do not share it. You can copy your user ID to another device or browser to import your account to that device or browser."
@@ -28,17 +28,23 @@
 	"invalidUserId": {
 		"message": "The user ID is not valid. It must be a valid UUID v4."
 	},
+	"optionsPageTitle": {
+		"message": "⚙️ Options"
+	},
 	"setUserId": {
 		"message": "Set User ID"
 	},
+	"iconOptionsSectionTitle": {
+		"message": "🙂 Icon Options"
+	},
 	"yourDataSectionTitle": {
-		"message": "Your Data"
+		"message": "💿 Your Data"
 	},
 	"downloadYourDataButton": {
 		"message": "Download all"
 	},
 	"advancedSectionTitle": {
-		"message": "Advanced"
+		"message": "🤓 Advanced"
 	},
 	"serviceUrlLabel": {
 		"message": "Service URL"
@@ -59,10 +65,25 @@
 	"errorCode_URL_TOO_LONG": {
 		"message": "The URL is too long. It might contain private information."
 	},
+	"badgesPageTitle": {
+		"message": "🏆 Badges 🎉"
+	},
+	"noBadges": {
+		"message": "You don't have any badges yet. Keep rating pages to earn badges."
+	},
+	"currentReactionsIdentifier": {
+		"message": "Your current reaction(s): "
+	},
 	"badge_FIRST_REACTION": {
 		"message": "🥇 1st Reaction"
 	},
 	"badge_ONE_YEAR": {
 		"message": "🎂 1 Year Anniversary"
+	},
+	"badge_ONE_HUNDRED_PAGES": {
+		"message": "💯 Pages"
+	},
+	"badge_ONE_HUNDRED_EMOJIS": {
+		"message": "💯 Emojis"
 	}
 }
