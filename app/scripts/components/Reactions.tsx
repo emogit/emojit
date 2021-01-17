@@ -198,26 +198,26 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		}
 
 		// Update the UI before sending the request to the service to make the UI feel quick.
-		// TODO Update pageReactions.
+		this.updatePageReactions({ reaction, count: +1 })
 		this.setState({
 			userReactions: update(this.state.userReactions, { $push: [reaction] }),
 			showReactingLoader: true,
-		})
+		}, () => {
+			this.react([{ reaction, count: +1 }]).then(() => {
+			}).catch((serviceError: any) => {
+				this.errorHandler!.showError({ serviceError })
+				// Remove the reaction.
 
-		this.react([{ reaction, count: +1 }]).then(() => {
-		}).catch((serviceError: any) => {
-			this.errorHandler!.showError({ serviceError })
-			// Remove the reaction.
-
-			const index = this.state.userReactions!.indexOf(reaction)
-			if (index > -1) {
-				// TODO Update pageReactions.
-				this.setState({
-					userReactions: update(this.state.userReactions, { $splice: [[index, 1]] }),
-				})
-			}
-		}).finally(() => {
-			this.setState({ showReactingLoader: false })
+				const index = this.state.userReactions!.indexOf(reaction)
+				if (index > -1) {
+					this.updatePageReactions({ reaction, count: -1 })
+					this.setState({
+						userReactions: update(this.state.userReactions, { $splice: [[index, 1]] }),
+					})
+				}
+			}).finally(() => {
+				this.setState({ showReactingLoader: false })
+			})
 		})
 	}
 
@@ -263,7 +263,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		}
 		const countDiff = -indicesToRemove.length
 		if (countDiff < 0) {
-			// TODO Update pageReactions.
+			this.updatePageReactions({ reaction, count: countDiff })
 			this.setState({
 				userReactions: update(this.state.userReactions, { $splice: indicesToRemove.map(i => [i, 1]) }),
 				showReactingLoader: true,
@@ -273,7 +273,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			}).catch((serviceError: any) => {
 				this.errorHandler!.showError({ serviceError })
 				// Add back the reactions.
-				// TODO Update pageReactions.
+				this.updatePageReactions({ reaction, count: Math.abs(countDiff) })
 				this.setState({
 					userReactions: update(this.state.userReactions, { $push: Array(Math.abs(countDiff)).fill(reaction) }),
 					showReactingLoader: true,
@@ -284,11 +284,21 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		}
 	}
 
+	updatePageReactions(modification: PageReaction): void {
+		const pageReactions = this.state.pageReactions || []
+		pageReactions.forEach(r => {
+			if (r.reaction === modification.reaction) {
+				// Even keep 0 in case they want to redo the reaction.
+				r.count += modification.count
+			}
+		})
+		this.setState({ pageReactions })
+	}
+
 	render(): React.ReactNode {
 		const { classes } = this.props
 
-		// TODO Combine user and page reactions.
-		// Make sure to count user reactions that are not in the page reactions.
+		// Page reactions already include the user's reactions.
 
 		return <div>
 			<div className={`${classes.header} ${classes.end}`}>
