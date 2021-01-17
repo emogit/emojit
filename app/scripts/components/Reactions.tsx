@@ -303,6 +303,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		return <div>
 			<div className={`${classes.header} ${classes.end}`}>
 				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+				{/* TODO Link to badges. */}
 				<button
 					className={classes.optionsButton}
 					onClick={this.openOptions}>

@@ -58,6 +58,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 			{this.state.badges === undefined && <div>
 				<CircularProgress className={classes.loadingSpinner} />
 			</div>}
+			{/* TODO Add summary. */}
 			<Grid container className={classes.badgeGrid} spacing={2}>
 				{this.state.badges !== undefined && this.state.badges.badges.map(badge =>
 					<Grid key={`badge-${badge.key}`} item xs={12} md={6}>
@@ -65,7 +66,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 						<Card className={classes.card} variant="outlined">
 							<CardContent>
 								<Typography className={classes.badgeName}>
-									{getMessage(`badge-${badge.name}`) || badge.name}
+									{getMessage(`badge_${badge.name}`) || badge.name}
 								</Typography>
 								{badge.pageUrl && <Typography variant="body2" color="textSecondary" component="p">
 									<Link href={badge.pageUrl} target="_blank">{badge.pageUrl}</Link>
