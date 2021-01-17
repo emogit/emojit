@@ -61,6 +61,18 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 	render(): React.ReactNode {
 		const { classes } = this.props
 
+		const badgeSummary: { [badgeName: string]: number | undefined } = {}
+		if (this.state.badges !== undefined) {
+			for (const badge of this.state.badges.badges) {
+				if (badgeSummary[badge.name] === undefined) {
+					badgeSummary[badge.name] = 1
+				} else {
+					badgeSummary[badge.name]! += 1
+				}
+			}
+		}
+		console.debug("badgeSummary:", badgeSummary)
+
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				{getMessage('badgesPageTitle') || "🏆 Badges 🎉"}
@@ -74,7 +86,14 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 					{getMessage("noBadges") || "You don't have any badges yet."}
 				</Typography>
 			</div>}
-			{/* TODO Add summary. */}
+			<div>
+				{/* FIXME Get summary to show. */}
+				{Object.entries(badgeSummary).map(([badgeName, count]) => {
+					<Typography component="p">
+						{getMessage(`badge_${badgeName}`) || badgeName}{" x "}{count}
+					</Typography>
+				})}
+			</div>
 			<Grid container className={classes.badgeGrid} spacing={3}>
 				{this.state.badges !== undefined && this.state.badges.badges.map((badge, index) =>
 					<Grid key={`badge-${index}`} item xs={12} sm={6} md={4}>
