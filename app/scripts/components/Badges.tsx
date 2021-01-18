@@ -22,7 +22,8 @@ interface Badge {
 
 const styles = (theme: Theme) => createStyles({
 	title: {
-		marginBottom: theme.spacing(2),
+		marginTop: theme.spacing(1.5),
+		marginBottom: theme.spacing(1),
 	},
 	center: {
 		display: 'flex',
@@ -37,8 +38,8 @@ const styles = (theme: Theme) => createStyles({
 		wordBreak: 'break-word',
 	},
 	badgeName: {
-		fontSize: 14,
-		marginBottom: theme.spacing(1),
+		// fontSize: 14,
+		// marginBottom: theme.spacing(1),
 	},
 })
 
@@ -71,7 +72,6 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 				}
 			}
 		}
-		console.debug("badgeSummary:", badgeSummary)
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
@@ -86,20 +86,38 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 					{getMessage("noBadges") || "You don't have any badges yet."}
 				</Typography>
 			</div>}
-			<div>
-				{/* FIXME Get summary to show. */}
-				{Object.entries(badgeSummary).map(([badgeName, count]) => {
-					<Typography component="p">
-						{getMessage(`badge_${badgeName}`) || badgeName}{" x "}{count}
-					</Typography>
-				})}
-			</div>
+			{this.state.badges !== undefined && this.state.badges.badges.length > 0 &&
+				<Typography className={classes.title} component="h5" variant="h5">
+					{getMessage('badgeSummaryTitle') || "Summary"}
+				</Typography>
+			}
+			<Grid container className={classes.badgeGrid} spacing={3}>
+				{Object.entries(badgeSummary).map(([badgeName, count], index) =>
+					<Grid key={`badgeSummary-${index}`} item xs={12} sm={4} md={3}>
+						<Card className={classes.card} raised={true}>
+							<CardContent>
+								<Typography className={`${classes.badgeName} ${classes.center}`} variant="h6">
+									{getMessage(`badge_${badgeName}`) || badgeName}
+								</Typography>
+								<Typography className={classes.center} color="textSecondary" component="p">
+									{"x "}{count}
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+				)}
+			</Grid>
+			{this.state.badges !== undefined && this.state.badges.badges.length > 0 &&
+				<Typography className={classes.title} component="h5" variant="h5">
+					{getMessage('yourBadgesTitle') || "Your Badges"}
+				</Typography>
+			}
 			<Grid container className={classes.badgeGrid} spacing={3}>
 				{this.state.badges !== undefined && this.state.badges.badges.map((badge, index) =>
 					<Grid key={`badge-${index}`} item xs={12} sm={6} md={4}>
 						<Card className={classes.card} raised={true}>
 							<CardContent>
-								<Typography className={classes.badgeName}>
+								<Typography className={classes.badgeName} variant="h6">
 									{getMessage(`badge_${badge.name}`) || badge.name}
 								</Typography>
 								{badge.pageUrl && <Typography variant="body2" color="textSecondary" component="p">
@@ -110,12 +128,15 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 								{badge.currentReactions && <Typography variant="body2" component="p">
 									{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}{badge.currentReactions.join("")}
 								</Typography>}
+								{badge.time && <Typography variant="body2" component="p">
+									{getMessage('earnedTimeIdentifier') || "📅 "}{new Date(badge.time).toString()}
+								</Typography>}
 							</CardContent>
 						</Card>
 					</Grid>
 				)}
 			</Grid>
-		</Container>
+		</Container >
 	}
 }
 

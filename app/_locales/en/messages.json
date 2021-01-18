@@ -68,6 +68,12 @@
 	"badgesPageTitle": {
 		"message": "🏆 Badges 🎉"
 	},
+	"badgeSummaryTitle": {
+		"message": "Summary"
+	},
+	"yourBadgesTitle": {
+		"message": "Your Badges"
+	},
 	"noBadges": {
 		"message": "You don't have any badges yet. Keep rating pages to earn badges."
 	},
@@ -85,5 +91,8 @@
 	},
 	"badge_ONE_HUNDRED_EMOJIS": {
 		"message": "💯 Emojis"
+	},
+	"earnedTimeIdentifier": {
+		"message": "📅 "
 	}
 }
