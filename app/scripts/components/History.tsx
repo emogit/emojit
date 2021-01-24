@@ -29,7 +29,6 @@ const styles = (theme: Theme) => createStyles({
 		marginTop: theme.spacing(1),
 		marginBottom: theme.spacing(1),
 		width: '100%',
-
 	},
 	center: {
 		display: 'flex',
@@ -120,19 +119,19 @@ class History extends React.Component<WithStyles<typeof styles>, {
 					<Grid key={`page-${index}`} item xs={12}>
 						<Card className={classes.card} raised={true}>
 							<CardContent className={classes.cartContent}>
-								{page.pageUrl && <Typography className={classes.pageUrlP}
+								<Typography className={classes.pageUrlP}
 									variant="body2" component="p"
 								>
 									<Link href={page.pageUrl} target="_blank">
 										{page.pageUrl}
 									</Link>
-								</Typography>}
-								{page.currentReactions && <Typography variant="body2" component="p">
+								</Typography>
+								<Typography variant="body2" component="p">
 									{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}{page.currentReactions.join("")}
-								</Typography>}
-								{page.time && <Typography variant="body2" component="p">
+								</Typography>
+								<Typography variant="body2" component="p">
 									{getMessage('earnedTimeIdentifier') || "📅 "}{new Date(page.time).toString()}
-								</Typography>}
+								</Typography>
 								{page.badges && page.badges.length > 0 && <Typography variant="body2" component="p">
 									{getMessage('badgesIdentifier') || "Your badges: "}{page.badges.map(badge => getMessage(`badge_${badge.name}`)).join(", ")}
 								</Typography>}
