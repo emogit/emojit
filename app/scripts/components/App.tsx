@@ -4,6 +4,7 @@ import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
 import { updateUrl } from '../url-helper'
 import Badges from './Badges'
+import { EmojitTheme } from './EmojitTheme'
 import History from './History'
 import Options from './Options'
 
@@ -70,30 +71,32 @@ class App extends React.Component<WithStyles<typeof styles>, {
 	}
 
 
-	render() {
+	render(): React.ReactNode {
 		const { classes } = this.props
 		return <div>
-			<Container>
-				<div className={`${classes.headerSection} ${classes.end}`}>
-					<a className={`${classes.pageButton} ${classes.historyButton} ${this.state.page === 'history' ? classes.selectedPageButton : ''}`}
-						onClick={this.showHistory}>
-						<HistoryIcon color="primary" />
+			<EmojitTheme>
+				<Container>
+					<div className={`${classes.headerSection} ${classes.end}`}>
+						<a className={`${classes.pageButton} ${classes.historyButton} ${this.state.page === 'history' ? classes.selectedPageButton : ''}`}
+							onClick={this.showHistory}>
+							<HistoryIcon color="primary" />
+						</a>
+						<a className={`${classes.pageButton} ${this.state.page === 'badges' ? classes.selectedPageButton : ''}`}
+							onClick={this.showBadges}>
+							🏆
 					</a>
-					<a className={`${classes.pageButton} ${this.state.page === 'badges' ? classes.selectedPageButton : ''}`}
-						onClick={this.showBadges}>
-						🏆
+						<a className={`${classes.pageButton} ${this.state.page === 'options' ? classes.selectedPageButton : ''}`}
+							onClick={this.showOptions}>
+							⚙️
 					</a>
-					<a className={`${classes.pageButton} ${this.state.page === 'options' ? classes.selectedPageButton : ''}`}
-						onClick={this.showOptions}>
-						⚙️
-					</a>
-				</div>
-			</Container>
-			{this.page()}
+					</div>
+				</Container>
+				{this.page()}
+			</EmojitTheme>
 		</div>
 	}
 
-	private page() {
+	private page(): JSX.Element {
 		switch (this.state.page) {
 			case 'badges':
 				return <Badges />
@@ -102,6 +105,8 @@ class App extends React.Component<WithStyles<typeof styles>, {
 			case 'options':
 				return <Options />
 		}
+		// Shouldn't happen.
+		return <div></div>
 	}
 }
 

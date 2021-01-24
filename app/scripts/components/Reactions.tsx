@@ -11,6 +11,7 @@ import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { setupUserSettings } from '../user'
 import { progressSpinnerColor } from './constants'
+import { EmojitTheme } from './EmojitTheme'
 
 const MAX_NUM_EMOJIS = 5
 
@@ -33,7 +34,6 @@ const styles = (theme: Theme) => createStyles({
 		cursor: 'pointer',
 		border: 'none',
 		outline: 'none',
-		fontSize: '1.5em',
 		// Make the buttons line up.
 		position: 'relative',
 		top: '6px',
@@ -58,7 +58,10 @@ const styles = (theme: Theme) => createStyles({
 		flexGrow: 1,
 		marginTop: theme.spacing(1.5),
 		minHeight: '6em',
-		fontSize: '1.5em',
+		fontSize: '1.2em',
+		marginBottom: theme.spacing(0.5),
+		paddingLeft: theme.spacing(1),
+		paddingRight: theme.spacing(1),
 	},
 	reactionButton: {
 		backgroundColor: 'inherit',
@@ -87,6 +90,8 @@ const styles = (theme: Theme) => createStyles({
 		color: 'red',
 		fontSize: '1.0em',
 		wordBreak: 'break-word',
+		paddingLeft: theme.spacing(1),
+		paddingRight: theme.spacing(1),
 	},
 	center: {
 		display: 'flex',
@@ -333,57 +338,59 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		// `pageReactions` already include the user's reactions.
 
 		return <div>
-			<div className={`${classes.header} ${classes.end}`}>
-				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
-				<button className={classes.historyButton}
-					onClick={this.openHistory}>
-					<HistoryIcon color="primary" />
-				</button>
-				<button className={classes.badgesButton}
-					onClick={this.openBadges}>
-					🏆
-				</button>
-				<button
-					className={classes.optionsButton}
-					onClick={this.openOptions}>
-					⚙️
-				</button>
-			</div>
-			<Grid container
-				className={`${classes.reactionGrid} ${classes.center}`}
-				spacing={1}
-			>
-				{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
-				{this.state.pageReactions === undefined && <div>
-					<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
-				</div>}
-				{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-					const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
-					return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
-						<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
-							<span>
-								{pageReaction.reaction}
-							</span>
-							<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
-								{pageReaction.count}
-							</span>
-						</button>
-					</Grid>
-				}
-				)}
-			</Grid>
-			<div className={classes.errorSection}>
-				<Typography component="p" id="error-text"></Typography>
-			</div>
-			<div className={classes.center}>
-				<button
-					id="emoji-trigger"
-					className={classes.emojiTrigger}
-					disabled={this.hasMaxReactions()}
+			<EmojitTheme>
+				<div className={`${classes.header} ${classes.end}`}>
+					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					<button className={classes.historyButton}
+						onClick={this.openHistory}>
+						<HistoryIcon color="primary" />
+					</button>
+					<button className={classes.badgesButton}
+						onClick={this.openBadges}>
+						🏆
+					</button>
+					<button
+						className={classes.optionsButton}
+						onClick={this.openOptions}>
+						⚙️
+					</button>
+				</div>
+				<Grid container
+					className={`${classes.reactionGrid} ${classes.center}`}
+					spacing={1}
 				>
-					🙂
-				</button>
-			</div>
+					{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
+					{this.state.pageReactions === undefined && <div>
+						<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
+					</div>}
+					{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
+						const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+						return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
+							<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
+								<span>
+									{pageReaction.reaction}
+								</span>
+								<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
+									{pageReaction.count}
+								</span>
+							</button>
+						</Grid>
+					}
+					)}
+				</Grid>
+				<div className={classes.errorSection}>
+					<Typography component="p" id="error-text"></Typography>
+				</div>
+				<div className={classes.center}>
+					<button
+						id="emoji-trigger"
+						className={classes.emojiTrigger}
+						disabled={this.hasMaxReactions()}
+					>
+						🙂
+					</button>
+				</div>
+			</EmojitTheme>
 		</div>
 	}
 }

@@ -43,6 +43,12 @@
 	"downloadYourDataButton": {
 		"message": "Download all"
 	},
+	"themeSectionTitle": {
+		"message": "🎨 Theme"
+	},
+	"themePreferenceDescription": {
+		"message": "Your choice of dark mode or light mode in your device's settings is used to deteremine if Emojit should have a dark theme or a light theme."
+	},
 	"advancedSectionTitle": {
 		"message": "🤓 Advanced"
 	},

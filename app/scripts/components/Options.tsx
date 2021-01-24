@@ -220,6 +220,15 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				</Button>
 			</div >
 
+			<div className={classes.section}>
+				<Typography component="h5" variant="h5">
+					{getMessage('themeSectionTitle') || "Theme"}
+				</Typography>
+				<Typography component="p">
+					{getMessage('themePreferenceDescription')}
+				</Typography>
+			</div>
+
 			{/* Add Advanced toggle. */}
 			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
