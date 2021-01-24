@@ -1,8 +1,10 @@
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
+import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
 import { updateUrl } from '../url-helper'
 import Badges from './Badges'
+import History from './History'
 import Options from './Options'
 
 const styles = (theme: Theme) => createStyles({
@@ -23,6 +25,11 @@ const styles = (theme: Theme) => createStyles({
 		fontSize: '1.5em',
 		opacity: 0.4,
 	},
+	historyButton: {
+		// Make the buttons line up.
+		position: 'relative',
+		top: '5px',
+	},
 	selectedPageButton: {
 		opacity: 1,
 	},
@@ -41,10 +48,17 @@ class App extends React.Component<WithStyles<typeof styles>, {
 
 		this.showBadges = this.showBadges.bind(this)
 		this.showOptions = this.showOptions.bind(this)
+		this.showHistory = this.showHistory.bind(this)
 	}
 
 	showBadges() {
 		const page = 'badges'
+		this.setState({ page })
+		updateUrl({ page })
+	}
+
+	showHistory() {
+		const page = 'history'
 		this.setState({ page })
 		updateUrl({ page })
 	}
@@ -55,11 +69,16 @@ class App extends React.Component<WithStyles<typeof styles>, {
 		updateUrl({ page })
 	}
 
+
 	render() {
 		const { classes } = this.props
 		return <div>
 			<Container>
 				<div className={`${classes.headerSection} ${classes.end}`}>
+					<a className={`${classes.pageButton} ${classes.historyButton} ${this.state.page === 'history' ? classes.selectedPageButton : ''}`}
+						onClick={this.showHistory}>
+						<HistoryIcon color="primary" />
+					</a>
 					<a className={`${classes.pageButton} ${this.state.page === 'badges' ? classes.selectedPageButton : ''}`}
 						onClick={this.showBadges}>
 						🏆
@@ -78,6 +97,8 @@ class App extends React.Component<WithStyles<typeof styles>, {
 		switch (this.state.page) {
 			case 'badges':
 				return <Badges />
+			case 'history':
+				return <History />
 			case 'options':
 				return <Options />
 		}

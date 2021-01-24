@@ -3,9 +3,20 @@ import { browser } from 'webextension-polyfill-ts'
 
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
 
+export interface BadgeInfo {
+	name: string
+}
+
 export interface PageReaction {
 	reaction: string
 	count: number
+}
+
+export interface PageReactions {
+	pageUrl: string
+	currentReactions: string[]
+	time: Date
+	badges: BadgeInfo[]
 }
 
 export class EmojitApi {
@@ -78,6 +89,24 @@ export class EmojitApi {
 					console.error("Error getting user reactions.", error.status, error.responseJSON)
 				}
 			})
+		})
+	}
+
+	/**
+	 * Get all of the user's CURRENT reactions.
+	 */
+	getAllUserReactions() {
+		const startTime = new Date()
+		return $.ajax({
+			method: 'GET',
+			url: `${this.url}/userReactions?userId=${encodeURIComponent(this.userId)}`,
+			success: function (response) {
+				console.debug("All reactions:", response)
+				console.debug("Getting all of the user's reactions took", new Date().getTime() - startTime.getTime(), "millis.")
+			},
+			error: function (error) {
+				console.error("Error getting all of the user's reactions.", error.status, error.responseJSON)
+			}
 		})
 	}
 
