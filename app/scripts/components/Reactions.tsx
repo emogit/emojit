@@ -2,6 +2,8 @@ import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React from 'react'
 import { browser, Tabs } from 'webextension-polyfill-ts'
@@ -26,12 +28,21 @@ const styles = (theme: Theme) => createStyles({
 		top: '-2px',
 		paddingRight: '2px',
 	},
+	historyButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		fontSize: '1.5em',
+		// Make the buttons line up.
+		position: 'relative',
+		top: '6px',
+	},
 	badgesButton: {
 		backgroundColor: 'inherit',
 		cursor: 'pointer',
 		border: 'none',
 		outline: 'none',
-		marginRight: theme.spacing(0.5),
 		fontSize: '1.5em',
 	},
 	optionsButton: {
@@ -58,6 +69,8 @@ const styles = (theme: Theme) => createStyles({
 		borderColor: 'lightgrey',
 		minWidth: 'max-content',
 		padding: '4px',
+		paddingRight: '6px',
+		paddingLeft: '6px',
 	},
 	reactionButtonPicked: {
 		backgroundColor: 'dodgerblue',
@@ -72,7 +85,8 @@ const styles = (theme: Theme) => createStyles({
 	},
 	errorSection: {
 		color: 'red',
-		fontSize: '1.2em',
+		fontSize: '1.0em',
+		wordBreak: 'break-word',
 	},
 	center: {
 		display: 'flex',
@@ -157,6 +171,10 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 	openBadges(): void {
 		browser.tabs.create({ url: 'pages/home.html?page=badges' })
+	}
+
+	openHistory(): void {
+		browser.tabs.create({ url: 'pages/home.html?page=history' })
 	}
 
 	openOptions(): void {
@@ -317,6 +335,10 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		return <div>
 			<div className={`${classes.header} ${classes.end}`}>
 				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+				<button className={classes.historyButton}
+					onClick={this.openHistory}>
+					<HistoryIcon color="primary" />
+				</button>
 				<button className={classes.badgesButton}
 					onClick={this.openBadges}>
 					🏆
@@ -351,7 +373,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				)}
 			</Grid>
 			<div className={classes.errorSection}>
-				<p id="error-text"></p>
+				<Typography component="p" id="error-text"></Typography>
 			</div>
 			<div className={classes.center}>
 				<button

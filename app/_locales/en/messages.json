@@ -77,8 +77,20 @@
 	"noBadges": {
 		"message": "You don't have any badges yet. Keep rating pages to earn badges."
 	},
+	"errorGettingBadges": {
+		"message": "There was an error getting your badges."
+	},
+	"errorGettingHistory": {
+		"message": "There was an error getting your history."
+	},
+	"noHistory": {
+		"message": "You haven't rated any pages yet."
+	},
 	"currentReactionsIdentifier": {
 		"message": "Your current reaction(s): "
+	},
+	"badgesIdentifier": {
+		"message": "Your badges: "
 	},
 	"badge_FIRST_REACTION": {
 		"message": "🥇 1st Reaction"
