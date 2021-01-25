@@ -1,9 +1,10 @@
-import { ThemeProvider } from '@material-ui/core'
+import { PaletteType, ThemeProvider } from '@material-ui/core'
 import blue from '@material-ui/core/colors/blue'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import React from 'react'
+import { setupUserSettings } from '../user'
 
 export function isDarkModePreferred(): boolean {
 	return useMediaQuery('(prefers-color-scheme: dark)')
@@ -11,29 +12,30 @@ export function isDarkModePreferred(): boolean {
 
 type Props = {
 	children: JSX.Element | JSX.Element[],
+	themePreference: PaletteType | 'device'
 }
 
-export const EmojitTheme = ({ children }: Props) => {
-	const prefersDarkMode = isDarkModePreferred()
 
-	const theme = React.useMemo(
-		() => {
-			let primary = undefined
-			if (prefersDarkMode) {
-				// Easier to see in dark mode.
-				primary = {
-					main: blue[300],
-				}
-			}
-			return createMuiTheme({
-				palette: {
-					type: prefersDarkMode ? 'dark' : 'light',
-					primary,
-				},
-			})
+const WithClasses = (props: Props) => {
+	const { children } = props
+	let { themePreference } = props
+
+	if (themePreference === 'device') {
+		themePreference = isDarkModePreferred() ? 'dark' : 'light'
+	}
+	let primary = undefined
+	if (themePreference === 'dark') {
+		// Easier to see in dark mode.
+		primary = {
+			main: blue[300],
+		}
+	}
+	const theme = createMuiTheme({
+		palette: {
+			type: themePreference,
+			primary,
 		},
-		[prefersDarkMode],
-	)
+	})
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -41,4 +43,33 @@ export const EmojitTheme = ({ children }: Props) => {
 			{children}
 		</ThemeProvider>
 	)
+}
+
+export class EmojitTheme extends React.Component<{
+	children: JSX.Element | JSX.Element[],
+}, {
+	themePreference: PaletteType | 'device',
+}> {
+	constructor(props: any) {
+		super(props)
+		this.state = {
+			// Default to light so that the page doesn't flash black.
+			themePreference: 'light',
+		}
+	}
+
+	async componentDidMount() {
+		const { themePreference } = await setupUserSettings()
+		this.setState({
+			themePreference,
+		})
+	}
+
+	render(): React.ReactNode {
+		return (
+			<WithClasses themePreference={this.state.themePreference}>
+				{this.props.children}
+			</WithClasses>
+		)
+	}
 }

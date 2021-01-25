@@ -20,19 +20,20 @@ export function setupUserSettings() {
 		serviceUrl: DEFAULT_SERVICE_URL,
 		userId: undefined,
 		updateIconTextWithTopPageReaction: undefined,
+		themePreference: undefined,
 	}
 
 	return browser.storage.local.get(keys).then(async (results) => {
-		const { serviceUrl } = results
-		let { userId, updateIconTextWithTopPageReaction } = results
+		const { serviceUrl, } = results
+		let { userId, updateIconTextWithTopPageReaction, themePreference } = results
 		if (!userId) {
 			await browser.storage.sync.get(['userId']).then((results) => {
 				userId = results.userId
 				if (!userId) {
 					userId = uuidv4()
-					browser.storage.local.set({ userId })
 					browser.storage.sync.set({ userId })
 				}
+				browser.storage.local.set({ userId })
 			})
 		}
 
@@ -41,11 +42,20 @@ export function setupUserSettings() {
 				updateIconTextWithTopPageReaction = results.updateIconTextWithTopPageReaction
 				if (updateIconTextWithTopPageReaction !== undefined) {
 					browser.storage.local.set({ updateIconTextWithTopPageReaction })
-					browser.storage.sync.set({ updateIconTextWithTopPageReaction })
 				}
 			})
 		}
+
+		if (themePreference === undefined) {
+			await browser.storage.sync.get(['themePreference']).then((results) => {
+				themePreference = results.themePreference
+				if (themePreference !== undefined) {
+					browser.storage.local.set({ themePreference })
+				}
+			})
+		}
+
 		const emojit = new EmojitApi(serviceUrl, userId)
-		return { emojit, serviceUrl, userId, updateIconTextWithTopPageReaction, }
+		return { emojit, serviceUrl, userId, updateIconTextWithTopPageReaction, themePreference }
 	})
 }
