@@ -9,7 +9,7 @@ import React from 'react'
 import { browser, Tabs } from 'webextension-polyfill-ts'
 import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
-import { setupUserSettings , ThemePreferenceType} from '../user'
+import { setupUserSettings, ThemePreferenceType } from '../user'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
 
@@ -61,7 +61,8 @@ const styles = (theme: Theme) => createStyles({
 		minHeight: '8em',
 		fontSize: '1.2em',
 		marginBottom: theme.spacing(0.5),
-		paddingLeft: theme.spacing(1),
+		// Somehow the grid container is getting translated to the right.
+		paddingLeft: theme.spacing(0.5),
 		paddingRight: theme.spacing(1),
 	},
 	reactionButton: {
@@ -359,8 +360,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 					</button>
 				</div>
 				<Grid container
-					className={`${classes.reactionGrid} ${classes.center}`}
-					spacing={1}
+					className={classes.reactionGrid}
+					direction="row"
+					alignItems="center"
+					justify="center"
+					spacing={2}
 				>
 					{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
 					{this.state.pageReactions === undefined && <div>
