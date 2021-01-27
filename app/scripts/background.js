@@ -2,7 +2,7 @@
 //   console.log('previousVersion', details.previousVersion)
 // })
 
-import { setupUserSettings } from "./user"
+import { setupUserSettings } from './user'
 
 // Keep a cache to avoid hitting the API again on every tab change and maybe avoid the "tabs" permission.
 const tabInfos = {}

@@ -9,7 +9,7 @@ import React from 'react'
 import { browser, Tabs } from 'webextension-polyfill-ts'
 import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
-import { setupUserSettings } from '../user'
+import { setupUserSettings , ThemePreferenceType} from '../user'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
 
@@ -34,9 +34,10 @@ const styles = (theme: Theme) => createStyles({
 		cursor: 'pointer',
 		border: 'none',
 		outline: 'none',
+		fontSize: '2em',
 		// Make the buttons line up.
 		position: 'relative',
-		top: '6px',
+		top: '9px',
 	},
 	badgesButton: {
 		backgroundColor: 'inherit',
@@ -57,7 +58,7 @@ const styles = (theme: Theme) => createStyles({
 	reactionGrid: {
 		flexGrow: 1,
 		marginTop: theme.spacing(1.5),
-		minHeight: '6em',
+		minHeight: '8em',
 		fontSize: '1.2em',
 		marginBottom: theme.spacing(0.5),
 		paddingLeft: theme.spacing(1),
@@ -118,18 +119,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	showReactingLoader: boolean
 }> {
 	private errorHandler: ErrorHandler | undefined
-	private picker = new EmojiButton(
-		{
-			autoHide: false,
-			emojiSize: '1.5em',
-			emojisPerRow: 6,
-			initialCategory: 'recents',
-			position: 'bottom',
-			recentsCount: 20,
-			rows: 4,
-			theme: 'auto',
-		}
-	)
+	private picker: EmojiButton | undefined
 
 	constructor(props: any) {
 		super(props)
@@ -143,7 +133,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async componentDidMount() {
-		const { emojit } = await setupUserSettings()
+		const { emojit, themePreference } = await setupUserSettings()
 		this.setState({ emojit })
 
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
@@ -153,24 +143,37 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			})
 		})
 		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
-		this.setUpEmojiPicker()
+		this.setUpEmojiPicker(themePreference)
 	}
 
-	setUpEmojiPicker(): void {
+	setUpEmojiPicker(themePreference: ThemePreferenceType): void {
 		// Docs https://emoji-button.js.org/docs/api/
 		const trigger = document.getElementById('emoji-trigger')
+
+		this.picker = new EmojiButton(
+			{
+				autoHide: false,
+				emojiSize: '1.5em',
+				emojisPerRow: 6,
+				initialCategory: 'recents',
+				position: 'bottom',
+				recentsCount: 20,
+				rows: 4,
+				theme: themePreference === 'device' ? 'auto' : themePreference,
+			}
+		)
 
 		this.picker.on('emoji', selection => {
 			this.addEmoji(selection.emoji)
 		})
 
-		this.picker.on('hidden', () => {
+		this.picker!.on('hidden', () => {
 			this.condensePopup()
 		})
 
 		trigger!.addEventListener('click', () => {
 			this.expandPopup()
-			this.picker.togglePicker(trigger!)
+			this.picker!.togglePicker(trigger!)
 		})
 	}
 
@@ -187,11 +190,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	condensePopup(): void {
-		document.getElementById('main-popup')!.style.height = '250px'
+		document.getElementById('main-popup')!.style.height = '280px'
 	}
 
 	expandPopup(): void {
-		document.getElementById('main-popup')!.style.height = '450px'
+		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
 	async loadReactions(tab: Tabs.Tab): Promise<void> {
@@ -218,7 +221,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	addEmoji(reaction: string): void {
-		if (this.hasMaxReactions()) {
+		if (this.hasMaxReactions() && this.picker) {
 			if (this.picker.isPickerVisible()) {
 				this.picker.hidePicker()
 			}
@@ -343,7 +346,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
 					<button className={classes.historyButton}
 						onClick={this.openHistory}>
-						<HistoryIcon color="primary" />
+						<HistoryIcon color="primary" fontSize="inherit" />
 					</button>
 					<button className={classes.badgesButton}
 						onClick={this.openBadges}>

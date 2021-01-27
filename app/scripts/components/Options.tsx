@@ -14,7 +14,7 @@ import { browser } from 'webextension-polyfill-ts'
 import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
-import { isValidUserId, setupUserSettings } from '../user'
+import { isValidUserId, setupUserSettings, ThemePreferenceType, UserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -49,7 +49,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	emojit: EmojitApi | undefined,
 	updateIconTextWithTopPageReaction: boolean | undefined,
 	userId: string,
-	themePreference: PaletteType | 'device' | '',
+	themePreference: ThemePreferenceType | '',
 	serviceUrl: string,
 }> {
 	private errorHandler = new ErrorHandler(undefined)
@@ -74,7 +74,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	componentDidMount(): void {
-		setupUserSettings().then((userSettings: any) => {
+		setupUserSettings().then((userSettings) => {
 			const emojit = userSettings.emojit
 			const userId = userSettings.userId
 			const { serviceUrl, updateIconTextWithTopPageReaction, themePreference } = userSettings
@@ -168,7 +168,6 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 
 	handleThemeChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const themePreference = event.target.value as PaletteType | 'device'
-		console.debug("themePreference:", themePreference)
 		this.setState({
 			themePreference,
 		})

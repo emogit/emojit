@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import React from 'react'
-import { setupUserSettings } from '../user'
+import { setupUserSettings, ThemePreferenceType } from '../user'
 
 export function isDarkModePreferred(): boolean {
 	return useMediaQuery('(prefers-color-scheme: dark)')
@@ -48,12 +48,13 @@ const WithClasses = (props: Props) => {
 export class EmojitTheme extends React.Component<{
 	children: JSX.Element | JSX.Element[],
 }, {
-	themePreference: PaletteType | 'device',
+	themePreference: ThemePreferenceType,
 }> {
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			// Default to light so that the page doesn't flash black.
+			// Default to light so that the page doesn't flash black in light mode.
+			// In dark mode, the page will always start white anyway.
 			themePreference: 'light',
 		}
 	}
