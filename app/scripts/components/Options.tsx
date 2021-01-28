@@ -233,7 +233,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				</Typography>
 			</div>
 
-			{/* Make toggle so that data cannot be deleted by accident as easily. */}
+			{/* TODO Make toggle so that data cannot be deleted by accident as easily. */}
 			<div className={classes.section} >
 				<Typography component="h5" variant="h5">
 					{getMessage('yourDataSectionTitle') || "Your Data"}
@@ -255,7 +255,6 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 					{getMessage('themePreferenceDescription')}
 				</Typography>
 				<FormControl className={classes.themeSelection} component="fieldset">
-					{/* <FormLabel component="legend">Gender</FormLabel> */}
 					<RadioGroup aria-label="theme" name="theme" value={this.state.themePreference} onChange={this.handleThemeChange}>
 						<FormControlLabel value="light" control={<Radio />} label="Light" />
 						<FormControlLabel value="dark" control={<Radio />} label="Dark" />
@@ -264,7 +263,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				</FormControl>
 			</div>
 
-			{/* Add Advanced toggle. */}
+			{/* TODO Add Advanced toggle. */}
 			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
 					{getMessage('advancedSectionTitle') || "Advanced"}

@@ -47,7 +47,7 @@
 		"message": "🎨 Theme"
 	},
 	"themePreferenceDescription": {
-		"message": "Refresh this page for the new theme to take effect."
+		"message": "Changing the theme will not effect this page until you reload the page."
 	},
 	"advancedSectionTitle": {
 		"message": "🤓 Advanced"
