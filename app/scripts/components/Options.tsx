@@ -74,7 +74,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	componentDidMount(): void {
-		setupUserSettings().then((userSettings) => {
+		setupUserSettings(['emojit', 'userId', 'serviceUrl','updateIconTextWithTopPageReaction', 'themePreference']).then((userSettings) => {
 			const emojit = userSettings.emojit
 			const userId = userSettings.userId
 			const { serviceUrl, updateIconTextWithTopPageReaction, themePreference } = userSettings

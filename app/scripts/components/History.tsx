@@ -65,7 +65,7 @@ class History extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async componentDidMount() {
-		const { emojit } = await setupUserSettings()
+		const { emojit } = await setupUserSettings(['emojit'])
 		try {
 			const history = await emojit.getAllUserReactions()
 			this.setState({ history, shownHistory: history })

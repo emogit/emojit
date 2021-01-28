@@ -53,7 +53,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async componentDidMount() {
-		const { emojit } = await setupUserSettings()
+		const { emojit } = await setupUserSettings(['emojit'])
 		try {
 			const badges = await emojit.getBadges()
 			this.setState({ badges })

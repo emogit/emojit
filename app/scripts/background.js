@@ -15,7 +15,7 @@ const cacheTimeMs = 10 * 60 * 1000
 browser.tabs.onActivated.addListener(async ({ tabId, _windowId }) => {
 	// Tab changed.
 	console.debug("onActivated tabId:", tabId)
-	setupUserSettings().then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
+	setupUserSettings(['emojit', 'updateIconTextWithTopPageReaction']).then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
 		// const currentBadgeText = await browser.browserAction.getBadgeText({ tabId })
 		// console.debug("onActivated: updateIconTextWithTopPageReaction:", updateIconTextWithTopPageReaction)
 		if (!updateIconTextWithTopPageReaction) {
@@ -81,7 +81,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	// The URL changed so we should clear the top reaction.
 	browser.browserAction.setBadgeText({ tabId, text: null })
 
-	setupUserSettings().then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
+	setupUserSettings(['emojit', 'updateIconTextWithTopPageReaction']).then(async ({ emojit, updateIconTextWithTopPageReaction }) => {
 		if (!updateIconTextWithTopPageReaction) {
 			return
 		}
