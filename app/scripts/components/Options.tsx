@@ -1,7 +1,11 @@
+import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import Container from '@material-ui/core/Container'
+import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -10,8 +14,7 @@ import { browser } from 'webextension-polyfill-ts'
 import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
-import { isValidUserId, setupUserSettings } from '../user'
-
+import { isValidUserId, setupUserSettings, ThemePreferenceType, UserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -37,13 +40,17 @@ const styles = (theme: Theme) => createStyles({
 	buttonHolder: {
 		paddingTop: '4px',
 	},
+	themeSelection: {
+		marginLeft: theme.spacing(2),
+	},
 })
 
 class Options extends React.Component<WithStyles<typeof styles>, {
 	emojit: EmojitApi | undefined,
-	serviceUrl: string,
 	updateIconTextWithTopPageReaction: boolean | undefined,
 	userId: string,
+	themePreference: ThemePreferenceType | '',
+	serviceUrl: string,
 }> {
 	private errorHandler = new ErrorHandler(undefined)
 
@@ -51,29 +58,32 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 		super(props)
 		this.state = {
 			emojit: undefined,
-			serviceUrl: "",
 			updateIconTextWithTopPageReaction: undefined,
 			userId: "",
+			themePreference: '',
+			serviceUrl: "",
 		}
 
 		this.deleteAllUserData = this.deleteAllUserData.bind(this)
 		this.exportData = this.exportData.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.handleThemeChange = this.handleThemeChange.bind(this)
 		this.resetServiceUrl = this.resetServiceUrl.bind(this)
 		this.setServiceUrl = this.setServiceUrl.bind(this)
 		this.setUserId = this.setUserId.bind(this)
 	}
 
 	componentDidMount(): void {
-		setupUserSettings().then((userSettings: any) => {
+		setupUserSettings().then((userSettings) => {
 			const emojit = userSettings.emojit
 			const userId = userSettings.userId
-			const { serviceUrl, updateIconTextWithTopPageReaction } = userSettings
+			const { serviceUrl, updateIconTextWithTopPageReaction, themePreference } = userSettings
 			this.setState({
 				emojit,
 				serviceUrl,
 				updateIconTextWithTopPageReaction,
 				userId,
+				themePreference,
 			})
 		})
 	}
@@ -156,6 +166,22 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 		})
 	}
 
+	handleThemeChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const themePreference = event.target.value as PaletteType | 'device'
+		this.setState({
+			themePreference,
+		})
+		const keys = {
+			themePreference,
+		}
+		browser.storage.local.set(keys).catch(errorMsg => {
+			this.errorHandler.showError({ errorMsg })
+		})
+		browser.storage.sync.set(keys).catch(errorMsg => {
+			this.errorHandler.showError({ errorMsg })
+		})
+	}
+
 	render(): React.ReactNode {
 		const { classes } = this.props
 
@@ -174,12 +200,13 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 					You can copy your user ID to another device or browser to import your account to that device or browser."}
 				</Typography>
 				<TextField name='userId'
+					variant="outlined"
 					value={this.state.userId}
 					onChange={this.handleChange}
 					style={{ width: 320 }}
 				/>
 				<div className={classes.buttonHolder}>
-					<Button onClick={this.setUserId}>
+					<Button variant="contained" onClick={this.setUserId}>
 						{getMessage('setUserId') || "Set user ID"}
 					</Button>
 				</div>
@@ -206,37 +233,54 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				</Typography>
 			</div>
 
-			{/* Make toggle so that data cannot be deleted by accident as easily. */}
+			{/* TODO Make toggle so that data cannot be deleted by accident as easily. */}
 			<div className={classes.section} >
 				<Typography component="h5" variant="h5">
 					{getMessage('yourDataSectionTitle') || "Your Data"}
 				</Typography>
-				<Button onClick={this.exportData}
+				<Button variant="contained" onClick={this.exportData}
 					style={{ marginRight: 5 }}>
 					{getMessage('downloadYourDataButton') || "Download all"}
 				</Button>
-				<Button onClick={this.deleteAllUserData}>
+				<Button variant="contained" onClick={this.deleteAllUserData}>
 					{getMessage('deleteAllUserDataButton') || "Delete all"}
 				</Button>
 			</div >
 
-			{/* Add Advanced toggle. */}
+			<div className={classes.section}>
+				<Typography component="h5" variant="h5">
+					{getMessage('themeSectionTitle') || "Theme"}
+				</Typography>
+				<Typography component="p">
+					{getMessage('themePreferenceDescription')}
+				</Typography>
+				<FormControl className={classes.themeSelection} component="fieldset">
+					<RadioGroup aria-label="theme" name="theme" value={this.state.themePreference} onChange={this.handleThemeChange}>
+						<FormControlLabel value="light" control={<Radio />} label="Light" />
+						<FormControlLabel value="dark" control={<Radio />} label="Dark" />
+						<FormControlLabel value="device" control={<Radio />} label="Device Preference" />
+					</RadioGroup>
+				</FormControl>
+			</div>
+
+			{/* TODO Add Advanced toggle. */}
 			<div className={classes.section}>
 				<Typography component="h5" variant="h5">
 					{getMessage('advancedSectionTitle') || "Advanced"}
 				</Typography>
 				<TextField name='serviceUrl'
+					variant="outlined"
 					label={getMessage('serviceUrlLabel') || "Service URL"}
 					value={this.state.serviceUrl}
 					onChange={this.handleChange}
-					style={{ width: 320 }}
+					style={{ width: 320, marginTop: '6px' }}
 				/>
 				<div className={classes.buttonHolder}>
-					<Button onClick={this.setServiceUrl}
+					<Button variant="contained" onClick={this.setServiceUrl}
 						style={{ marginRight: 5 }}>
 						{getMessage('setServiceUrl') || "Set service URL"}
 					</Button>
-					<Button onClick={this.resetServiceUrl}>
+					<Button variant="contained" onClick={this.resetServiceUrl}>
 						{getMessage('resetServiceUrl') || "Reset service URL"}
 					</Button>
 				</div>

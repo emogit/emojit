@@ -9,8 +9,9 @@ import React from 'react'
 import { browser, Tabs } from 'webextension-polyfill-ts'
 import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
-import { setupUserSettings } from '../user'
+import { setupUserSettings, ThemePreferenceType } from '../user'
 import { progressSpinnerColor } from './constants'
+import { EmojitTheme } from './EmojitTheme'
 
 const MAX_NUM_EMOJIS = 5
 
@@ -33,10 +34,10 @@ const styles = (theme: Theme) => createStyles({
 		cursor: 'pointer',
 		border: 'none',
 		outline: 'none',
-		fontSize: '1.5em',
+		fontSize: '2em',
 		// Make the buttons line up.
 		position: 'relative',
-		top: '6px',
+		top: '9px',
 	},
 	badgesButton: {
 		backgroundColor: 'inherit',
@@ -57,8 +58,12 @@ const styles = (theme: Theme) => createStyles({
 	reactionGrid: {
 		flexGrow: 1,
 		marginTop: theme.spacing(1.5),
-		minHeight: '6em',
-		fontSize: '1.5em',
+		minHeight: '8em',
+		fontSize: '1.2em',
+		marginBottom: theme.spacing(0.5),
+		// Somehow the grid container is getting translated to the right.
+		paddingLeft: theme.spacing(0.5),
+		paddingRight: theme.spacing(1),
 	},
 	reactionButton: {
 		backgroundColor: 'inherit',
@@ -87,6 +92,8 @@ const styles = (theme: Theme) => createStyles({
 		color: 'red',
 		fontSize: '1.0em',
 		wordBreak: 'break-word',
+		paddingLeft: theme.spacing(1),
+		paddingRight: theme.spacing(1),
 	},
 	center: {
 		display: 'flex',
@@ -113,18 +120,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	showReactingLoader: boolean
 }> {
 	private errorHandler: ErrorHandler | undefined
-	private picker = new EmojiButton(
-		{
-			autoHide: false,
-			emojiSize: '1.5em',
-			emojisPerRow: 6,
-			initialCategory: 'recents',
-			position: 'bottom',
-			recentsCount: 20,
-			rows: 4,
-			theme: 'auto',
-		}
-	)
+	private picker: EmojiButton | undefined
 
 	constructor(props: any) {
 		super(props)
@@ -138,7 +134,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async componentDidMount() {
-		const { emojit } = await setupUserSettings()
+		const { emojit, themePreference } = await setupUserSettings()
 		this.setState({ emojit })
 
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
@@ -148,24 +144,37 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			})
 		})
 		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
-		this.setUpEmojiPicker()
+		this.setUpEmojiPicker(themePreference)
 	}
 
-	setUpEmojiPicker(): void {
+	setUpEmojiPicker(themePreference: ThemePreferenceType): void {
 		// Docs https://emoji-button.js.org/docs/api/
 		const trigger = document.getElementById('emoji-trigger')
+
+		this.picker = new EmojiButton(
+			{
+				autoHide: false,
+				emojiSize: '1.5em',
+				emojisPerRow: 6,
+				initialCategory: 'recents',
+				position: 'bottom',
+				recentsCount: 20,
+				rows: 4,
+				theme: themePreference === 'device' ? 'auto' : themePreference,
+			}
+		)
 
 		this.picker.on('emoji', selection => {
 			this.addEmoji(selection.emoji)
 		})
 
-		this.picker.on('hidden', () => {
+		this.picker!.on('hidden', () => {
 			this.condensePopup()
 		})
 
 		trigger!.addEventListener('click', () => {
 			this.expandPopup()
-			this.picker.togglePicker(trigger!)
+			this.picker!.togglePicker(trigger!)
 		})
 	}
 
@@ -182,11 +191,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	condensePopup(): void {
-		document.getElementById('main-popup')!.style.height = '250px'
+		document.getElementById('main-popup')!.style.height = '280px'
 	}
 
 	expandPopup(): void {
-		document.getElementById('main-popup')!.style.height = '450px'
+		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
 	async loadReactions(tab: Tabs.Tab): Promise<void> {
@@ -213,7 +222,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	addEmoji(reaction: string): void {
-		if (this.hasMaxReactions()) {
+		if (this.hasMaxReactions() && this.picker) {
 			if (this.picker.isPickerVisible()) {
 				this.picker.hidePicker()
 			}
@@ -333,57 +342,62 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		// `pageReactions` already include the user's reactions.
 
 		return <div>
-			<div className={`${classes.header} ${classes.end}`}>
-				{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
-				<button className={classes.historyButton}
-					onClick={this.openHistory}>
-					<HistoryIcon color="primary" />
-				</button>
-				<button className={classes.badgesButton}
-					onClick={this.openBadges}>
-					🏆
-				</button>
-				<button
-					className={classes.optionsButton}
-					onClick={this.openOptions}>
-					⚙️
-				</button>
-			</div>
-			<Grid container
-				className={`${classes.reactionGrid} ${classes.center}`}
-				spacing={1}
-			>
-				{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
-				{this.state.pageReactions === undefined && <div>
-					<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
-				</div>}
-				{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-					const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
-					return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
-						<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
-							<span>
-								{pageReaction.reaction}
-							</span>
-							<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
-								{pageReaction.count}
-							</span>
-						</button>
-					</Grid>
-				}
-				)}
-			</Grid>
-			<div className={classes.errorSection}>
-				<Typography component="p" id="error-text"></Typography>
-			</div>
-			<div className={classes.center}>
-				<button
-					id="emoji-trigger"
-					className={classes.emojiTrigger}
-					disabled={this.hasMaxReactions()}
+			<EmojitTheme>
+				<div className={`${classes.header} ${classes.end}`}>
+					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					<button className={classes.historyButton}
+						onClick={this.openHistory}>
+						<HistoryIcon color="primary" fontSize="inherit" />
+					</button>
+					<button className={classes.badgesButton}
+						onClick={this.openBadges}>
+						🏆
+					</button>
+					<button
+						className={classes.optionsButton}
+						onClick={this.openOptions}>
+						⚙️
+					</button>
+				</div>
+				<Grid container
+					className={classes.reactionGrid}
+					direction="row"
+					alignItems="center"
+					justify="center"
+					spacing={2}
 				>
-					🙂
-				</button>
-			</div>
+					{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
+					{this.state.pageReactions === undefined && <div>
+						<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
+					</div>}
+					{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
+						const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+						return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
+							<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
+								<span>
+									{pageReaction.reaction}
+								</span>
+								<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
+									{pageReaction.count}
+								</span>
+							</button>
+						</Grid>
+					}
+					)}
+				</Grid>
+				<div className={classes.errorSection}>
+					<Typography component="p" id="error-text"></Typography>
+				</div>
+				<div className={classes.center}>
+					<button
+						id="emoji-trigger"
+						className={classes.emojiTrigger}
+						disabled={this.hasMaxReactions()}
+					>
+						🙂
+					</button>
+				</div>
+			</EmojitTheme>
 		</div>
 	}
 }

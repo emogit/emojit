@@ -43,6 +43,12 @@
 	"downloadYourDataButton": {
 		"message": "Download all"
 	},
+	"themeSectionTitle": {
+		"message": "🎨 Theme"
+	},
+	"themePreferenceDescription": {
+		"message": "Changing the theme will not effect this page until you reload the page."
+	},
 	"advancedSectionTitle": {
 		"message": "🤓 Advanced"
 	},
