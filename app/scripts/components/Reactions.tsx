@@ -117,7 +117,8 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	pageUrl: string | undefined,
 	userReactions: string[] | undefined,
 	pageReactions: PageReaction[] | undefined,
-	showReactingLoader: boolean
+	showReactingLoader: boolean,
+	tab: Tabs.Tab | undefined,
 }> {
 	private errorHandler: ErrorHandler | undefined
 	private picker: EmojiButton | undefined
@@ -130,20 +131,20 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			userReactions: undefined,
 			pageReactions: undefined,
 			showReactingLoader: false,
+			tab: undefined,
 		}
 	}
 
 	async componentDidMount() {
-		const { emojit, themePreference } = await setupUserSettings(['emojit', 'themePreference'])
-		this.setState({ emojit })
+		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
 
+		const { emojit, themePreference } = await setupUserSettings(['emojit', 'themePreference'])
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
 			const pageUrl = tabs[0].url
-			this.setState({ pageUrl }, () => {
-				this.loadReactions(tabs[0])
+			this.setState({ pageUrl, emojit, tab: tabs[0] }, () => {
+				this.loadReactions()
 			})
 		})
-		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
 		this.setUpEmojiPicker(themePreference)
 	}
 
@@ -198,19 +199,14 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
-	async loadReactions(tab: Tabs.Tab): Promise<void> {
+	async loadReactions(): Promise<void> {
 		console.debug("Loading reactions...")
 
 		try {
 			const { userReactions, pageReactions } = await this.state.emojit!.getUserPageReactions(this.state.pageUrl!)
-			this.setState({ userReactions, pageReactions })
-			if (pageReactions) {
-				if (pageReactions.length > 0) {
-					browser.browserAction.setBadgeText({ tabId: tab.id, text: pageReactions[0].reaction })
-				} else {
-					browser.browserAction.setBadgeText({ tabId: tab.id, text: null })
-				}
-			}
+			this.setState({ userReactions, pageReactions }, () => {
+				this.updateBadgeText()
+			})
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
 			this.setState({ userReactions: [], pageReactions: [] })
@@ -255,6 +251,15 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		})
 	}
 
+	private updateBadgeText() {
+		const topReaction = this.getTopReaction()
+		if (topReaction && topReaction.count > 0) {
+			browser.browserAction.setBadgeText({ tabId: this.state.tab!.id, text: topReaction.reaction })
+		} else {
+			browser.browserAction.setBadgeText({ tabId: this.state.tab!.id, text: null })
+		}
+	}
+
 	react(modifications: any[]): any {
 		const { pageUrl } = this.state
 		if (!pageUrl) {
@@ -295,11 +300,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				break
 			}
 		}
-		const countDiff = -indicesToRemove.length
-		if (countDiff < 0) {
+		if (indicesToRemove.length > 0) {
+			const countDiff = -indicesToRemove.length
 			this.updatePageReactions({ reaction, count: countDiff })
 			this.setState({
-				userReactions: update(this.state.userReactions, { $splice: indicesToRemove.map(i => [i, 1]) }),
+				userReactions: update(this.state.userReactions, { $splice: indicesToRemove.reverse().map(i => [i, 1]) }),
 				showReactingLoader: true,
 			})
 
@@ -333,14 +338,24 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		}
 		// Purposely do not re-sort to avoid jumpiness.
 
-		this.setState({ pageReactions })
+		this.setState({ pageReactions }, () => {
+			this.updateBadgeText()
+		})
+	}
+
+	getTopReaction(): PageReaction | undefined {
+		const { pageReactions } = this.state
+		if (!pageReactions || pageReactions.length === 0) {
+			return undefined
+		}
+		return pageReactions.reduce((prev, current) => prev.count < current.count ? current : prev)
 	}
 
 	render(): React.ReactNode {
 		const { classes } = this.props
 
 		// `pageReactions` already include the user's reactions.
-
+						
 		return <div>
 			<EmojitTheme>
 				<div className={`${classes.header} ${classes.end}`}>
