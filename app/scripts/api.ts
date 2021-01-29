@@ -56,8 +56,7 @@ export class EmojitApi {
 	}
 
 	getPageReactions(pageUrl: string): Promise<{
-		userReactions: string[],
-		pageReactions: PageReaction[],
+		reactions: PageReaction[],
 	}> {
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
@@ -75,7 +74,10 @@ export class EmojitApi {
 		})
 	}
 
-	getUserPageReactions(pageUrl: string) {
+	getUserPageReactions(pageUrl: string): Promise<{
+		userReactions: string[],
+		pageReactions: PageReaction[],
+	}> {
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return $.ajax({
