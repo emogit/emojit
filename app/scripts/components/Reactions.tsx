@@ -55,14 +55,17 @@ const styles = (theme: Theme) => createStyles({
 		paddingRight: 0,
 		fontSize: '1.5em',
 	},
-	reactionGrid: {
+	gridDiv: {
 		flexGrow: 1,
+		// Make sure there is an even amount of spacing on the left and right.
+		overflowX: 'hidden',
+	},
+	reactionGrid: {
 		marginTop: theme.spacing(1.5),
 		minHeight: '8em',
 		fontSize: '1.2em',
 		marginBottom: theme.spacing(0.5),
-		// Somehow the grid container is getting translated to the right.
-		paddingLeft: theme.spacing(0.5),
+		paddingLeft: theme.spacing(1),
 		paddingRight: theme.spacing(1),
 	},
 	reactionButton: {
@@ -355,7 +358,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		const { classes } = this.props
 
 		// `pageReactions` already include the user's reactions.
-						
+
 		return <div>
 			<EmojitTheme>
 				<div className={`${classes.header} ${classes.end}`}>
@@ -374,32 +377,34 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 						⚙️
 					</button>
 				</div>
-				<Grid container
-					className={classes.reactionGrid}
-					direction="row"
-					alignItems="center"
-					justify="center"
-					spacing={2}
-				>
-					{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
-					{this.state.pageReactions === undefined && <div>
-						<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
-					</div>}
-					{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-						const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
-						return <Grid key={`reaction-${pageReaction.reaction}`} item xs={3}>
-							<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
-								<span>
-									{pageReaction.reaction}
-								</span>
-								<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
-									{pageReaction.count}
-								</span>
-							</button>
-						</Grid>
-					}
-					)}
-				</Grid>
+				<div className={classes.gridDiv}>
+					<Grid container
+						className={classes.reactionGrid}
+						direction="row"
+						alignItems="center"
+						justify="center"
+						spacing={1}
+					>
+						{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
+						{this.state.pageReactions === undefined && <div>
+							<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
+						</div>}
+						{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
+							const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+							return <Grid key={`reaction-${pageReaction.reaction}`} item xs>
+								<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
+									<span>
+										{pageReaction.reaction}
+									</span>
+									<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
+										{pageReaction.count}
+									</span>
+								</button>
+							</Grid>
+						}
+						)}
+					</Grid>
+				</div>
 				<div className={classes.errorSection}>
 					<Typography component="p" id="error-text"></Typography>
 				</div>
