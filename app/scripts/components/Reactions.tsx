@@ -134,7 +134,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async componentDidMount() {
-		const { emojit, themePreference } = await setupUserSettings()
+		const { emojit, themePreference } = await setupUserSettings(['emojit', 'themePreference'])
 		this.setState({ emojit })
 
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {

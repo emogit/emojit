@@ -26,8 +26,8 @@ export interface UserSettings {
 	themePreference: ThemePreferenceType
 }
 
-export async function setupUserSettings(): Promise<UserSettings> {
-	const startTime = new Date().getTime()
+export async function setupUserSettings(requiredKeys: (keyof (UserSettings))[]): Promise<UserSettings> {
+	// const startTime = new Date().getTime()
 	const keys = {
 		serviceUrl: DEFAULT_SERVICE_URL,
 		userId: undefined,
@@ -38,7 +38,7 @@ export async function setupUserSettings(): Promise<UserSettings> {
 	const results = await browser.storage.local.get(keys)
 	const { serviceUrl, } = results
 	let { userId, updateIconTextWithTopPageReaction, themePreference } = results
-	if (!userId) {
+	if ((requiredKeys.indexOf('userId') > -1 || requiredKeys.indexOf('emojit') > - 1) && !userId) {
 		const r = await browser.storage.sync.get(['userId'])
 		userId = r.userId
 		if (!userId) {
@@ -47,14 +47,14 @@ export async function setupUserSettings(): Promise<UserSettings> {
 		}
 		browser.storage.local.set({ userId })
 	}
-	if (updateIconTextWithTopPageReaction === undefined) {
+	if (requiredKeys.indexOf('updateIconTextWithTopPageReaction') > - 1 && updateIconTextWithTopPageReaction === undefined) {
 		const r = await browser.storage.sync.get(['updateIconTextWithTopPageReaction'])
 		updateIconTextWithTopPageReaction = r.updateIconTextWithTopPageReaction
 		if (updateIconTextWithTopPageReaction !== undefined) {
 			browser.storage.local.set({ updateIconTextWithTopPageReaction })
 		}
 	}
-	if (themePreference === undefined) {
+	if (requiredKeys.indexOf('themePreference') > - 1 && themePreference === undefined) {
 		const r = await browser.storage.sync.get(['themePreference'])
 		themePreference = r.themePreference
 		if (themePreference !== undefined) {
@@ -63,7 +63,11 @@ export async function setupUserSettings(): Promise<UserSettings> {
 			themePreference = 'device'
 		}
 	}
-	const emojit = new EmojitApi(serviceUrl, userId)
-	console.debug("setupUserSettings took ", new Date().getTime() - startTime, "millis.")
-	return { emojit, serviceUrl, userId, updateIconTextWithTopPageReaction, themePreference }
+
+	const result: any = { serviceUrl, userId, updateIconTextWithTopPageReaction, themePreference }
+	if (requiredKeys.indexOf('emojit') > - 1) {
+		result.emojit = new EmojitApi(serviceUrl, userId)
+	}
+	// console.debug("setupUserSettings took", new Date().getTime() - startTime, "millis for", requiredKeys.length, " key(s).")
+	return result
 }

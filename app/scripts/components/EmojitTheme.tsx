@@ -60,7 +60,7 @@ export class EmojitTheme extends React.Component<{
 	}
 
 	async componentDidMount() {
-		const { themePreference } = await setupUserSettings()
+		const { themePreference } = await setupUserSettings(['themePreference'])
 		this.setState({
 			themePreference,
 		})
