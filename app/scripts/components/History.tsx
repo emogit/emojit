@@ -104,9 +104,11 @@ class History extends React.Component<WithStyles<typeof styles>, {
 			})
 		} else {
 			const index = this.state.checkedPages.indexOf(pageUrl)
-			this.setState({
-				checkedPages: update(this.state.checkedPages, { $splice: [[index, 1]] }),
-			})
+			if (index > -1) {
+				this.setState({
+					checkedPages: update(this.state.checkedPages, { $splice: [[index, 1]] }),
+				})
+			}
 		}
 	}
 
