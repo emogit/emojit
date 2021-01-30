@@ -74,7 +74,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	componentDidMount(): void {
-		setupUserSettings(['emojit', 'userId', 'serviceUrl','updateIconTextWithTopPageReaction', 'themePreference']).then((userSettings) => {
+		setupUserSettings(['emojit', 'userId', 'serviceUrl', 'updateIconTextWithTopPageReaction', 'themePreference']).then((userSettings) => {
 			const emojit = userSettings.emojit
 			const userId = userSettings.userId
 			const { serviceUrl, updateIconTextWithTopPageReaction, themePreference } = userSettings
@@ -126,12 +126,11 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	deleteAllUserData(): void {
-		const doDeleteUser = browser.extension.getBackgroundPage().confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
+		const doDeleteUser = confirm(browser.i18n.getMessage('deleteAllUserDataConfirmation'))
 		if (doDeleteUser) {
 			this.state.emojit!.deleteUser()
 				.then((_response: any) => {
-					const errorMsg = "Successfully deleted all of your data."
-					this.errorHandler.showError({ errorMsg })
+					this.errorHandler.showError({ errorMsg: getMessage('deleteDataSuccess') })
 				}).catch((serviceError: any) => {
 					this.errorHandler.showError({ serviceError })
 				})

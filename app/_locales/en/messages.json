@@ -19,6 +19,9 @@
 		"message": "Delete all",
 		"description": "Text for the button to request all user data be deleted"
 	},
+	"deleteDataSuccess": {
+		"message": "Successfully deleted all of your data."
+	},
 	"userIdSectionTitle": {
 		"message": "👤 User ID"
 	},
@@ -92,11 +95,17 @@
 	"noHistory": {
 		"message": "You haven't rated any pages yet."
 	},
+	"deleteSelectedPagesConfirmation": {
+		"message": "Are you sure you want to delete the selected item(s) from your history? You will also lose the associated badges."
+	},
+	"deleteUserPageReactionsSuccess": {
+		"message": "Successfully deleted the history for the selected page(s)."
+	},
 	"currentReactionsIdentifier": {
 		"message": "Your current reaction(s): "
 	},
 	"badgesIdentifier": {
-		"message": "Your badges: "
+		"message": "🏆 Your badge(s): "
 	},
 	"badge_FIRST_REACTION": {
 		"message": "🥇 1st Reaction"
@@ -105,12 +114,15 @@
 		"message": "🎂 1 Year Anniversary"
 	},
 	"badge_ONE_HUNDRED_PAGES": {
-		"message": "💯 Pages"
+		"message": "💯 Pages 📄"
 	},
 	"badge_ONE_HUNDRED_EMOJIS": {
-		"message": "💯 Emojis"
+		"message": "💯 Emojis 🙂"
+	},
+	"badge_ONE_HUNDRED_BADGES": {
+		"message": "💯 Badges 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅 "
+		"message": "📅: "
 	}
 }

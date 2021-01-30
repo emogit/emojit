@@ -52,7 +52,7 @@ const styles = (theme: Theme) => createStyles({
 		border: 'none',
 		outline: 'none',
 		// Make sure it align with the right side.
-		paddingRight: 0,
+		paddingRight: theme.spacing(0.5),
 		fontSize: '1.5em',
 	},
 	gridDiv: {
@@ -381,8 +381,8 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 					<Grid container
 						className={classes.reactionGrid}
 						direction="row"
-						alignItems="center"
 						justify="center"
+						alignItems="center"
 						spacing={1}
 					>
 						{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
@@ -391,7 +391,9 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 						</div>}
 						{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
 							const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
-							return <Grid key={`reaction-${pageReaction.reaction}`} item xs>
+							return <Grid key={`reaction-${pageReaction.reaction}`}
+								container item xs
+								justify="center">
 								<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
 									<span>
 										{pageReaction.reaction}

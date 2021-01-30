@@ -31,7 +31,7 @@ export class EmojitApi {
 			if (url.length > this.urlMaxLength) {
 				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
 			}
-			if (!/^(chrome-extension|extension|https?):\/\/.{8,}/i.test(url)) {
+			if (!/^(brave|chrome-extension|edge|extension|https?):\/\/.{8,}/i.test(url)) {
 				reject(browser.i18n.getMessage('errorCode_INVALID_URL'))
 			}
 			resolve()
@@ -51,6 +51,23 @@ export class EmojitApi {
 			},
 			error: function (error) {
 				console.error("Error deleting user.", error.status, error.responseJSON)
+			}
+		})
+	}
+
+	deleteUserReactions(pageUrls: string[]) {
+		const request = { userId: this.userId, pageUrls }
+		return $.ajax({
+			method: 'DELETE',
+			dataType: 'json',
+			contentType: 'application/json',
+			url: `${this.url}/userPageReactions`,
+			data: JSON.stringify(request),
+			success: function (response) {
+				console.debug("Delete page reactions response:", response)
+			},
+			error: function (error) {
+				console.error("Error deleting user page reactions.", error.status, error.responseJSON)
 			}
 		})
 	}

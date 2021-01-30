@@ -38,7 +38,7 @@ export async function setupUserSettings(requiredKeys: (keyof (UserSettings))[]):
 	const results = await browser.storage.local.get(keys)
 	const { serviceUrl, } = results
 	let { userId, updateIconTextWithTopPageReaction, themePreference } = results
-	if ((requiredKeys.indexOf('userId') > -1 || requiredKeys.indexOf('emojit') > - 1) && !userId) {
+	if (!userId && (requiredKeys.indexOf('userId') > -1 || requiredKeys.indexOf('emojit') > - 1)) {
 		const r = await browser.storage.sync.get(['userId'])
 		userId = r.userId
 		if (!userId) {
