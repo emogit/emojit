@@ -53,17 +53,20 @@ export class EmojitTheme extends React.Component<{
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			// Default to light so that the page doesn't flash black in light mode.
-			// In dark mode, the page will always start white anyway.
-			themePreference: 'light',
+			// Defaulting to light makes the page not flash black in light mode.
+			// In dark mode, the page will always start white.
+			// A person's device preference is likely to be the same as their preference here, so defaulting to a device should mininize a possible quick flash (like most pages have anyway).
+			themePreference: 'device',
 		}
 	}
 
-	async componentDidMount() {
+	async componentDidMount(): Promise<void> {
 		const { themePreference } = await setupUserSettings(['themePreference'])
-		this.setState({
-			themePreference,
-		})
+		if (themePreference !== this.state.themePreference) {
+			this.setState({
+				themePreference,
+			})
+		}
 	}
 
 	render(): React.ReactNode {

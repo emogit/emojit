@@ -55,6 +55,23 @@ export class EmojitApi {
 		})
 	}
 
+	deleteUserReactions(pageUrls: string[]) {
+		const request = { userId: this.userId, pageUrls }
+		return $.ajax({
+			method: 'DELETE',
+			dataType: 'json',
+			contentType: 'application/json',
+			url: `${this.url}/userPageReactions`,
+			data: JSON.stringify(request),
+			success: function (response) {
+				console.debug("Delete page reactions response:", response)
+			},
+			error: function (error) {
+				console.error("Error deleting user page reactions.", error.status, error.responseJSON)
+			}
+		})
+	}
+
 	getPageReactions(pageUrl: string): Promise<{
 		reactions: PageReaction[],
 	}> {
