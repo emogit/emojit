@@ -52,7 +52,7 @@ const styles = (theme: Theme) => createStyles({
 		border: 'none',
 		outline: 'none',
 		// Make sure it align with the right side.
-		paddingRight: 0,
+		paddingRight: theme.spacing(0.5),
 		fontSize: '1.5em',
 	},
 	gridDiv: {
