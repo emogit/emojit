@@ -95,8 +95,11 @@
 	"noHistory": {
 		"message": "You haven't rated any pages yet."
 	},
+	"deleteSelectedPagesConfirmation": {
+		"message": "Are you sure you want to delete the selected item(s) from your history? You will also lose the associated badges."
+	},
 	"deleteUserPageReactionsSuccess": {
-		"message": "Successfully deleted the selected pages reactions."
+		"message": "Successfully deleted the history for the selected page(s)."
 	},
 	"currentReactionsIdentifier": {
 		"message": "Your current reaction(s): "

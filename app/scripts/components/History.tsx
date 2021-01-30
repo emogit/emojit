@@ -108,7 +108,7 @@ class History extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	async deletePages(): Promise<void> {
-		if (confirm(getMessage(`deleteSelectedPagesConfirmation`))) {
+		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
 			try {
 				await this.state.emojit!.deleteUserReactions(this.state.checkedPages)
 				this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
@@ -159,19 +159,19 @@ class History extends React.Component<WithStyles<typeof styles>, {
 					}}
 				/>
 			</div>}
-			{
-				this.state.shownHistory === undefined && this.state.errorGettingHistory === undefined && <div className={classes.center}>
-					<CircularProgress size={70} style={{ color: progressSpinnerColor }}
-					/>
-				</div>
+			{this.state.shownHistory === undefined && this.state.errorGettingHistory !== undefined && <Typography variant="body2" component="p" color="error">
+				{this.state.errorGettingHistory}
+			</Typography>}
+			{this.state.shownHistory === undefined && this.state.errorGettingHistory === undefined && <div className={classes.center}>
+				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
+				/>
+			</div>
 			}
-			{
-				this.state.history !== undefined && this.state.history.pages.length === 0 && <div>
-					<Typography variant="body2" component="p" >
-						{getMessage("noHistory")}
-					</Typography>
-				</div>
-			}
+			{this.state.history !== undefined && this.state.history.pages.length === 0 && <div>
+				<Typography variant="body2" component="p" >
+					{getMessage("noHistory")}
+				</Typography>
+			</div>}
 
 			<Grid container className={classes.historyGrid} spacing={1}>
 				{this.state.shownHistory !== undefined && this.state.shownHistory.pages.map((page, index) =>
