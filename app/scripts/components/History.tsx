@@ -55,6 +55,9 @@ const styles = (theme: Theme) => createStyles({
 	cartContent: {
 		padding: '12px !important',
 	},
+	pageReactions: {
+		fontSize: '1.2em',
+	},
 })
 
 class History extends React.Component<WithStyles<typeof styles>, {
@@ -107,19 +110,20 @@ class History extends React.Component<WithStyles<typeof styles>, {
 		}
 	}
 
-	async deletePages(): Promise<void> {
+	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
-			try {
-				await this.state.emojit!.deleteUserReactions(this.state.checkedPages)
-				this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
-				// Soft reload.
-				this.setState({ history: undefined, shownHistory: undefined, }, async () => {
+			// Make the loading spinner show.
+			const { checkedPages } = this.state
+			this.setState({ history: undefined, shownHistory: undefined, checkedPages: [] }, async () => {
+				try {
+					await this.state.emojit!.deleteUserReactions(checkedPages)
+					this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
 					const history = await this.state.emojit!.getAllUserReactions()
 					this.setState({ history, shownHistory: history })
-				})
-			} catch (serviceError) {
-				this.errorHandler.showError({ serviceError })
-			}
+				} catch (serviceError) {
+					this.errorHandler.showError({ serviceError })
+				}
+			})
 		}
 	}
 
@@ -197,9 +201,12 @@ class History extends React.Component<WithStyles<typeof styles>, {
 											</Link>
 										</Typography>
 										<Typography variant="body2" component="p">
-											{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}{page.currentReactions.join("")}
+											{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}
+											<span className={classes.pageReactions}>
+												{page.currentReactions.join("")}
+											</span>
 										</Typography>
-										<Typography variant="body2" component="p">
+										<Typography variant="body2" component="p" color="textSecondary">
 											{getMessage('earnedTimeIdentifier') || "📅 "}{new Date(page.time).toString()}
 										</Typography>
 										{page.badges && page.badges.length > 0 && <Typography variant="body2" component="p">

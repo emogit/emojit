@@ -105,7 +105,7 @@
 		"message": "Your current reaction(s): "
 	},
 	"badgesIdentifier": {
-		"message": "Your badges: "
+		"message": "🏆 Your badge(s): "
 	},
 	"badge_FIRST_REACTION": {
 		"message": "🥇 1st Reaction"
@@ -120,9 +120,9 @@
 		"message": "💯 Emojis 🙂"
 	},
 	"badge_ONE_HUNDRED_BADGES": {
-		"message": "💯 Badges 🥇"
+		"message": "💯 Badges 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅 "
+		"message": "📅: "
 	}
 }
