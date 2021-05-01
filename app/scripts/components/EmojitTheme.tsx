@@ -43,7 +43,7 @@ export class EmojitTheme extends React.Component<{
 
 	render(): React.ReactNode {
 		let primary = undefined
-		let { themePreference } = this.state
+		const { themePreference } = this.state
 
 		if (themePreference === 'dark') {
 			// Easier to see in dark mode.
