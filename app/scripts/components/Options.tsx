@@ -14,7 +14,7 @@ import { browser } from 'webextension-polyfill-ts'
 import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
-import { isValidUserId, setupUserSettings, ThemePreferenceType, UserSettings } from '../user'
+import { isValidUserId, setupUserSettings, ThemePreferenceType } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -220,15 +220,10 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 						checked={this.state.updateIconTextWithTopPageReaction === true}
 						onChange={this.handleChange}
 					/>}
-					label={getMessage('updateIconTextWithTopPageReactionLabel') || "Show the top emoji for the page on top of the extension icon without clicking on the extension icon"}
+					label={getMessage('updateIconTextWithTopPageReactionLabel')}
 				/>
 				<Typography component="p">
-					This may only work on tabs opened after enabling this option.
-					This sends the page's URL address to a server every time you change the tab in your browser.
-					This is disabled by default because it could make it look like we are trying to record your browsing history
-					even though we are not.
-					Currently, your user ID will not be sent with this request but this may change it the future for
-					authentication purposes to prevent spam requests.
+					{getMessage('updateIconTextWithTopPageReactionInfo')}
 				</Typography>
 			</div>
 

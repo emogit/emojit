@@ -40,6 +40,12 @@
 	"iconOptionsSectionTitle": {
 		"message": "🙂 Icon Options"
 	},
+	"updateIconTextWithTopPageReactionLabel": {
+		"message": "Show the top emoji for the page on top of the extension icon without clicking on the extension icon"
+	},
+	"updateIconTextWithTopPageReactionInfo": {
+		"message": "This may only work on tabs opened after enabling this option. This sends the page's URL address to a server every time you change the tab in your browser. This is disabled by default because it could make it look like we are trying to record your browsing history even though we are not. Currently, your user ID will not be sent with this request but this may change it the future for authentication purposes to prevent spam requests."
+	},
 	"yourDataSectionTitle": {
 		"message": "💿 Your Data"
 	},

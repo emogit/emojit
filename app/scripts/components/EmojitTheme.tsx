@@ -11,15 +11,12 @@ export function isDarkModePreferred(): boolean {
 
 type Props = {
 	children: JSX.Element | JSX.Element[],
-	themePreference: PaletteType | 'device'
 }
 
-export class EmojitTheme extends React.Component<{
-	children: JSX.Element | JSX.Element[],
-}, {
+export class EmojitTheme extends React.Component<Props, {
 	themePreference: PaletteType,
 }> {
-	constructor(props: any) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
 			// Defaulting to light makes the page not flash black in light mode.

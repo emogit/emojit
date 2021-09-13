@@ -236,8 +236,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			userReactions: update(this.state.userReactions, { $push: [reaction] }),
 			showReactingLoader: true,
 		}, () => {
-			this.react([{ reaction, count: +1 }]).then(() => {
-			}).catch((serviceError: any) => {
+			this.react([{ reaction, count: +1 }]).catch((serviceError: any) => {
 				this.errorHandler!.showError({ serviceError })
 				// Remove the reaction.
 
@@ -263,11 +262,12 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		}
 	}
 
-	react(modifications: any[]): any {
+	react(modifications: PageReaction[]): any {
 		const { pageUrl } = this.state
 		if (!pageUrl) {
 			console.warn("pageUrl has not been set yet. Will retry.")
 			setTimeout(() => { this.react(modifications) }, 200)
+			return
 		}
 		return this.state.emojit!.react({
 			pageUrl,
@@ -294,6 +294,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 	removeAllEmojiOccurrences(reaction: string): void {
 		const indicesToRemove = []
+		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			const fromIndex = indicesToRemove.length === 0 ? 0 : indicesToRemove[indicesToRemove.length - 1] + 1
 			const index = this.state.userReactions!.indexOf(reaction, fromIndex)
@@ -311,8 +312,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				showReactingLoader: true,
 			})
 
-			this.react([{ reaction, count: countDiff }]).then(() => {
-			}).catch((serviceError: any) => {
+			this.react([{ reaction, count: countDiff }]).catch((serviceError: any) => {
 				this.errorHandler!.showError({ serviceError })
 				// Add back the reactions.
 				this.updatePageReactions({ reaction, count: Math.abs(countDiff) })
