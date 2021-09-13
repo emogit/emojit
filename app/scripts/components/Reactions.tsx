@@ -157,7 +157,8 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 
 		this.picker = new EmojiButton(
 			{
-				autoHide: false,
+				// Hide so that you can see that picking one worked.
+				autoHide: true,
 				emojiSize: '1.5em',
 				emojisPerRow: 6,
 				initialCategory: 'recents',
