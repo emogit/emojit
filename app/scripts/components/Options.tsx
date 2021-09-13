@@ -262,9 +262,12 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 				<Typography component="h5" variant="h5">
 					{getMessage('advancedSectionTitle') || "Advanced"}
 				</Typography>
+				<Typography component="p">
+					{getMessage('serviceUrlLabel') || "Service URL"}
+				</Typography>
 				<TextField name='serviceUrl'
 					variant="outlined"
-					label={getMessage('serviceUrlLabel') || "Service URL"}
+					aria-label={getMessage('serviceUrlLabel') || "Service URL"}
 					value={this.state.serviceUrl}
 					onChange={this.handleChange}
 					style={{ width: 320, marginTop: '6px' }}
