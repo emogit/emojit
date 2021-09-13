@@ -84,11 +84,11 @@ class App extends React.Component<WithStyles<typeof styles>, {
 						<a className={`${classes.pageButton} ${this.state.page === 'badges' ? classes.selectedPageButton : ''}`}
 							onClick={this.showBadges}>
 							🏆
-					</a>
+						</a>
 						<a className={`${classes.pageButton} ${this.state.page === 'options' ? classes.selectedPageButton : ''}`}
 							onClick={this.showOptions}>
 							⚙️
-					</a>
+						</a>
 					</div>
 				</Container>
 				{this.page()}

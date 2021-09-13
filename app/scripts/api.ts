@@ -19,6 +19,12 @@ export interface PageReactions {
 	badges: BadgeInfo[]
 }
 
+interface ReactRequest {
+	pageUrl: string
+	userId?: string
+	modifications: PageReaction[]
+}
+
 export class EmojitApi {
 	urlMaxLength = 256
 
@@ -26,7 +32,7 @@ export class EmojitApi {
 		this.url = url || DEFAULT_SERVICE_URL
 	}
 
-	checkUrl(url: string) {
+	checkUrl(url: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			if (url.length > this.urlMaxLength) {
 				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
@@ -38,7 +44,7 @@ export class EmojitApi {
 		})
 	}
 
-	deleteUser() {
+	deleteUser(): JQuery.jqXHR<any> {
 		const request = { userId: this.userId }
 		return $.ajax({
 			method: 'DELETE',
@@ -55,7 +61,7 @@ export class EmojitApi {
 		})
 	}
 
-	deleteUserReactions(pageUrls: string[]) {
+	deleteUserReactions(pageUrls: string[]): JQuery.jqXHR<any> {
 		const request = { userId: this.userId, pageUrls }
 		return $.ajax({
 			method: 'DELETE',
@@ -114,7 +120,7 @@ export class EmojitApi {
 	/**
 	 * Get all of the user's CURRENT reactions.
 	 */
-	getAllUserReactions() {
+	getAllUserReactions(): JQuery.jqXHR<any> {
 		const startTime = new Date()
 		return $.ajax({
 			method: 'GET',
@@ -129,7 +135,7 @@ export class EmojitApi {
 		})
 	}
 
-	react(request: any) {
+	react(request: ReactRequest): Promise<any> {
 		return this.checkUrl(request.pageUrl).then(() => {
 			request.userId = this.userId
 			return $.ajax({
@@ -148,7 +154,7 @@ export class EmojitApi {
 		})
 	}
 
-	getAllData() {
+	getAllData(): JQuery.jqXHR<any> {
 		return $.ajax({
 			method: 'GET',
 			url: `${this.url}/userData?userId=${encodeURIComponent(this.userId)}`,
@@ -161,7 +167,7 @@ export class EmojitApi {
 		})
 	}
 
-	getBadges() {
+	getBadges(): JQuery.jqXHR<any> {
 		return $.ajax({
 			method: 'GET',
 			url: `${this.url}/badges?userId=${encodeURIComponent(this.userId)}`,
