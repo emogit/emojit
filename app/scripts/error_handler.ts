@@ -7,7 +7,7 @@ export interface ShowErrorInput {
 }
 
 export class ErrorHandler {
-	private lastTimeout: number | undefined
+	private lastTimeout?: number
 
 	/**
 	 * @param errorTextElement The location where to display the error. If not given, the error will be alerted.
@@ -34,7 +34,7 @@ export class ErrorHandler {
 		if (this.errorTextElement && errorMsg) {
 			clearTimeout(this.lastTimeout)
 			this.errorTextElement.innerText = errorMsg
-			this.lastTimeout = setTimeout(() => {
+			this.lastTimeout = window.setTimeout(() => {
 				if (this.errorTextElement && this.errorTextElement.innerText === errorMsg) {
 					this.clear()
 				}

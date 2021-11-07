@@ -31,6 +31,7 @@
 		"webextension-toolbox": "latest"
 	},
 	"dependencies": {
+		"@emogit/emojit-core": "^1.0.0",
 		"@joeattardi/emoji-button": "^4.6.0",
 		"@material-ui/core": "^4.11.2",
 		"@material-ui/icons": "^4.11.2",

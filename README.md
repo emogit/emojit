@@ -7,10 +7,14 @@ You can download the extension for various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 
 # Dev
+To install dependencies, you will need a GitHub PAT.
+You can generate one at https://github.com/settings/tokens.
+Give it the `write:packages` and possibly the `repo` scopes.
 
 ## Install
-
-    yarn install
+```bash
+EMOGIT_NPM_AUTH_TOKEN=<GitHub PAT token> yarn install
+```
 
 ## Development
 Run one of:
