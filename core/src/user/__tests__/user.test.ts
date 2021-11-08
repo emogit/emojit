@@ -1,8 +1,5 @@
-import { createNewUserId, isValidUserId } from '@emogit/emojit-core/lib/user'
 import { expect } from 'chai'
-
-// Test that the library works since I'm new to importing from my own library.
-// Also these are currently the only tests in this project.
+import { createNewUserId, isValidUserId } from '../'
 
 describe('user', () => {
 	it('isValidUserId', () => {

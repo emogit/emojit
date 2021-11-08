@@ -1044,15 +1044,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emogit/emojit-core@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@emogit/emojit-core@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40emogit%2Femojit-core%2F1.0.0%2F3f4147ea69a5527195a32460aff034fa622c63fa571ed9227d90f3e1e97e22a6"
+"@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A."
   dependencies:
     "@types/node": ^16.11.6
     typescript: ^4.4.4
-  checksum: 45c302fc783ab21fa6921fb5d49a9242b3c28542696d97583e25cde7cf6723fdb67e3408f0c9d357c520271a7b18b6f29fbdd99102b1f58d3bdbc92beb6e2d67
+    uuid: ^8.3.2
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@emotion/hash@npm:^0.8.0":
   version: 0.8.0
@@ -8166,6 +8166,15 @@ __metadata:
   dependencies:
     inherits: 2.0.3
   checksum: 80bee6a2edf5ab08dcb97bfe55ca62289b4e66f762ada201f2c5104cb5e46474c8b334f6504d055c0e6a8fda10999add9bcbd81ba765e7f37b17dc767331aa55
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
   languageName: node
   linkType: hard
 

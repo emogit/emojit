@@ -43,5 +43,8 @@
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1"
 	},
-	"packageManager": "yarn@3.1.0"
+	"packageManager": "yarn@3.1.0",
+	"resolutions": {
+		"@emogit/emojit-core": "portal:../core"
+	}
 }

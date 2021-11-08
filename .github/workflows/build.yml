@@ -28,21 +28,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: "Install"
+      - name: Install
         run: |
           set -ex
           yarn install
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Build"
+      - name: Test
+        run: yarn test
+
+      - name: Build
         run: |
           set -ex
           yarn build
         # env:
         #   EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Publish"
+      - name: Publish
         if: github.ref == 'refs/heads/master'
         run: |
           set -ex

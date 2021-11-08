@@ -9,7 +9,7 @@ yarn build
 # Local Version
 To use a local version of this package, in the folder where you want to use it, run:
 ```bash
-yarn link <path to this folder>
+yarn link <path to this folder> --relative
 ```
 
 # Development
