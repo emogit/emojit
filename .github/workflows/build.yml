@@ -19,7 +19,7 @@ jobs:
     defaults:
       run:
         # Directory for run steps.
-        working-directory: extension
+        working-directory: core
 
     permissions:
       contents: read
