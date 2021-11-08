@@ -13,8 +13,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  core:
-    name: Core
+  build:
+    name: Build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,24 +28,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install
+      - name: "Core: Install"
         run: |
           set -ex
           yarn install
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test
+      - name: "Core: Test"
         run: yarn test
 
-      - name: Build
+      - name: "Core: Build"
         run: |
           set -ex
           yarn build
         # env:
         #   EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish
+      - name: "Core: Publish"
         if: github.ref == 'refs/heads/master'
         run: |
           set -ex
@@ -54,34 +54,23 @@ jobs:
           # NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  extension:
-    name: Extension
-    needs: core
-    # Change to ubuntu-20.04 when it is fully supported.
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        # Directory for run steps.
-        working-directory: extension
-
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install
+      # Extension
+      - name: "Extension: Install"
         run: yarn install
+        working-directory: extension
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test
+      - name: "Extension: Test"
         run: yarn test
+        working-directory: extension
 
-      - name: Lint
+      - name: "Extension: Lint"
         # Split Lint into a separate task so that it can always run even if the tests fail.
         run: yarn lint
         if: success() || failure()
+        working-directory: extension
 
-      - name: Build
+      - name: "Extension: Build"
         run: yarn build chrome
+        working-directory: extension
