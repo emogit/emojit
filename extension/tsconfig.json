@@ -77,6 +77,6 @@
     }
   ],
   "lib": ["es2020"],
-  "include": ["app/scripts/**"],
+  "include": ["app/**/*", ".*.js", "*.js"],
   "exclude": ["node_modules", "dist", "packages"]
 }

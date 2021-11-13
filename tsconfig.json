@@ -32,6 +32,7 @@
             "path": "extension"
         }
     ],
+    "include": [".*.js", "*.js"],
     "exclude": [
         "build",
         "node_modules",

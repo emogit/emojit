@@ -1,12 +1,35 @@
 {
   "name": "monorepo",
   "version": "1.0.0",
-  "repository": "git@github.com:emogit/emojit.git",
+  "repository": {
+    "url": "git+https://github.com/emogit/emojit.git",
+    "type": "git"
+  },
   "author": "Justin D. Harris <juharris@users.noreply.github.com>",
   "license": "BSD-3-Clause",
   "private": true,
+  "scripts": {
+    "dev": "webextension-toolbox dev",
+    "build": "webextension-toolbox build",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-mocha --require dotenv/config --recursive --exit --extension ts app/**/*.test.ts",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint-fix": "eslint  . --fix --ext .js,.jsx,.ts,.tsx"
+  },
   "workspaces": [
     "core",
     "extension"
-  ]
+  ],
+  "packageManager": "yarn@3.1.0",
+  "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
+    "@typescript-eslint/parser": "^5.3.1",
+    "chai": "^4.3.4",
+    "eslint": "^8.2.0",
+    "mocha": "^9.1.3",
+    "ts-mocha": "^8.0.0",
+    "typescript": "^4.4.4"
+  }
 }

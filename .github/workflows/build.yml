@@ -16,10 +16,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        # Directory for run steps.
-        working-directory: core
 
     permissions:
       contents: read
@@ -28,20 +24,34 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: "Core: Install"
+      - name: "Root: Install"
         run: |
           set -ex
           yarn install
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: "Extension: Lint"
+        # Split Lint into a separate task so that it can always run.
+        run: yarn lint
+
+      - name: "Core: Install"
+        run: |
+          set -ex
+          yarn install
+        working-directory: core
+        env:
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Core: Test"
         run: yarn test
+        working-directory: core
 
       - name: "Core: Build"
         run: |
           set -ex
           yarn build
+        working-directory: core
         # env:
         #   EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,6 +60,7 @@ jobs:
         run: |
           set -ex
           yarn npm publish
+        working-directory: core
         env:
           # NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,8 +79,8 @@ jobs:
       - name: "Extension: Lint"
         # Split Lint into a separate task so that it can always run even if the tests fail.
         run: yarn lint
-        if: success() || failure()
         working-directory: extension
+        if: success() || failure()
 
       - name: "Extension: Build"
         run: yarn build chrome
