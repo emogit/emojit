@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "incremental": true,
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "moduleResolution": "Node",
+        "module": "CommonJS",
+        "target": "ES2020",
+        "sourceMap": true,
+        "lib": [
+            "esnext"
+        ],
+        "esModuleInterop": true,
+        "alwaysStrict": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "resolveJsonModule": true,
+        "paths": {
+            "@emogit/*": [
+                "*/src/index.ts"
+            ]
+        }
+    },
+    "references": [
+        {
+            "path": "core"
+        },
+        {
+            "path": "extension"
+        }
+    ],
+    "exclude": [
+        "build",
+        "node_modules",
+        "dist",
+        "lib",
+        "*.d.ts"
+    ]
+}

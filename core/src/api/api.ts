@@ -19,7 +19,6 @@ export interface PageReactions {
     badges: BadgeInfo[]
 }
 
-
 export class ReactRequest {
     /**
      * @param userId An identifier for the user.
@@ -182,6 +181,7 @@ export class EmojitApi {
                 return response.data
             }).catch(error => {
                 console.error("Error getting page reactions.", error)
+                throw error
             })
         })
     }
@@ -199,6 +199,7 @@ export class EmojitApi {
                 return response.data
             }).catch(error => {
                 console.error("Error getting user reactions.", error)
+                throw error
             })
         })
     }
@@ -218,6 +219,7 @@ export class EmojitApi {
             return response.data
         }).catch(error => {
             console.error("Error getting all of the user's reactions.", error)
+            throw error
         })
     }
 
@@ -234,6 +236,7 @@ export class EmojitApi {
                 return response.data
             }).catch(error => {
                 console.error("Error reacting.", error)
+                throw error
             })
         })
     }
@@ -248,6 +251,7 @@ export class EmojitApi {
             return response.data
         }).catch(error => {
             console.error("Error getting all data.", error)
+            throw error
         })
     }
 
@@ -261,6 +265,7 @@ export class EmojitApi {
             return response.data
         }).catch(error => {
             console.error("Error getting user's badges.", error.status, error.responseJSON)
+            throw error
         })
     }
 }
