@@ -1,6 +1,8 @@
 import $ from 'jquery'
 import { browser } from 'webextension-polyfill-ts'
 
+// TODO Use api from core.
+
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
 
 export interface BadgeInfo {
@@ -37,7 +39,7 @@ export class EmojitApi {
 			if (url.length > this.urlMaxLength) {
 				reject(browser.i18n.getMessage('errorCode_URL_TOO_LONG'))
 			}
-			if (!/^(brave|chrome-extension|edge|extension|https?):\/\/.{8,}/i.test(url)) {
+			if (!/^(brave|chrome|chrome-extension|edge|extension|https?):\/\/./i.test(url)) {
 				reject(browser.i18n.getMessage('errorCode_INVALID_URL'))
 			}
 			resolve()
