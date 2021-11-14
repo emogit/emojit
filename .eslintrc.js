@@ -30,6 +30,7 @@ module.exports = {
 
 		'key-spacing': ['error'],
 		'keyword-spacing': ['error'],
+		'linebreak-style': ['error', 'unix'],
 		'no-tabs': 0,
 		'no-trailing-spaces': ['error', { skipBlankLines: false, ignoreComments: false, }],
 		'object-curly-spacing': ['error', 'always'],
@@ -52,6 +53,11 @@ module.exports = {
 		'/core/',
 		'/extension/',
 		'/site/',
+		// Coverage
+		'/coverage/',
+		// Build
+		'/build/',
+		'/dist/',
 		// Other
 		'node_modules/',
 		'/.yarn/',

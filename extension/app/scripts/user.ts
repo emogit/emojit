@@ -1,3 +1,4 @@
+import { createNewUserId } from '@emogit/emojit-core/lib/user'
 import { PaletteType } from '@material-ui/core'
 import { browser } from 'webextension-polyfill-ts'
 import { DEFAULT_SERVICE_URL, EmojitApi } from './api'
