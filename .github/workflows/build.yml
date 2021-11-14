@@ -46,6 +46,12 @@ jobs:
       - name: "Core: Test"
         run: yarn test
         working-directory: core
+      
+      - name: "Core: Lint"
+        # Split Lint into a separate task so that it can always run even if the tests fail.
+        run: yarn lint
+        working-directory: extension
+        if: success() || failure()
 
       - name: "Core: Build"
         run: |

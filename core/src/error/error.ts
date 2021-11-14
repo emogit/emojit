@@ -19,5 +19,5 @@ export enum ErrorCode {
 }
 
 export function error(code: ErrorCode): string {
-    return ErrorCode[code]
+	return ErrorCode[code]
 }
