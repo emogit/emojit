@@ -21,3 +21,10 @@ export enum ErrorCode {
 export function error(code: ErrorCode): string {
 	return ErrorCode[code]
 }
+
+export class EmojitError extends Error {
+	constructor(public errorCode: ErrorCode, public httpStatusCode?: number, message?: string) {
+		super(message || error(errorCode))
+		this.name = "EmojitError"
+	}
+}

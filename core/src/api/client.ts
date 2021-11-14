@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { error, ErrorCode } from '../error/error'
+import { EmojitError, error, ErrorCode } from '../error/error'
 import { Badge, BadgeAssignerResponse, BadgeInfo } from './badge'
 
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
@@ -21,14 +21,14 @@ export interface PageReactions {
 
 export class ReactRequest {
 	/**
-     * @param userId An identifier for the user.
-     * @param pageUrl The URL of the page the user is reacting to.
-     * @param modifications The update to make. `count` must be an integer and can be negative.
+	 * @param pageUrl The URL of the page the user is reacting to.
+	 * @param modifications The update to make. `count` must be an integer and can be negative.
+     * @param userId An identifier for the user. If not given, then the client will set it.
      */
 	constructor(
-		public userId: string,
 		public pageUrl: string,
-		public modifications: ReactionModification[]) { }
+		public modifications: ReactionModification[],
+		public userId: string | undefined = undefined) { }
 }
 
 export class ReactResponse {
@@ -118,18 +118,17 @@ export class StatsResponse {
 export class EmojitApi {
 	urlMaxLength = 256
 
-	constructor(public url: string, public userId: string) {
+	constructor(public userId: string, public url: string = '') {
 		this.url = url || DEFAULT_SERVICE_URL
 	}
 
-	// TODO Set error type?
 	checkUrl(url: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			if (url.length > this.urlMaxLength) {
-				reject({ errorCode: error(ErrorCode.URL_TOO_LONG) })
+				reject(new EmojitError(ErrorCode.URL_TOO_LONG))
 			}
 			if (!/^(brave|chrome|chrome-extension|edge|extension|https?):\/\/./i.test(url)) {
-				reject({ errorCode: error(ErrorCode.INVALID_URL) })
+				reject(new EmojitError(ErrorCode.INVALID_URL))
 			}
 			resolve()
 		})
@@ -147,8 +146,8 @@ export class EmojitApi {
 			return response.data
 		}).catch(error => {
 			// See https://www.npmjs.com/package/axios#handling-errors for details about handling errors.
-			console.error("Error deleting user.", error)
-			throw error
+			console.error("Error deleting user.", error.response || error)
+			throw error.response ? (error.response.data || error.response) : error
 		})
 	}
 
