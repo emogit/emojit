@@ -1,9 +1,10 @@
+import { EmojitError, error } from '@emogit/emojit-core'
 import { browser } from 'webextension-polyfill-ts'
 
 export interface ShowErrorInput {
-	serviceError: any | undefined
-	errorMsg: string | undefined
-	clearAfterMs: number | undefined
+	serviceError?: any
+	errorMsg?: string
+	clearAfterMs?: number
 }
 
 export class ErrorHandler {
@@ -22,6 +23,8 @@ export class ErrorHandler {
 			// Use errorMsg.
 		} else if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
+		} else if (serviceError instanceof EmojitError) {
+			errorMsg = browser.i18n.getMessage(`errorCode_${error(serviceError.errorCode)}`) || serviceError.message
 		} else if (serviceError !== undefined && serviceError.responseJSON && serviceError.responseJSON.error) {
 			const { errorCode, message } = serviceError.responseJSON.error
 			errorMsg = browser.i18n.getMessage(`errorCode_${errorCode}`) || message
