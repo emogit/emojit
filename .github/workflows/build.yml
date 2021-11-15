@@ -44,7 +44,7 @@ jobs:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Core: Test"
-        run: yarn test
+        run: yarn test --invert --fgrep Integration
         working-directory: core
       
       - name: "Core: Lint"

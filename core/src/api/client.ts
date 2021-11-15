@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { EmojitError, error, ErrorCode } from '../error/error'
+import { EmojitError, ErrorCode } from '../error/error'
+import { isValidUserId } from '../user'
 import { Badge, BadgeAssignerResponse, BadgeInfo } from './badge'
 
 export const DEFAULT_SERVICE_URL = 'https://api.emojit.site'
@@ -23,8 +24,8 @@ export class ReactRequest {
 	/**
 	 * @param pageUrl The URL of the page the user is reacting to.
 	 * @param modifications The update to make. `count` must be an integer and can be negative.
-     * @param userId An identifier for the user. If not given, then the client will set it.
-     */
+	 * @param userId An identifier for the user. If not given, then the client will set it.
+	 */
 	constructor(
 		public pageUrl: string,
 		public modifications: ReactionModification[],
@@ -33,8 +34,8 @@ export class ReactRequest {
 
 export class ReactResponse {
 	/**
-     * @param reactions The updated reactions for that user on the page.
-     */
+	 * @param reactions The updated reactions for that user on the page.
+	 */
 	constructor(
 		public reactions: string[],
 		public badges: BadgeAssignerResponse,
@@ -120,6 +121,9 @@ export class EmojitApi {
 
 	constructor(public userId: string, public url: string = '') {
 		this.url = url || DEFAULT_SERVICE_URL
+		if (!isValidUserId(userId)) {
+			throw new EmojitError(ErrorCode.INVALID_USERID)
+		}
 	}
 
 	checkUrl(url: string): Promise<void> {
@@ -142,7 +146,7 @@ export class EmojitApi {
 			responseType: 'json',
 			data: request,
 		}).then(response => {
-			console.debug("Delete response:", response)
+			// console.debug("Delete response:", response.data)
 			return response.data
 		}).catch(error => {
 			// See https://www.npmjs.com/package/axios#handling-errors for details about handling errors.
@@ -159,7 +163,7 @@ export class EmojitApi {
 			responseType: 'json',
 			data: request,
 		}).then(response => {
-			console.debug("Delete page reactions response:", response)
+			// console.debug("Delete page reactions response:", response.data)
 			return response.data
 		}).catch(error => {
 			console.error("Error deleting user page reactions.", error)
@@ -175,7 +179,7 @@ export class EmojitApi {
 				url: `${this.url}/pageReactions?pageUrl=${encodeURIComponent(pageUrl)}`,
 				responseType: 'json',
 			}).then(response => {
-				console.debug("Page reactions response:", response)
+				// console.debug("Page reactions response:", response.data)
 				console.debug("Getting page reactions took", new Date().getTime() - startTime.getTime(), "millis.")
 				return response.data
 			}).catch(error => {
@@ -193,7 +197,7 @@ export class EmojitApi {
 				url: `${this.url}/userPageReaction?userId=${encodeURIComponent(this.userId)}&pageUrl=${encodeURIComponent(pageUrl)}`,
 				responseType: 'json',
 			}).then(response => {
-				console.debug("Page reactions:", response)
+				// console.debug("Page reactions:", response.data)
 				console.debug("Getting user and page reactions took", new Date().getTime() - startTime.getTime(), "millis.")
 				return response.data
 			}).catch(error => {
@@ -204,8 +208,8 @@ export class EmojitApi {
 	}
 
 	/**
-     * Get all of the user's CURRENT reactions.
-     */
+	 * Get all of the user's CURRENT reactions.
+	 */
 	getAllUserReactions(): Promise<UserReactionsResponse> {
 		const startTime = new Date()
 		return axios({
@@ -213,7 +217,7 @@ export class EmojitApi {
 			url: `${this.url}/userReactions?userId=${encodeURIComponent(this.userId)}`,
 			responseType: 'json',
 		}).then(response => {
-			console.debug("All reactions:", response)
+			// console.debug("All reactions:", response.data)
 			console.debug("Getting all of the user's reactions took", new Date().getTime() - startTime.getTime(), "millis.")
 			return response.data
 		}).catch(error => {
@@ -231,7 +235,7 @@ export class EmojitApi {
 				responseType: 'json',
 				data: request,
 			}).then(response => {
-				console.debug("React response:", response)
+				// console.debug("React response:", response.data)
 				return response.data
 			}).catch(error => {
 				console.error("Error reacting.", error)
@@ -246,7 +250,7 @@ export class EmojitApi {
 			url: `${this.url}/userData?userId=${encodeURIComponent(this.userId)}`,
 			responseType: 'json',
 		}).then(response => {
-			console.debug("All data:", response)
+			// console.debug("All data:", response.data)
 			return response.data
 		}).catch(error => {
 			console.error("Error getting all data.", error)
@@ -260,7 +264,7 @@ export class EmojitApi {
 			url: `${this.url}/badges?userId=${encodeURIComponent(this.userId)}`,
 			responseType: 'json',
 		}).then(response => {
-			console.debug("Badges:", response)
+			// console.debug("Badges:", response.data)
 			return response.data
 		}).catch(error => {
 			console.error("Error getting user's badges.", error.status, error.responseJSON)

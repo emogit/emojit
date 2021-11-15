@@ -32,10 +32,23 @@ Run one of:
     yarn build opera
     yarn build edge
 
-## Environment
+## Lint
+```bash
+yarn lint
+```
 
+Correct:
+```bash
+yarn lint-fix
+```
+
+## Test
+```bash
+yarn test
+```
+
+## Environment
 The build tool also defines a variable named `process.env.NODE_ENV` in your scripts. 
 
 ## Docs
-
 * [webextension-toolbox](https://github.com/HaNdTriX/webextension-toolbox)

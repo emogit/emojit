@@ -6,15 +6,23 @@ Core code for Emojit.
 yarn build
 ```
 
-# Local Version
-To use a local version of this package, in the folder where you want to use it, run:
+# Lint
 ```bash
-yarn link <path to this folder> --relative
+yarn lint
 ```
 
-# Development
-
-# Lint
+Correct:
+```bash
+yarn lint-fix
+```
 
 # Test
+Run all tests except integration tests (calls the back end service):
+```bash
+yarn test --invert --fgrep Integration
+```
 
+Run all tests:
+```bash
+yarn test
+```
