@@ -1,4 +1,4 @@
-import { createNewUserId } from '@emogit/emojit-core/lib/user'
+import { createNewUserId } from '@emogit/emojit-core'
 import { PaletteType } from '@material-ui/core'
 import { browser } from 'webextension-polyfill-ts'
 import { DEFAULT_SERVICE_URL, EmojitApi } from '@emogit/emojit-core'
@@ -53,7 +53,7 @@ export async function setupUserSettings(requiredKeys: (keyof (UserSettings))[]):
 
 	const result: any = { serviceUrl, userId, updateIconTextWithTopPageReaction, themePreference }
 	if (requiredKeys.indexOf('emojit') > - 1) {
-		result.emojit = new EmojitApi(serviceUrl, userId)
+		result.emojit = new EmojitApi(userId, serviceUrl)
 	}
 	// console.debug("setupUserSettings took", new Date().getTime() - startTime, "millis for", requiredKeys.length, " key(s).")
 	return result
