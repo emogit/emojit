@@ -2,6 +2,7 @@
     "compilerOptions": {
         "incremental": true,
         "outDir": "./dist",
+        "rootDir": ".",
         "baseUrl": ".",
         "moduleResolution": "Node",
         "module": "CommonJS",

@@ -3,9 +3,16 @@
 // (but you could use ES2015 features supported by your Node.js version).
 const { resolve } = require('path') // eslint-disable-line @typescript-eslint/no-var-requires
 const GlobEntriesPlugin = require('webpack-watched-glob-entries-plugin') // eslint-disable-line @typescript-eslint/no-var-requires
+const path = require('path') // eslint-disable-line @typescript-eslint/no-var-requires
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
 	webpack: (config) => {
+		if (config.resolve.plugins) {
+			config.resolve.plugins.push(new TsconfigPathsPlugin())
+		} else {
+			config.resolve.plugins = [new TsconfigPathsPlugin()]
+		}
 		// Add typescript loader. supports .ts and .tsx files as entry points.
 		config.resolve.extensions.push('.ts')
 		config.resolve.extensions.push('.tsx')
@@ -29,6 +36,14 @@ module.exports = {
 		config.module.rules.push({
 			test: /\.tsx?$/,
 			loader: 'ts-loader'
+		})
+		config.module.rules.push({
+			test: /\.ts$/,
+			loader: 'ts-loader',
+			include: [
+				path.resolve(__dirname, '../core/src')
+			],
+			exclude: /node_modules/,
 		})
 
 		return config
