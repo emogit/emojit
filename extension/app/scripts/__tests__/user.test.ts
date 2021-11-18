@@ -1,4 +1,4 @@
-import { createNewUserId, isValidUserId } from '@emogit/emojit-core/lib/user'
+import { createNewUserId, isValidUserId } from '@emogit/emojit-core'
 import { expect } from 'chai'
 
 // Test that the library works since I'm new to importing from my own library.

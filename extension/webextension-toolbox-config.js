@@ -3,8 +3,7 @@
 // (but you could use ES2015 features supported by your Node.js version).
 const { resolve } = require('path') // eslint-disable-line @typescript-eslint/no-var-requires
 const GlobEntriesPlugin = require('webpack-watched-glob-entries-plugin') // eslint-disable-line @typescript-eslint/no-var-requires
-const path = require('path') // eslint-disable-line @typescript-eslint/no-var-requires
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin') // eslint-disable-line @typescript-eslint/no-var-requires
 
 module.exports = {
 	webpack: (config) => {
