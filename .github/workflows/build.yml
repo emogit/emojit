@@ -50,7 +50,7 @@ jobs:
       - name: "Core: Lint"
         # Split Lint into a separate task so that it can always run even if the tests fail.
         run: yarn lint
-        working-directory: extension
+        working-directory: core
         if: success() || failure()
 
       - name: "Core: Build"
