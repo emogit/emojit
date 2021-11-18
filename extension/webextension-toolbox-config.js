@@ -37,14 +37,6 @@ module.exports = {
 			test: /\.tsx?$/,
 			loader: 'ts-loader'
 		})
-		config.module.rules.push({
-			test: /\.ts$/,
-			loader: 'ts-loader',
-			include: [
-				path.resolve(__dirname, '../core/src')
-			],
-			exclude: /node_modules/,
-		})
 
 		return config
 	},
