@@ -1,13 +1,14 @@
+import { EmojitError, error } from '@emogit/emojit-core'
 import { browser } from 'webextension-polyfill-ts'
 
 export interface ShowErrorInput {
-	serviceError: any | undefined
-	errorMsg: string | undefined
-	clearAfterMs: number | undefined
+	serviceError?: any
+	errorMsg?: string
+	clearAfterMs?: number
 }
 
 export class ErrorHandler {
-	private lastTimeout: number | undefined
+	private lastTimeout?: number
 
 	/**
 	 * @param errorTextElement The location where to display the error. If not given, the error will be alerted.
@@ -22,6 +23,8 @@ export class ErrorHandler {
 			// Use errorMsg.
 		} else if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
+		} else if (serviceError instanceof EmojitError) {
+			errorMsg = browser.i18n.getMessage(`errorCode_${error(serviceError.errorCode)}`) || serviceError.message
 		} else if (serviceError !== undefined && serviceError.responseJSON && serviceError.responseJSON.error) {
 			const { errorCode, message } = serviceError.responseJSON.error
 			errorMsg = browser.i18n.getMessage(`errorCode_${errorCode}`) || message
@@ -34,7 +37,7 @@ export class ErrorHandler {
 		if (this.errorTextElement && errorMsg) {
 			clearTimeout(this.lastTimeout)
 			this.errorTextElement.innerText = errorMsg
-			this.lastTimeout = setTimeout(() => {
+			this.lastTimeout = window.setTimeout(() => {
 				if (this.errorTextElement && this.errorTextElement.innerText === errorMsg) {
 					this.clear()
 				}

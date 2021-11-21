@@ -1,3 +1,4 @@
+import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
 import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -11,10 +12,9 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { browser } from 'webextension-polyfill-ts'
-import { DEFAULT_SERVICE_URL, EmojitApi } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
-import { isValidUserId, setupUserSettings, ThemePreferenceType } from '../user'
+import { setupUserSettings, ThemePreferenceType } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -46,7 +46,7 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Options extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitApi | undefined,
+	emojit: EmojitClient | undefined,
 	updateIconTextWithTopPageReaction: boolean | undefined,
 	userId: string,
 	themePreference: ThemePreferenceType | '',

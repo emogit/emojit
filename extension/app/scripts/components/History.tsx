@@ -1,3 +1,4 @@
+import { EmojitClient, PageReactions } from '@emogit/emojit-core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -12,7 +13,6 @@ import Typography from '@material-ui/core/Typography'
 import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React, { ChangeEvent } from 'react'
-import { EmojitApi, PageReactions } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
@@ -61,11 +61,11 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class History extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitApi | undefined
-	history: { pages: PageReactions[] } | undefined,
-	shownHistory: { pages: PageReactions[] } | undefined,
+	emojit?: EmojitClient
+	history?: { pages: PageReactions[] },
+	shownHistory?: { pages: PageReactions[] },
 	checkedPages: string[],
-	errorGettingHistory: string | undefined,
+	errorGettingHistory?: string,
 }> {
 	private errorHandler = new ErrorHandler(undefined)
 

@@ -1,3 +1,4 @@
+import { EmojitClient, PageReaction, ReactRequest } from '@emogit/emojit-core'
 import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
@@ -7,7 +8,6 @@ import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React from 'react'
 import { browser, Tabs } from 'webextension-polyfill-ts'
-import { EmojitApi, PageReaction } from '../api'
 import { ErrorHandler } from '../error_handler'
 import { setupUserSettings, ThemePreferenceType } from '../user'
 import { progressSpinnerColor } from './constants'
@@ -116,12 +116,12 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitApi | undefined,
-	pageUrl: string | undefined,
-	userReactions: string[] | undefined,
-	pageReactions: PageReaction[] | undefined,
+	emojit?: EmojitClient,
+	pageUrl?: string,
+	userReactions?: string[],
+	pageReactions?: PageReaction[],
 	showReactingLoader: boolean,
-	tab: Tabs.Tab | undefined,
+	tab?: Tabs.Tab,
 }> {
 	private errorHandler: ErrorHandler | undefined
 	private picker: EmojiButton | undefined
@@ -270,13 +270,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			setTimeout(() => { this.react(modifications) }, 200)
 			return
 		}
-		return this.state.emojit!.react({
-			pageUrl,
-			modifications,
-		}).then(r => {
-			this.errorHandler!.clear()
-			return r
-		})
+		return this.state.emojit!.react(new ReactRequest(pageUrl, modifications))
+			.then(r => {
+				this.errorHandler!.clear()
+				return r
+			})
 	}
 
 	clickReaction(reaction: string): void {

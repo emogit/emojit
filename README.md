@@ -1,37 +1,51 @@
-# Emojit Extension
+# Emojit
+Emojit allows you to rate any web page using emojis 🤯
 
-Rate any web page.
+This repository holds the public code for Emojit.
 
-# Downloads
-You can download the extension for various browsers:
+<!-- Following monorepo guide in https://valcker.medium.com/configuring-typescript-monorepo-with-eslint-prettier-and-webstorm-61a71f218104. -->
+
+# Browser Extension
+You can install our extension in various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 
-# Dev
+It should work for Firefox but we haven't built it and tried it yet.
 
-## Install
+# Code
+See the code for our [browser extension](./extension).
 
-    yarn install
+<!-- TODO Show gif of using the extension. -->
 
-## Development
-Run one of:
+[Website + Embeddable Widget](./site)
 
-    yarn dev chrome
-    yarn dev firefox
-    yarn dev opera
-    yarn dev edge
+[Core Code](./core) including the API client.
 
-## Build
-Run one of:
+# API
+`npm install @emogit/emojit-core`
 
-    yarn build chrome
-    yarn build firefox
-    yarn build opera
-    yarn build edge
+or
 
-## Environment
+`yarn add @emogit/emojit-core`
 
-The build tool also defines a variable named `process.env.NODE_ENV` in your scripts. 
+Examples:
+```TypeScript
+import { createNewUserId, EmojitClient, ReactionModification, ReactRequest } from '@emogit/emojit-core'
 
-## Docs
+// Create a client for a specific user.
+// A userId is a v4 UUID. It should be kept secret.
+const client = new EmojitClient(createNewUserId())
 
-* [webextension-toolbox](https://github.com/HaNdTriX/webextension-toolbox)
+// Add a reaction to a page.
+const reactResponse = await cllient.react(new ReactRequest('https://emojit.site/test',
+    [
+        new ReactionModification('💕', 1),
+        new ReactionModification('🤓', 1),
+    ]))
+// reactResponse: { reactions: ['💕', '🤓'] }
+
+// Check the reactions on a page.
+const pageReactions = await e.getPageReactions('https://emojit.site/test')
+// pageReactions: { reactions: [{ reaction: '💕', count: 1 }, { reaction: '🤓', count: 1 }, ...]}
+```
+
+See [client.ts](./core/src/api/client.ts) for full details.

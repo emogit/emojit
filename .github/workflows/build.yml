@@ -13,21 +13,84 @@ on:
 
 jobs:
   build:
-    # Change to ubuntu-20.04 when it is fully supported.
+    name: Build
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install
-        run: yarn install
 
-      - name: Test
-        run: yarn test
+      - name: "Root: Install"
+        run: |
+          set -ex
+          yarn install
+        env:
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: "Lint"
+        # Split Lint into a separate task so that it can always run.
+        run: yarn lint
 
-      - name: Lint
+      - name: "Core: Install"
+        run: |
+          set -ex
+          yarn install
+        working-directory: core
+        env:
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Core: Test"
+        run: yarn test --invert --fgrep Integration
+        working-directory: core
+      
+      - name: "Core: Lint"
         # Split Lint into a separate task so that it can always run even if the tests fail.
         run: yarn lint
+        working-directory: core
         if: success() || failure()
 
-      - name: Build
-        run: yarn build chrome
+      - name: "Core: Build"
+        run: |
+          set -ex
+          yarn build
+        working-directory: core
+        # env:
+        #   EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Core: Publish"
+        if: github.ref == 'refs/heads/master'
+        run: |
+          set -ex
+          yarn npm publish
+        working-directory: core
+        env:
+          # NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extension
+      - name: "Extension: Install"
+        run: yarn install
+        working-directory: extension
+        env:
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Extension: Test"
+        run: yarn test
+        working-directory: extension
+
+      - name: "Extension: Lint"
+        # Split Lint into a separate task so that it can always run even if the tests fail.
+        run: yarn lint
+        working-directory: extension
+        if: success() || failure()
+
+      - name: "Extension: Build"
+        run: |
+          set -ex
+          yarn build chrome
+          # Make sure the package gets created.
+          ls packages/emojit*
+        working-directory: extension

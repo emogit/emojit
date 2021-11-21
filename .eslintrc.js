@@ -1,13 +1,15 @@
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
+	parserOptions: {
+		project: './tsconfig.json'
+	},
 	plugins: [
 		'@typescript-eslint',
 	],
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
-		'plugin:react/recommended',
 	],
 	rules: {
 		'@typescript-eslint/no-explicit-any': 'off',
@@ -18,10 +20,19 @@ module.exports = {
 		'arrow-spacing': ['error'],
 		'comma-dangle': ['off', 'ignore'],
 		'comma-spacing': ['error', { before: false, after: true }],
-		indent: ['error', 'tab', { SwitchCase: 1 }],
+
+		// Indentation
+		// Disable the typical indenting in favor of TypeScript indenting as per:
+		// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+		// It works for JavaScript files.
+		indent: 'off',
+		'@typescript-eslint/indent': ['error', 'tab', { SwitchCase: 1 }],
+
 		'key-spacing': ['error'],
 		'keyword-spacing': ['error'],
+		'linebreak-style': ['error', 'unix'],
 		'no-tabs': 0,
+		'no-trailing-spaces': ['error', { skipBlankLines: false, ignoreComments: false, }],
 		'object-curly-spacing': ['error', 'always'],
 		'operator-linebreak': ['off'],
 		quotes: ['off'],
@@ -35,7 +46,21 @@ module.exports = {
 		'space-infix-ops': ['error', { int32Hint: false }],
 	},
 	env: {
-		browser: true,
 		node: true,
 	},
+	ignorePatterns: [
+		//Other projects
+		'/core/',
+		'/extension/',
+		'/site/',
+		// Coverage
+		'/coverage/',
+		// Build
+		'/build/',
+		'/dist/',
+		// Other
+		'node_modules/',
+		'/.yarn/',
+		'/.git*',
+	]
 }
