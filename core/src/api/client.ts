@@ -34,7 +34,8 @@ export class ReactRequest {
 
 export class ReactResponse {
 	/**
-	 * @param reactions The updated reactions for that user on the page.
+	 * @param reactions The current latest reactions for that user on the page.
+	 * @param badges Badges earned by the user for the reaction they made for the request.
 	 */
 	constructor(
 		public reactions: string[],
@@ -54,6 +55,9 @@ export class PageReactionsRequest {
 }
 
 export class PageReactionsResponse {
+	/**
+	 * @param reactions The reactions on the page URL for the request.
+	 */
 	constructor(public reactions: PageReaction[]) { }
 }
 
@@ -116,7 +120,7 @@ export class StatsResponse {
 	constructor(public stats: { [statName: string]: any }) { }
 }
 
-export class EmojitApi {
+export class EmojitClient {
 	urlMaxLength = 256
 
 	constructor(public userId: string, public url: string = '') {

@@ -1,4 +1,4 @@
-import { DEFAULT_SERVICE_URL, EmojitApi } from '@emogit/emojit-core'
+import { DEFAULT_SERVICE_URL, EmojitClient } from '@emogit/emojit-core'
 import { isValidUserId } from '@emogit/emojit-core/lib/user'
 import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -47,7 +47,7 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Options extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitApi | undefined,
+	emojit: EmojitClient | undefined,
 	updateIconTextWithTopPageReaction: boolean | undefined,
 	userId: string,
 	themePreference: ThemePreferenceType | '',

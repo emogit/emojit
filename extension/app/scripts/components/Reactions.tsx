@@ -1,4 +1,4 @@
-import { EmojitApi, PageReaction, ReactRequest } from '@emogit/emojit-core'
+import { EmojitClient, PageReaction, ReactRequest } from '@emogit/emojit-core'
 import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
@@ -116,7 +116,7 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
-	emojit?: EmojitApi,
+	emojit?: EmojitClient,
 	pageUrl?: string,
 	userReactions?: string[],
 	pageReactions?: PageReaction[],

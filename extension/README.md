@@ -1,6 +1,5 @@
 # Emojit Browser Extension
-
-Rate any web page.
+Emojit allows you to rate any web page 🤯
 
 # Downloads
 You can download the extension for various browsers:

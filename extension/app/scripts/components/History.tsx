@@ -1,4 +1,4 @@
-import { EmojitApi, PageReactions } from '@emogit/emojit-core'
+import { EmojitClient, PageReactions } from '@emogit/emojit-core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -61,7 +61,7 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class History extends React.Component<WithStyles<typeof styles>, {
-	emojit?: EmojitApi
+	emojit?: EmojitClient
 	history?: { pages: PageReactions[] },
 	shownHistory?: { pages: PageReactions[] },
 	checkedPages: string[],

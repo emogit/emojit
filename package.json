@@ -1,6 +1,6 @@
 {
   "name": "monorepo",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "repository": {
     "url": "git+https://github.com/emogit/emojit.git",
     "type": "git"

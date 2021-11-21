@@ -1,6 +1,6 @@
 {
   "name": "@emogit/emojit-core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Core code for Emojit.",
   "main": "lib/core/src/index.js",
   "types": "lib/core/src/index.d.ts",
