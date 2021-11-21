@@ -1,5 +1,4 @@
-import { DEFAULT_SERVICE_URL, EmojitClient } from '@emogit/emojit-core'
-import { isValidUserId } from '@emogit/emojit-core/lib/user'
+import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
 import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
