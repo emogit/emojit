@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - main
-    # - use-emojit-core
   pull_request:
     branches:
     - main
@@ -31,7 +30,7 @@ jobs:
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: "Extension: Lint"
+      - name: "Lint"
         # Split Lint into a separate task so that it can always run.
         run: yarn lint
 
