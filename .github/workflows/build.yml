@@ -61,7 +61,7 @@ jobs:
           yarn npm publish
         working-directory: core
         env:
-          EMOGIT_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Extension
       - name: "Extension: Install"

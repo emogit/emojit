@@ -21,6 +21,12 @@ See the code for our [browser extension](./extension).
 [Core Code](./core) including the API client.
 
 # API
+To install our package, you will need to authenticate with GitHub Packages:\
+`npm login --scope=@emogit --registry=https://npm.pkg.github.com`
+
+See https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages for details.
+
+Install the package:\
 `npm install @emogit/emojit-core`
 
 or
