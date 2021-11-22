@@ -8,7 +8,7 @@
     "lib"
   ],
   "license": "BSD-3-Clause",
-  "repository": "git@github.com:emogit/emojit-core.git",
+  "repository": "git@github.com:emogit/emojit.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
