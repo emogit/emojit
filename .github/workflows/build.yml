@@ -57,17 +57,14 @@ jobs:
           set -ex
           yarn build
         working-directory: core
-        # env:
-        #   EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Core: Publish"
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         run: |
           set -ex
           yarn npm publish
         working-directory: core
         env:
-          # NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Extension
