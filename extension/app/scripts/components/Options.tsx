@@ -202,7 +202,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 					variant="outlined"
 					value={this.state.userId}
 					onChange={this.handleChange}
-					style={{ width: 320 }}
+					style={{ width: 330 }}
 				/>
 				<div className={classes.buttonHolder}>
 					<Button variant="contained" onClick={this.setUserId}>
