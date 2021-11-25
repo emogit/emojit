@@ -83,5 +83,7 @@ jobs:
           set -ex
           yarn build chrome
           # Make sure the package gets created.
-          ls packages/emojit*
+          ls packages/emojit.v*chrome.zip
+          yarn build firefox
+          ls packages/emojit.v*firefox.xpi.zip
         working-directory: extension

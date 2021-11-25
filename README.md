@@ -55,3 +55,10 @@ const pageReactions = await e.getPageReactions('https://emojit.site/test')
 ```
 
 See [client.ts](./core/src/api/client.ts) for full details.
+
+# Development
+Some helpful commands from the root:
+* Install all subprojects: `./scripts/run-all.sh yarn install`
+* Lint all: `./scripts/run-all.sh yarn lint`
+* Lint `--fix` all: `./scripts/run-all.sh yarn lint-fix`
+* Test all: `./scripts/run-all.sh yarn test`
