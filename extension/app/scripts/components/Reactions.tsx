@@ -184,11 +184,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	openBadges(): void {
-		browser.tabs.create({ url: 'pages/home.html?page=badges' })
+		browser.tabs.create({ url: '/pages/home.html?page=badges' })
 	}
 
 	openHistory(): void {
-		browser.tabs.create({ url: 'pages/home.html?page=history' })
+		browser.tabs.create({ url: '/pages/home.html?page=history' })
 	}
 
 	openOptions(): void {
