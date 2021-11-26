@@ -8,6 +8,7 @@ This repository holds the public code for Emojit.
 # Browser Extension
 You can install our extension in various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
+* [Firefox](https://addons.mozilla.org/addon/emojit)
 
 It should work for Firefox but we haven't built it and tried it yet.
 
