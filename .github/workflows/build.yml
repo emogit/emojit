@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - main
+    - ci-test
   pull_request:
     branches:
     - main
@@ -55,12 +56,12 @@ jobs:
         working-directory: core
 
       - name: "Core: Publish"
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/ci-test'
         run: |
           set -ex
           yarn npm publish || echo "Might already be published."
           # Publish the beta or next version.
-          yarn npm dist-tag rm @emogit/emojit-core next
+          yarn npm tag remove @emogit/emojit-core next || echo "Might not be pulished yet."
           yarn npm publish --tag next
         working-directory: core
         env:
