@@ -6,14 +6,26 @@ You can download the extension for various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 
 # Dev
-To install dependencies, you will need a GitHub PAT.
+You will need install and build the dependencies in this repo first:
+```bash
+# Go to the repo root:
+pushd ..
+yarn install
+cd core
+yarn install
+yarn build
+popd
+```
+
+Otherwise, if you just try to build from this folder, then you might need `EMOGIT_NPM_AUTH_TOKEN` to be a GitHub PAT.
 You can generate one at https://github.com/settings/tokens.
 Give it the `write:packages` and possibly the `repo` scopes.
-
-## Install
 ```bash
 EMOGIT_NPM_AUTH_TOKEN=<GitHub PAT token> yarn install
 ```
+
+## Install
+In this folder, run `yarn install`.
 
 ## Development
 Run one of:
@@ -23,6 +35,8 @@ Run one of:
     yarn dev opera
     yarn dev edge
 
+An extension that is ready to be loaded as an unpacked extension/add-on can be found in `dist/<platform>/`.
+
 ## Build
 Run one of:
 
@@ -30,6 +44,8 @@ Run one of:
     yarn build firefox
     yarn build opera
     yarn build edge
+
+A package will get placed in the packages folder.
 
 ## Lint
 ```bash
