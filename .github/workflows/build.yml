@@ -58,7 +58,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           set -ex
-          yarn npm publish
+          yarn npm publish || echo "Might already be published."
+          # Publish the beta or next version.
+          yarn npm dist-tag rm @emogit/emojit-core next
+          yarn npm publish --tag next
         working-directory: core
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
