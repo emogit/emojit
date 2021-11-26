@@ -39,19 +39,23 @@ import { createNewUserId, EmojitClient, ReactionModification, ReactRequest } fro
 
 // Create a client for a specific user.
 // A userId is a v4 UUID. It should be kept secret.
-const client = new EmojitClient(createNewUserId())
+const userId = createNewUserId()
+const client = new EmojitClient(userId)
 
 // Add a reaction to a page.
-const reactResponse = await cllient.react(new ReactRequest('https://emojit.site/test',
+const reactResponse = await client.react(new ReactRequest(
+    'https://emojit.site/test',
     [
         new ReactionModification('💕', 1),
         new ReactionModification('🤓', 1),
     ]))
-// reactResponse: { reactions: ['💕', '🤓'] }
+// reactResponse has the user's current reactions for the URL:
+// { reactions: ['💕', '🤓'] }
 
 // Check the reactions on a page.
-const pageReactions = await e.getPageReactions('https://emojit.site/test')
-// pageReactions: { reactions: [{ reaction: '💕', count: 1 }, { reaction: '🤓', count: 1 }, ...]}
+const pageReactions = await client.getPageReactions('https://emojit.site/test')
+// pageReactions has the reactions for all users for the URL:
+// { reactions: [{ reaction: '👨‍💻', count: 3 }, { reaction: '💕', count: 2 }, { reaction: '🤓', count: 1 }, ...]}
 ```
 
 See [client.ts](./core/src/api/client.ts) for full details.
