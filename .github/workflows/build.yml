@@ -62,7 +62,7 @@ jobs:
           yarn npm publish || echo "Might already be published."
           # Publish the beta or next version.
           yarn npm tag remove @emogit/emojit-core next || echo "Might not be pulished yet."
-          yarn npm publish --tag next
+          yarn npm publish --tag next --tolerate-republish
         working-directory: core
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
