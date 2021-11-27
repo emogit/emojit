@@ -13,6 +13,8 @@ You can install our extension in various browsers:
 It should work for Firefox but we haven't built it and tried it yet.
 
 # Code
+[![Build](https://github.com/emogit/emojit/actions/workflows/build.yml/badge.svg)](https://github.com/emogit/emojit/actions/workflows/build.yml)
+
 See the code for our [browser extension](./extension).
 
 <!-- TODO Show gif of using the extension. -->
