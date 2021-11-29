@@ -95,6 +95,9 @@
 	"errorGettingBadges": {
 		"message": "Beim Abrufen deiner Abzeichen ist ein Fehler aufgetreten."
 	},
+	"historyPageTitle": {
+		"message": "Geschichte"
+	},
 	"errorGettingHistory": {
 		"message": "Beim Abrufen deines Verlaufs ist ein Fehler aufgetreten."
 	},

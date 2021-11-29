@@ -95,6 +95,9 @@
 	"errorGettingBadges": {
 		"message": "There was an error getting your badges."
 	},
+	"historyPageTitle": {
+		"message": "History"
+	},
 	"errorGettingHistory": {
 		"message": "There was an error getting your history."
 	},
