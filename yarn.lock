@@ -1914,6 +1914,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webextension-polyfill@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "@types/webextension-polyfill@npm:0.8.2"
+  checksum: 59d12c51f2d92515346d1e99682ff44a0d9b5791575f9ece9d46a98ac3f04ee79ed1a820ada884f31cd687edc1110913c80a12b537aa4a7d474a61b008e03e27
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^5.3.0, @typescript-eslint/eslint-plugin@npm:^5.3.1":
   version: 5.3.1
   resolution: "@typescript-eslint/eslint-plugin@npm:5.3.1"
@@ -3115,6 +3122,7 @@ __metadata:
     "@types/mocha": ^9.0.0
     "@types/react": ^17.0.0
     "@types/react-dom": ^17.0.0
+    "@types/webextension-polyfill": ^0.8.2
     "@typescript-eslint/eslint-plugin": ^5.3.1
     "@typescript-eslint/parser": ^5.3.1
     chai: ^4.3.4
@@ -3130,7 +3138,6 @@ __metadata:
     ts-mocha: ^8.0.0
     tsconfig-paths-webpack-plugin: ^3.5.2
     typescript: ^4.4.4
-    webextension-polyfill-ts: ^0.22.0
     webextension-toolbox: latest
   languageName: unknown
   linkType: soft
@@ -6375,26 +6382,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webextension-polyfill-ts@npm:^0.22.0":
-  version: 0.22.0
-  resolution: "webextension-polyfill-ts@npm:0.22.0"
-  dependencies:
-    webextension-polyfill: ^0.7.0
-  checksum: b7d60c787c2041458117f837914b6bc4f03c1685174ff7b751ad19192e232fa7e71a0ac7a22d73e898856a86de198e61e9cd59c63764279127c7ee973f3202d8
-  languageName: node
-  linkType: hard
-
 "webextension-polyfill@npm:0.8.0":
   version: 0.8.0
   resolution: "webextension-polyfill@npm:0.8.0"
   checksum: 56286e6216e15834fdcdc3dcf611000d96b49c9d925de3d657eb5f1e294074180dd3efe78a0966223eb311ac3a0ac5fdf71d324b836bf05724455ffd6c7c98c3
-  languageName: node
-  linkType: hard
-
-"webextension-polyfill@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "webextension-polyfill@npm:0.7.0"
-  checksum: fb738a5de07feb593875e02f25c3ab4276c8736118929556c8d4bdf965bb0f11c96ea263cd397b9b21259e8faf2dce2eaaa42ce08c922d96de7adb5896ec7d10
   languageName: node
   linkType: hard
 
