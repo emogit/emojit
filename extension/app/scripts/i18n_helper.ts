@@ -1,4 +1,4 @@
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 
 // Inspired by https://stackoverflow.com/a/56429696/1226799
 // document.querySelectorAll('[data-i18n]').forEach(e => {

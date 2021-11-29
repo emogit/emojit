@@ -3,7 +3,7 @@ import blue from '@material-ui/core/colors/blue'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme } from '@material-ui/core/styles'
 import React from 'react'
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 import { setupUserSettings, ThemePreferenceType } from '../user'
 
 export function isDarkModePreferred(): boolean {

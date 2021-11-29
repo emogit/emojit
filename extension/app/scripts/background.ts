@@ -2,7 +2,7 @@
 //   console.log('previousVersion', details.previousVersion)
 // })
 
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 import { setupUserSettings } from './user'
 
 // Keep a cache to avoid hitting the API again on every tab change and maybe avoid the "tabs" permission.

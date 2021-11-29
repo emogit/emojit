@@ -1,5 +1,5 @@
 import { EmojitError, error } from '@emogit/emojit-core'
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 
 export interface ShowErrorInput {
 	serviceError?: any

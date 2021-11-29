@@ -11,7 +11,7 @@ import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/s
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 import { ErrorHandler } from '../error_handler'
 import { getMessage } from '../i18n_helper'
 import { setupUserSettings, ThemePreferenceType } from '../user'
