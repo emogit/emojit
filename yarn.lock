@@ -1505,21 +1505,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@joeattardi/emoji-button@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "@joeattardi/emoji-button@npm:4.6.0"
+"@joeattardi/emoji-button@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "@joeattardi/emoji-button@npm:4.6.2"
   dependencies:
     "@fortawesome/fontawesome-svg-core": ^1.2.28
     "@fortawesome/free-regular-svg-icons": ^5.13.0
     "@fortawesome/free-solid-svg-icons": ^5.13.0
     "@popperjs/core": ^2.4.0
     "@types/twemoji": ^12.1.1
+    escape-html: ^1.0.3
     focus-trap: ^5.1.0
     fuzzysort: ^1.1.4
     tiny-emitter: ^2.1.0
     tslib: ^2.0.0
     twemoji: ^13.0.0
-  checksum: a9a44c6acb85f8d15770ca68458938198fc48b3da3ef2eaab09adc11718065804b23afa79a77bc61d45c32c0ca96fc9aed9c6be705d803956e229d96b0763578
+  checksum: 6799668126b6cd7599a5bd05b5a6ff4387db28b80879e28aa452b6e82d146fa8d36d59d3ef0353a0ea87648df0c8a7fd108c162addb7a2542e1b9a433806f7c7
   languageName: node
   linkType: hard
 
@@ -3114,7 +3115,7 @@ __metadata:
   resolution: "emojit@workspace:extension"
   dependencies:
     "@emogit/emojit-core": ^0.1.0
-    "@joeattardi/emoji-button": ^4.6.0
+    "@joeattardi/emoji-button": ^4.6.2
     "@material-ui/core": ^4.11.2
     "@material-ui/icons": ^4.11.2
     "@types/chai": ^4.2.22
@@ -3256,6 +3257,13 @@ __metadata:
   version: 3.1.1
   resolution: "escalade@npm:3.1.1"
   checksum: a3e2a99f07acb74b3ad4989c48ca0c3140f69f923e56d0cba0526240ee470b91010f9d39001f2a4a313841d237ede70a729e92125191ba5d21e74b106800b133
+  languageName: node
+  linkType: hard
+
+"escape-html@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "escape-html@npm:1.0.3"
+  checksum: 6213ca9ae00d0ab8bccb6d8d4e0a98e76237b2410302cf7df70aaa6591d509a2a37ce8998008cbecae8fc8ffaadf3fb0229535e6a145f3ce0b211d060decbb24
   languageName: node
   linkType: hard
 
