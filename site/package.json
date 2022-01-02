@@ -51,5 +51,12 @@
   "resolutions": {
     "@emogit/emojit-core": "portal:../core",
     "@emogit/emojit-react-core": "portal:../react-core"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/parser": "^5.8.1",
+    "eslint": "^8.6.0",
+    "eslint-plugin-react": "^7.28.0",
+    "jest-watch-typeahead": "0.6.5"
   }
 }

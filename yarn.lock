@@ -634,7 +634,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-private-property-in-object@npm:^7.14.5, @babel/plugin-proposal-private-property-in-object@npm:^7.16.7":
+"@babel/plugin-proposal-private-property-in-object@npm:*, @babel/plugin-proposal-private-property-in-object@npm:^7.14.5, @babel/plugin-proposal-private-property-in-object@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/plugin-proposal-private-property-in-object@npm:7.16.7"
   dependencies:
@@ -2966,14 +2966,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^17.0.6":
   version: 17.0.6
   resolution: "@types/node@npm:17.0.6"
   checksum: 36fda5555ec759132886721f59fa74333947f7148b7dcce3de0a78c36f37f57ec86a3d09fd38c835ba65c8de77905de6c01523ec99864d8cead83f404118a44a
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.11.17, @types/node@npm:^16.11.6, @types/node@npm:^16.11.7":
+"@types/node@npm:^16.11.17, @types/node@npm:^16.11.6":
   version: 16.11.17
   resolution: "@types/node@npm:16.11.17"
   checksum: 86ed84f79450f6aba1a6ef09f8407c10076966c3cc7cc4eb3d35b8ae4f47817e525641396ef0a667fa0a88fcdf484f6182812c074601403083bdf3b5e1ac0313
@@ -3178,7 +3178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.3.0, @typescript-eslint/eslint-plugin@npm:^5.3.1, @typescript-eslint/eslint-plugin@npm:^5.5.0":
+"@typescript-eslint/eslint-plugin@npm:^5.3.0, @typescript-eslint/eslint-plugin@npm:^5.3.1, @typescript-eslint/eslint-plugin@npm:^5.5.0, @typescript-eslint/eslint-plugin@npm:^5.8.1":
   version: 5.8.1
   resolution: "@typescript-eslint/eslint-plugin@npm:5.8.1"
   dependencies:
@@ -3216,7 +3216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.3.0, @typescript-eslint/parser@npm:^5.3.1, @typescript-eslint/parser@npm:^5.5.0":
+"@typescript-eslint/parser@npm:^5.3.0, @typescript-eslint/parser@npm:^5.3.1, @typescript-eslint/parser@npm:^5.5.0, @typescript-eslint/parser@npm:^5.8.1":
   version: 5.8.1
   resolution: "@typescript-eslint/parser@npm:5.8.1"
   dependencies:
@@ -6067,6 +6067,11 @@ __metadata:
     "@types/node": ^16.11.17
     "@types/react": ^17.0.38
     "@types/react-dom": ^17.0.11
+    "@typescript-eslint/eslint-plugin": ^5.8.1
+    "@typescript-eslint/parser": ^5.8.1
+    eslint: ^8.6.0
+    eslint-plugin-react: ^7.28.0
+    jest-watch-typeahead: 0.6.5
     react: ^17.0.2
     react-dom: ^17.0.2
     react-scripts: 5.0.0
@@ -6407,7 +6412,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.25.1, eslint-plugin-react@npm:^7.27.1":
+"eslint-plugin-react@npm:^7.25.1, eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.28.0":
   version: 7.28.0
   resolution: "eslint-plugin-react@npm:7.28.0"
   dependencies:
@@ -6503,7 +6508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.2.0, eslint@npm:^8.3.0":
+"eslint@npm:^8.2.0, eslint@npm:^8.3.0, eslint@npm:^8.6.0":
   version: 8.6.0
   resolution: "eslint@npm:8.6.0"
   dependencies:
@@ -8661,6 +8666,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-watch-typeahead@npm:0.6.5":
+  version: 0.6.5
+  resolution: "jest-watch-typeahead@npm:0.6.5"
+  dependencies:
+    ansi-escapes: ^4.3.1
+    chalk: ^4.0.0
+    jest-regex-util: ^27.0.0
+    jest-watcher: ^27.0.0
+    slash: ^3.0.0
+    string-length: ^4.0.1
+    strip-ansi: ^6.0.0
+  peerDependencies:
+    jest: ^26.0.0 || ^27.0.0
+  checksum: 01f5113e51cb49365661986144bfc6520d9e8d74d8a5d7527d5edb8e2bc8f128f6cf7baa512bb6bb35fdbb86fa92f0b26a4a7a4db66ac4dc3f7ea603ba48ca81
+  languageName: node
+  linkType: hard
+
 "jest-watch-typeahead@npm:^1.0.0":
   version: 1.0.0
   resolution: "jest-watch-typeahead@npm:1.0.0"
@@ -9626,16 +9648,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo@workspace:."
   dependencies:
+    "@testing-library/jest-dom": ^5.16.1
+    "@testing-library/react": ^12.1.2
+    "@testing-library/user-event": ^13.5.0
     "@types/chai": ^4.2.22
+    "@types/jest": ^27.4.0
     "@types/mocha": ^9.0.0
-    "@types/node": ^16.11.7
+    "@types/node": ^17.0.6
+    "@types/react": ^17.0.38
+    "@types/react-dom": ^17.0.11
     "@typescript-eslint/eslint-plugin": ^5.3.1
     "@typescript-eslint/parser": ^5.3.1
     chai: ^4.3.4
     eslint: ^8.2.0
     mocha: ^9.1.3
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    react-scripts: ^5.0.0
     ts-mocha: ^8.0.0
-    typescript: ^4.4.4
+    typescript: ^4.5.4
+    web-vitals: ^2.1.2
   languageName: unknown
   linkType: soft
 
@@ -11434,7 +11466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-scripts@npm:5.0.0":
+"react-scripts@npm:5.0.0, react-scripts@npm:^5.0.0":
   version: 5.0.0
   resolution: "react-scripts@npm:5.0.0"
   dependencies:
