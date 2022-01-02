@@ -69,15 +69,19 @@
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "paths": {
-      "@emogit/emojit-core": ["../core/src/index.ts"]
+      "@emogit/emojit-core": ["../core/src/index.ts"],
+      "@emogit/emojit-react-core": ["../react-core/src/index.ts"]
     }
   },
   "references": [
     {
       "path": "../core"
+    },
+    {
+      "path": "../react-core"
     }
   ],
-  "lib": ["es2020", "dom"],
+  // "lib": ["es2020", "dom"],
   "include": ["app/**/*", ".*.js", "*.js"],
   "exclude": ["node_modules", "dist", "packages", "./out"]
 }
