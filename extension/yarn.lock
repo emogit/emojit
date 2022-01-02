@@ -1035,14 +1035,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A.":
+"@emogit/emojit-core@portal:../core::locator=emojit-extension%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A."
+  resolution: "@emogit/emojit-core@portal:../core::locator=emojit-extension%40workspace%3A."
   dependencies:
     "@types/node": ^16.11.6
     axios: ^0.24.0
     typescript: ^4.4.4
     uuid: ^8.3.2
+  languageName: node
+  linkType: soft
+
+"@emogit/emojit-react-core@portal:../react-core::locator=emojit-extension%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@emogit/emojit-react-core@portal:../react-core::locator=emojit-extension%40workspace%3A."
+  dependencies:
+    "@emogit/emojit-core": ^0.1.0
+    "@joeattardi/emoji-button": ^4.6.2
+    "@material-ui/core": ^4.11.2
+    "@material-ui/icons": ^4.11.2
+    "@types/react": ^17.0.0
+    "@types/react-dom": ^17.0.0
+    immutability-helper: ^3.1.1
+    react: ^17.0.1
+    react-dom: ^17.0.1
   languageName: node
   linkType: soft
 
@@ -3296,11 +3312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emojit@workspace:.":
+"emojit-extension@workspace:.":
   version: 0.0.0-use.local
-  resolution: "emojit@workspace:."
+  resolution: "emojit-extension@workspace:."
   dependencies:
     "@emogit/emojit-core": ^0.1.0
+    "@emogit/emojit-react-core": ^0.1.0
     "@joeattardi/emoji-button": ^4.6.2
     "@material-ui/core": ^4.11.2
     "@material-ui/icons": ^4.11.2
@@ -8040,7 +8057,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
   version: 4.4.4
-  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"
+  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

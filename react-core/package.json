@@ -1,15 +1,20 @@
 {
-	"name": "emojit-extension",
-	"version": "1.1.0",
-	"description": "Rate any web page.",
+	"name": "@emogit/emojit-react-core",
+	"version": "0.1.0",
+	"description": "Core React components.",
 	"license": "BSD-3-Clause",
 	"repository": {
 		"url": "git+https://github.com/emogit/emojit.git",
 		"type": "git"
 	},
+	"main": "lib/react-core/src/index.js",
+	"types": "lib/react-core/src/index.d.ts",
+	"files": [
+		"lib"
+	],
 	"scripts": {
-		"dev": "webextension-toolbox dev",
-		"build": "webextension-toolbox build",
+		"build": "tsc --build tsconfig.build.json",
+		"dev": "ts-node ./src/index.ts",
 		"test": "env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-mocha --require dotenv/config --recursive --exit --extension ts app/**/*.test.ts",
 		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
 		"lint-fix": "eslint  . --fix --ext .js,.jsx,.ts,.tsx"
@@ -17,7 +22,6 @@
 	"devDependencies": {
 		"@types/chai": "^4.2.22",
 		"@types/mocha": "^9.0.0",
-		"@types/webextension-polyfill": "^0.8.2",
 		"@typescript-eslint/eslint-plugin": "^5.3.1",
 		"@typescript-eslint/parser": "^5.3.1",
 		"chai": "^4.3.4",
@@ -28,26 +32,21 @@
 		"ts-loader": "^8.0.13",
 		"ts-mocha": "^8.0.0",
 		"tsconfig-paths-webpack-plugin": "^3.5.2",
-		"typescript": "^4.4.4",
-		"webextension-toolbox": "latest"
+		"typescript": "^4.4.4"
 	},
 	"dependencies": {
 		"@emogit/emojit-core": "^0.1.0",
-		"@emogit/emojit-react-core": "^0.1.0",
 		"@joeattardi/emoji-button": "^4.6.2",
 		"@material-ui/core": "^4.11.2",
 		"@material-ui/icons": "^4.11.2",
-		"@types/jquery": "^3.5.5",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
 		"immutability-helper": "^3.1.1",
-		"jquery": "^3.5.1",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1"
 	},
 	"packageManager": "yarn@3.1.1",
 	"resolutions": {
-		"@emogit/emojit-core": "portal:../core",
-		"@emogit/emojit-react-core": "portal:../react-core"
+		"@emogit/emojit-core": "portal:../core"
 	}
 }

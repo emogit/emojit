@@ -6,3 +6,4 @@ ${command}
 
 (cd core && ${command})
 (cd extension && ${command})
+(cd react-core && ${command})
