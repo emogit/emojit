@@ -115,6 +115,9 @@ const styles = (theme: Theme) => createStyles({
 	}
 })
 
+/**
+ * Displays the reactions for a given page and lets the user pick reactions.
+ */
 class Reactions extends React.Component<WithStyles<typeof styles>, {
 	emojit?: EmojitClient,
 	pageUrl?: string,

@@ -1,12 +1,9 @@
+import { Badges, EmojitTheme, History, Options } from '@emogit/emojit-react-core'
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
 import { updateUrl } from '../url-helper'
-import Badges from './Badges'
-import { EmojitTheme } from './EmojitTheme'
-import History from './History'
-import Options from './Options'
 
 const styles = (theme: Theme) => createStyles({
 	headerSection: {
@@ -69,7 +66,6 @@ class App extends React.Component<WithStyles<typeof styles>, {
 		this.setState({ page })
 		updateUrl({ page })
 	}
-
 
 	render(): React.ReactNode {
 		const { classes } = this.props

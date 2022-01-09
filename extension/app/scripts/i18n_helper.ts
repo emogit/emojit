@@ -1,16 +1,8 @@
 import browser from 'webextension-polyfill'
+import { GetMessage } from '@emogit/emojit-core'
 
-// Inspired by https://stackoverflow.com/a/56429696/1226799
-// document.querySelectorAll('[data-i18n]').forEach(e => {
-// 	const el = e as HTMLElement
-// 	const text = getMessage(el.dataset.i18n!)
-// 	if (text) {
-// 		el.innerText = text
-// 	} else {
-// 		console.warn(`No message found for "${el.dataset.i18n}".`)
-// 	}
-// })
-
-export function getMessage(key: string): string | undefined {
-	return browser.i18n.getMessage(key)
+export function getMessage(key: string, substitutions?: any): string | undefined {
+	return browser.i18n.getMessage(key, substitutions)
 }
+
+export const BrowserGetMessage: GetMessage = getMessage
