@@ -1,9 +1,12 @@
-import { Badges, EmojitTheme, History, Options } from '@emogit/emojit-react-core'
+import { EmojitTheme } from '@emogit/emojit-react-core'
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
-import { updateUrl } from '../url-helper'
+import { updateUrl } from '../url_helper'
+import Badges from './Badges'
+import History from './History'
+import Options from './Options'
 
 const styles = (theme: Theme) => createStyles({
 	headerSection: {

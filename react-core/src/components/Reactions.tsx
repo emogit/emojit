@@ -426,4 +426,4 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(Reactions)
+export const ReactionsComponent = withStyles(styles)(Reactions)

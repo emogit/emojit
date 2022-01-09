@@ -86,6 +86,6 @@
     "node_modules",
     "dist",
     "packages",
-    "./out"
+    "./lib"
   ]
 }
