@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography'
 import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React from 'react'
-import browser, { Tabs } from 'webextension-polyfill'
 import { ErrorHandler } from '../error_handler'
-import { setupUserSettings, ThemePreferenceType } from '../user'
+import { ThemePreferenceType } from '../theme'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
+
 
 const MAX_NUM_EMOJIS = 5
 
@@ -115,43 +115,36 @@ const styles = (theme: Theme) => createStyles({
 	}
 })
 
+interface Props extends WithStyles<typeof styles> {
+	emojitClient: EmojitClient
+	pageUrl: string
+	themePreference: ThemePreferenceType
+}
+
 /**
  * Displays the reactions for a given page and lets the user pick reactions.
  */
-class Reactions extends React.Component<WithStyles<typeof styles>, {
-	emojit?: EmojitClient,
-	pageUrl?: string,
+class Reactions extends React.Component<Props, {
 	userReactions?: string[],
 	pageReactions?: PageReaction[],
 	showReactingLoader: boolean,
-	tab?: Tabs.Tab,
 }> {
 	private errorHandler: ErrorHandler | undefined
 	private picker: EmojiButton | undefined
 
-	constructor(props: any) {
+	constructor(props: Props) {
 		super(props)
 		this.state = {
-			emojit: undefined,
-			pageUrl: undefined,
 			userReactions: undefined,
 			pageReactions: undefined,
 			showReactingLoader: false,
-			tab: undefined,
 		}
 	}
 
 	async componentDidMount() {
 		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
-
-		const { emojit, themePreference } = await setupUserSettings(['emojit', 'themePreference'])
-		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-			const pageUrl = tabs[0].url
-			this.setState({ pageUrl, emojit, tab: tabs[0] }, () => {
-				this.loadReactions()
-			})
-		})
-		this.setUpEmojiPicker(themePreference)
+		this.loadReactions()
+		this.setUpEmojiPicker(this.props.themePreference)
 	}
 
 	setUpEmojiPicker(themePreference: ThemePreferenceType): void {
@@ -186,18 +179,6 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		})
 	}
 
-	openBadges(): void {
-		browser.tabs.create({ url: '/pages/home.html?page=badges' })
-	}
-
-	openHistory(): void {
-		browser.tabs.create({ url: '/pages/home.html?page=history' })
-	}
-
-	openOptions(): void {
-		browser.runtime.openOptionsPage()
-	}
-
 	condensePopup(): void {
 		document.getElementById('main-popup')!.style.height = '280px'
 	}
@@ -210,9 +191,9 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		console.debug("Loading reactions...")
 
 		try {
-			const { userReactions, pageReactions } = await this.state.emojit!.getUserPageReactions(this.state.pageUrl!)
+			const { userReactions, pageReactions } = await this.props.emojitClient.getUserPageReactions(this.props.pageUrl)
 			this.setState({ userReactions, pageReactions }, () => {
-				this.updateBadgeText()
+				this.props.updateBadgeText(pageReactions)
 			})
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
@@ -257,23 +238,14 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		})
 	}
 
-	private updateBadgeText() {
-		const topReaction = this.getTopReaction()
-		if (topReaction && topReaction.count > 0) {
-			browser.browserAction.setBadgeText({ tabId: this.state.tab!.id, text: topReaction.reaction })
-		} else {
-			browser.browserAction.setBadgeText({ tabId: this.state.tab!.id, text: null })
-		}
-	}
-
 	react(modifications: PageReaction[]): any {
-		const { pageUrl } = this.state
+		const { pageUrl } = this.props
 		if (!pageUrl) {
 			console.warn("pageUrl has not been set yet. Will retry.")
 			setTimeout(() => { this.react(modifications) }, 200)
 			return
 		}
-		return this.state.emojit!.react(new ReactRequest(pageUrl, modifications))
+		return this.props.emojitClient.react(new ReactRequest(pageUrl, modifications))
 			.then(r => {
 				this.errorHandler!.clear()
 				return r
@@ -344,16 +316,8 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		// Purposely do not re-sort to avoid jumpiness.
 
 		this.setState({ pageReactions }, () => {
-			this.updateBadgeText()
+			this.props.updateBadgeText(this.state.pageReactions)
 		})
-	}
-
-	getTopReaction(): PageReaction | undefined {
-		const { pageReactions } = this.state
-		if (!pageReactions || pageReactions.length === 0) {
-			return undefined
-		}
-		return pageReactions.reduce((prev, current) => prev.count < current.count ? current : prev)
 	}
 
 	render(): React.ReactNode {
@@ -365,6 +329,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			<EmojitTheme>
 				<div className={`${classes.header} ${classes.end}`}>
 					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					{/* FIXME Move buttons to extension specific component. */}
 					<button className={classes.historyButton}
 						onClick={this.openHistory}>
 						<HistoryIcon color="primary" fontSize="inherit" />

@@ -1,5 +1,5 @@
 import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
-import { ErrorHandler } from '@emogit/emojit-react-core'
+import { ErrorHandler, ThemePreferenceType } from '@emogit/emojit-react-core'
 import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
 import { getMessage } from '../i18n_helper'
-import { setupUserSettings, ThemePreferenceType } from '../user'
+import { setupUserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
