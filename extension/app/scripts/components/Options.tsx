@@ -46,8 +46,8 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Options extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitClient | undefined,
-	updateIconTextWithTopPageReaction: boolean | undefined,
+	emojit?: EmojitClient,
+	updateIconTextWithTopPageReaction?: boolean,
 	userId: string,
 	themePreference: ThemePreferenceType | '',
 	serviceUrl: string,

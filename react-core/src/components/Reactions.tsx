@@ -4,7 +4,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React from 'react'
 import { ErrorHandler } from '../error_handler'
@@ -18,42 +17,6 @@ const MAX_NUM_EMOJIS = 5
 const styles = (theme: Theme) => createStyles({
 	header: {
 		marginBottom: theme.spacing(1),
-	},
-	end: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	reactingLoader: {
-		position: 'relative',
-		top: '-2px',
-		paddingRight: '2px',
-	},
-	historyButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		fontSize: '2em',
-		// Make the buttons line up.
-		position: 'relative',
-		top: '9px',
-	},
-	badgesButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		fontSize: '1.5em',
-	},
-	optionsButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		// Make sure it align with the right side.
-		paddingRight: theme.spacing(0.5),
-		fontSize: '1.5em',
 	},
 	gridDiv: {
 		flexGrow: 1,
@@ -323,27 +286,10 @@ class Reactions extends React.Component<Props, {
 	render(): React.ReactNode {
 		const { classes } = this.props
 
-		// `pageReactions` already include the user's reactions.
+		// `pageReactions` already includes the user's reactions.
 
 		return <div>
 			<EmojitTheme>
-				<div className={`${classes.header} ${classes.end}`}>
-					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
-					{/* FIXME Move buttons to extension specific component. */}
-					<button className={classes.historyButton}
-						onClick={this.openHistory}>
-						<HistoryIcon color="primary" fontSize="inherit" />
-					</button>
-					<button className={classes.badgesButton}
-						onClick={this.openBadges}>
-						🏆
-					</button>
-					<button
-						className={classes.optionsButton}
-						onClick={this.openOptions}>
-						⚙️
-					</button>
-				</div>
 				<div className={classes.gridDiv}>
 					<Grid container
 						className={classes.reactionGrid}

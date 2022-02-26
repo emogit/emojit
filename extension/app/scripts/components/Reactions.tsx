@@ -1,8 +1,13 @@
-import { PageReaction } from "@emogit/emojit-core"
-import { ReactionsComponent } from "@emogit/emojit-react-core"
-import React, { useEffect } from 'react'
+import { EmojitClient, PageReaction } from "@emogit/emojit-core"
+import { ReactionsComponent, ThemePreferenceType } from "@emogit/emojit-react-core"
+import { progressSpinnerColor } from '@emogit/react-core'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
+import HistoryIcon from '@material-ui/icons/History'
+import React from 'react'
 import browser from 'webextension-polyfill'
 import { setupUserSettings } from '../user'
+
 
 function openBadges(): void {
 	browser.tabs.create({ url: '/pages/home.html?page=badges' })
@@ -16,9 +21,65 @@ function openOptions(): void {
 	browser.runtime.openOptionsPage()
 }
 
-export const Reactions = () => {
+const styles = (theme: Theme) => createStyles({
+	header: {
+		marginBottom: theme.spacing(1),
+	},
+	reactingLoader: {
+		position: 'relative',
+		top: '-2px',
+		paddingRight: '2px',
+	},
+	end: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		alignItems: 'flex-end',
+	},
+	historyButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		fontSize: '2em',
+		// Make the buttons line up.
+		position: 'relative',
+		top: '9px',
+	},
+	badgesButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		fontSize: '1.5em',
+	},
+	optionsButton: {
+		backgroundColor: 'inherit',
+		cursor: 'pointer',
+		border: 'none',
+		outline: 'none',
+		// Make sure it align with the right side.
+		paddingRight: theme.spacing(0.5),
+		fontSize: '1.5em',
+	},
+})
 
-	function updateBadgeText(pageReactions?: PageReaction[]): void {
+
+class Reactions extends React.Component<WithStyles<typeof styles>, {
+	emojit?: EmojitClient,
+	themePreference: ThemePreferenceType,
+	// TODO Maybe use redux for showReactingLoader?
+	showReactingLoader: boolean,
+}> {
+	constructor(props: any) {
+		super(props)
+		this.state = {
+			emojit: undefined,
+			themePreference: '',
+			showReactingLoader: false,
+		}
+	}
+
+	updateBadgeText(pageReactions?: PageReaction[]): void {
 		if (!pageReactions || pageReactions.length === 0) {
 			return
 		}
@@ -31,18 +92,49 @@ export const Reactions = () => {
 		}
 	}
 
-
-	// FIXME
-	useEffect(async () => {
+	async componentDidMount() {
 		const { emojit, themePreference } = await setupUserSettings(['emojit', 'themePreference'])
-
+		this.setState({ emojit, themePreference })
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
 			const pageUrl = tabs[0].url
+			// TODO
 			// this.setState({ pageUrl, tab: tabs[0] })
 		})
-	})
-	// FIXME Use EmojitTheme, add buttons for history, badges, etc.
-	return (<div>
-		<ReactionsComponent emojitClient={emojit} themePreference={themePreference} />
-	</div>)
+
+	}
+
+	render(): React.ReactNode {
+		const { classes } = this.props
+		const { emojit, themePreference } = this.state
+
+		if (emojit === undefined) {
+			return (<div>
+				<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
+			</div>)
+		} else {
+			return (<div>
+				<div className={`${classes.header} ${classes.end}`}>
+					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					{/* FIXME Move buttons to extension specific component. */}
+					<button className={classes.historyButton}
+						onClick={openHistory}>
+						<HistoryIcon color="primary" fontSize="inherit" />
+					</button>
+					<button className={classes.badgesButton}
+						onClick={openBadges}>
+						🏆
+					</button>
+					<button
+						className={classes.optionsButton}
+						onClick={openOptions}>
+						⚙️
+					</button>
+				</div>
+
+				<ReactionsComponent emojitClient={emojit} themePreference={themePreference} />
+			</div>)
+		}
+	}
 }
+
+export default withStyles(styles)(Reactions)

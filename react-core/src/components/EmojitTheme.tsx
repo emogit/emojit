@@ -12,6 +12,7 @@ export const DARK_MODE_INPUT_COLOR = '#eee'
 
 type Props = {
 	children: JSX.Element | JSX.Element[],
+	// TODO Add themePreference so that an extra lookup can be avoided.
 }
 
 export class EmojitTheme extends React.Component<Props, {
