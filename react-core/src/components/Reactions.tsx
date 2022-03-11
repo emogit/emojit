@@ -82,6 +82,8 @@ interface Props extends WithStyles<typeof styles> {
 	emojitClient: EmojitClient
 	pageUrl: string
 	themePreference: ThemePreferenceType
+
+	onPageReactions: (reactions?: PageReaction[]) => void
 }
 
 /**
@@ -156,7 +158,7 @@ class Reactions extends React.Component<Props, {
 		try {
 			const { userReactions, pageReactions } = await this.props.emojitClient.getUserPageReactions(this.props.pageUrl)
 			this.setState({ userReactions, pageReactions }, () => {
-				this.props.updateBadgeText(pageReactions)
+				this.props.onPageReactions(pageReactions)
 			})
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
@@ -279,7 +281,7 @@ class Reactions extends React.Component<Props, {
 		// Purposely do not re-sort to avoid jumpiness.
 
 		this.setState({ pageReactions }, () => {
-			this.props.updateBadgeText(this.state.pageReactions)
+			this.props.onPageReactions(this.state.pageReactions)
 		})
 	}
 

@@ -66,15 +66,15 @@ const styles = (theme: Theme) => createStyles({
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
 	emojit?: EmojitClient,
-	themePreference: ThemePreferenceType,
-	// TODO Maybe use redux for showReactingLoader?
+	pageUrl?: string,
+	tab?: browser.Tabs.Tab,
+	themePreference?: ThemePreferenceType,
+	// TODO Maybe use redux for showReactingLoader so that it synced with other component that are loading?
 	showReactingLoader: boolean,
 }> {
 	constructor(props: any) {
 		super(props)
 		this.state = {
-			emojit: undefined,
-			themePreference: '',
 			showReactingLoader: false,
 		}
 	}
@@ -97,17 +97,15 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		this.setState({ emojit, themePreference })
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
 			const pageUrl = tabs[0].url
-			// TODO
-			// this.setState({ pageUrl, tab: tabs[0] })
+			this.setState({ pageUrl, tab: tabs[0] })
 		})
-
 	}
 
 	render(): React.ReactNode {
 		const { classes } = this.props
-		const { emojit, themePreference } = this.state
+		const { emojit, pageUrl, themePreference } = this.state
 
-		if (emojit === undefined) {
+		if (emojit === undefined || themePreference === undefined || pageUrl === undefined) {
 			return (<div>
 				<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
 			</div>)
@@ -115,7 +113,6 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 			return (<div>
 				<div className={`${classes.header} ${classes.end}`}>
 					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
-					{/* FIXME Move buttons to extension specific component. */}
 					<button className={classes.historyButton}
 						onClick={openHistory}>
 						<HistoryIcon color="primary" fontSize="inherit" />
@@ -131,7 +128,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 					</button>
 				</div>
 
-				<ReactionsComponent emojitClient={emojit} themePreference={themePreference} />
+				<ReactionsComponent
+					emojitClient={emojit}
+					themePreference={themePreference}
+					onPageReactions={this.updateBadgeText}
+					pageUrl={pageUrl} />
 			</div>)
 		}
 	}
