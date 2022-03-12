@@ -1,11 +1,12 @@
-import { isDarkModePreferred } from '@emogit/emojit-react-core'
 import { PaletteType, ThemeOptions, ThemeProvider } from '@material-ui/core'
 import blue from '@material-ui/core/colors/blue'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme } from '@material-ui/core/styles'
+// FIXME Get setupUserSettings.
+import { setupUserSettings } from 'FIXME'
 import React from 'react'
 import browser from 'webextension-polyfill'
-import { setupUserSettings, ThemePreferenceType } from '../user'
+import { isDarkModePreferred, ThemePreferenceType } from '../theme'
 
 export const DARK_MODE_INPUT_BACKGROUND_COLOR = '#303030'
 export const DARK_MODE_INPUT_COLOR = '#eee'

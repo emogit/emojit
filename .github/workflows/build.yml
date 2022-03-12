@@ -76,7 +76,7 @@ jobs:
         working-directory: react-core
 
       - name: "React Core: Test"
-        run: yarn test --invert --fgrep Integration
+        run: yarn test
         working-directory: react-core
 
       - name: "React Core: Lint"
