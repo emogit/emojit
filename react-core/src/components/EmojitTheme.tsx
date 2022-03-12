@@ -44,6 +44,7 @@ export class EmojitTheme extends React.Component<Props, {
 			})
 		}
 
+		// FIXME Abstract away browser.
 		browser.storage.onChanged.addListener((changes, areaName) => {
 			if (areaName === 'local' && changes.themePreference) {
 				const themePreference = this.mapThemePreference(changes.themePreference.newValue)

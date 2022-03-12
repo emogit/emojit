@@ -1,4 +1,4 @@
-import { EmojitClient, PageReaction, ReactRequest } from '@emogit/emojit-core'
+import { EmojitClient, GetMessage, PageReaction, ReactRequest } from '@emogit/emojit-core'
 import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
@@ -83,6 +83,8 @@ interface Props extends WithStyles<typeof styles> {
 	pageUrl: string
 	themePreference: ThemePreferenceType
 
+	getMessage: GetMessage
+
 	/**
 	 * Runs when the current reactions for the page are updated.
 	 */
@@ -110,7 +112,7 @@ class Reactions extends React.Component<Props, {
 	}
 
 	async componentDidMount() {
-		this.errorHandler = new ErrorHandler(document.getElementById('error-text'))
+		this.errorHandler = new ErrorHandler(this.props.getMessage, document.getElementById('error-text'))
 		this.loadReactions()
 		this.setUpEmojiPicker(this.props.themePreference)
 	}

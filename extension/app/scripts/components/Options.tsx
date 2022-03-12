@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
-import { getMessage } from '../i18n_helper'
+import { BrowserGetMessage, getMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
@@ -52,7 +52,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	themePreference: ThemePreferenceType | '',
 	serviceUrl: string,
 }> {
-	private errorHandler = new ErrorHandler(undefined)
+	private errorHandler = new ErrorHandler(BrowserGetMessage)
 
 	constructor(props: any) {
 		super(props)

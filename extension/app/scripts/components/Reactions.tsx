@@ -6,6 +6,7 @@ import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/s
 import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
 import browser from 'webextension-polyfill'
+import { BrowserGetMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
 
 
@@ -131,8 +132,10 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				<ReactionsComponent
 					emojitClient={emojit}
 					themePreference={themePreference}
-					onPageReactions={this.updateBadgeText}
 					pageUrl={pageUrl} />
+
+				getMessage={BrowserGetMessage}
+				onPageReactions={this.updateBadgeText}
 			</div>)
 		}
 	}
