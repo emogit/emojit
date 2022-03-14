@@ -120,10 +120,10 @@ jobs:
         run: |
           set -ex
           yarn build chrome
-          # Make sure the packages gets created.
-          ls packages/emojit.v*chrome.zip
+          # Make sure the packages get created.
+          ls packages/emojit-extension.v*chrome.zip
           yarn build firefox
-          ls packages/emojit.v*firefox.xpi.zip
+          ls packages/emojit-extension.v*firefox.xpi.zip
           md5sum packages/*
           sha256sum packages/*
         working-directory: extension
