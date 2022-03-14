@@ -37,13 +37,13 @@
 	"dependencies": {
 		"@emogit/emojit-core": "^0.1.0",
 		"@joeattardi/emoji-button": "^4.6.2",
-		"@material-ui/core": "^4.11.2",
+		"@material-ui/core": "^4.12.3",
 		"@material-ui/icons": "^4.11.2",
-		"@types/react": "^17.0.0",
-		"@types/react-dom": "^17.0.0",
+		"@types/react": "^17.0.40",
+		"@types/react-dom": "^17.0.13",
 		"immutability-helper": "^3.1.1",
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1"
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
 	},
 	"packageManager": "yarn@3.1.1",
 	"resolutions": {

@@ -1,4 +1,4 @@
-import { PaletteType, ThemeOptions, ThemeProvider } from '@material-ui/core'
+import { ThemeOptions, ThemeProvider } from '@material-ui/core'
 import blue from '@material-ui/core/colors/blue'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createTheme } from '@material-ui/core/styles'
@@ -13,19 +13,11 @@ type Props = {
 	themePreference?: ThemePreferenceType
 }
 
-export class EmojitTheme extends React.Component<Props, {
-	themePreference: PaletteType
-}> {
-	constructor(props: Props) {
-		super(props)
-		this.state = {
-			// Defaulting to light makes the page not flash black in light mode.
-			// In dark mode, the page will always start white.
-			// A person's device preference is likely to be the same as their preference here, so defaulting to a device should mininize a possible quick flash (like most pages have anyway).
-			themePreference: this.mapThemePreference(this.props.themePreference),
-		}
-	}
+// Defaulting to light theme makes the page not flash black in light mode.
+// In dark mode, the page will always start white.
+// A person's device preference is likely to be the same as their preference here, so defaulting to a device should mininize a possible quick flash (like most pages have anyway).
 
+export class EmojitTheme extends React.Component<Props> {
 	mapThemePreference(themePreference?: ThemePreferenceType): 'dark' | 'light' {
 		if (themePreference === undefined || themePreference === 'device') {
 			return isDarkModePreferred() ? 'dark' : 'light'
@@ -34,7 +26,7 @@ export class EmojitTheme extends React.Component<Props, {
 	}
 
 	render(): React.ReactNode {
-		const { themePreference } = this.state
+		const themePreference = this.mapThemePreference(this.props.themePreference)
 
 		const themeOptions: ThemeOptions = {
 			palette: {

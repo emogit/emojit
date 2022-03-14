@@ -184,6 +184,8 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	render(): React.ReactNode {
 		const { classes } = this.props
 
+		// FIXME Input fields colors for dark mode: https://github.com/onhello-automation/onhello/blob/main/app/scripts/components/Options.tsx
+
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				{getMessage('optionsPageTitle') || "⚙️ Options"}
