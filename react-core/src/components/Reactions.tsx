@@ -95,9 +95,9 @@ interface Props extends WithStyles<typeof styles> {
  * Displays the reactions for a given page and lets the user pick reactions.
  */
 class Reactions extends React.Component<Props, {
-	userReactions?: string[],
-	pageReactions?: PageReaction[],
-	showReactingLoader: boolean,
+	userReactions?: string[]
+	pageReactions?: PageReaction[]
+	showReactingLoader: boolean
 }> {
 	private errorHandler: ErrorHandler | undefined
 	private picker: EmojiButton | undefined
@@ -300,7 +300,7 @@ class Reactions extends React.Component<Props, {
 		// `pageReactions` already includes the user's reactions.
 
 		return <div>
-			<EmojitTheme>
+			<EmojitTheme themePreference={this.props.themePreference}>
 				<div className={classes.gridDiv}>
 					<Grid container
 						className={classes.reactionGrid}

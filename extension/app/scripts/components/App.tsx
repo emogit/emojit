@@ -1,9 +1,11 @@
-import { EmojitTheme } from '@emogit/emojit-react-core'
+import { EmojitTheme, ThemePreferenceType } from '@emogit/emojit-react-core'
 import Container from '@material-ui/core/Container'
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
 import HistoryIcon from '@material-ui/icons/History'
 import React from 'react'
+import browser from 'webextension-polyfill'
 import { updateUrl } from '../url_helper'
+import { setupUserSettings } from '../user'
 import Badges from './Badges'
 import History from './History'
 import Options from './Options'
@@ -38,6 +40,7 @@ const styles = (theme: Theme) => createStyles({
 
 class App extends React.Component<WithStyles<typeof styles>, {
 	page: string
+	themePreference?: ThemePreferenceType
 }> {
 	constructor(props: any) {
 		super(props)
@@ -50,6 +53,22 @@ class App extends React.Component<WithStyles<typeof styles>, {
 		this.showBadges = this.showBadges.bind(this)
 		this.showOptions = this.showOptions.bind(this)
 		this.showHistory = this.showHistory.bind(this)
+	}
+
+	async componentDidMount() {
+		const { themePreference } = await setupUserSettings(['themePreference'])
+		this.setState({ themePreference })
+
+		browser.storage.onChanged.addListener((changes, areaName) => {
+			if (areaName === 'local' && changes.themePreference) {
+				const themePreference = changes.themePreference.newValue
+				if (themePreference !== this.state.themePreference) {
+					this.setState({
+						themePreference,
+					})
+				}
+			}
+		})
 	}
 
 	showBadges() {
@@ -72,8 +91,10 @@ class App extends React.Component<WithStyles<typeof styles>, {
 
 	render(): React.ReactNode {
 		const { classes } = this.props
+		const { themePreference } = this.state
+
 		return <div>
-			<EmojitTheme>
+			<EmojitTheme themePreference={themePreference}>
 				<Container>
 					<div className={`${classes.headerSection} ${classes.end}`}>
 						<a className={`${classes.pageButton} ${classes.historyButton} ${this.state.page === 'history' ? classes.selectedPageButton : ''}`}

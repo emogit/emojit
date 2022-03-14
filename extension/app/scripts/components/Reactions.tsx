@@ -66,12 +66,12 @@ const styles = (theme: Theme) => createStyles({
 
 
 class Reactions extends React.Component<WithStyles<typeof styles>, {
-	emojit?: EmojitClient,
-	pageUrl?: string,
-	tab?: browser.Tabs.Tab,
-	themePreference?: ThemePreferenceType,
+	emojit?: EmojitClient
+	pageUrl?: string
+	tab?: browser.Tabs.Tab
+	themePreference?: ThemePreferenceType
 	// TODO Maybe use redux for showReactingLoader so that it synced with other component that are loading?
-	showReactingLoader: boolean,
+	showReactingLoader: boolean
 }> {
 	constructor(props: any) {
 		super(props)
@@ -99,6 +99,17 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 		browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
 			const pageUrl = tabs[0].url
 			this.setState({ pageUrl, tab: tabs[0] })
+		})
+
+		browser.storage.onChanged.addListener((changes, areaName) => {
+			if (areaName === 'local' && changes.themePreference) {
+				const themePreference = changes.themePreference.newValue
+				if (themePreference !== this.state.themePreference) {
+					this.setState({
+						themePreference,
+					})
+				}
+			}
 		})
 	}
 
@@ -132,10 +143,11 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 				<ReactionsComponent
 					emojitClient={emojit}
 					themePreference={themePreference}
-					pageUrl={pageUrl} />
+					pageUrl={pageUrl}
 
-				getMessage={BrowserGetMessage}
-				onPageReactions={this.updateBadgeText}
+					getMessage={BrowserGetMessage}
+					onPageReactions={this.updateBadgeText}
+				/>
 			</div>)
 		}
 	}
