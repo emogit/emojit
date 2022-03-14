@@ -1,3 +1,4 @@
+import { progressSpinnerColor } from '@emogit/emojit-react-core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -9,7 +10,6 @@ import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { getMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
-import { progressSpinnerColor } from './constants'
 
 interface Badge {
 	name: string

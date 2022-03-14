@@ -1,4 +1,5 @@
 import { EmojitClient, PageReactions } from '@emogit/emojit-core'
+import { ErrorHandler, progressSpinnerColor } from '@emogit/emojit-react-core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -13,10 +14,8 @@ import Typography from '@material-ui/core/Typography'
 import HistoryIcon from '@material-ui/icons/History'
 import update from 'immutability-helper'
 import React, { ChangeEvent } from 'react'
-import { ErrorHandler } from '../error_handler'
-import { getMessage } from '../i18n_helper'
+import { BrowserGetMessage, getMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
-import { progressSpinnerColor } from './constants'
 
 
 const styles = (theme: Theme) => createStyles({
@@ -67,7 +66,7 @@ class History extends React.Component<WithStyles<typeof styles>, {
 	checkedPages: string[],
 	errorGettingHistory?: string,
 }> {
-	private errorHandler = new ErrorHandler(undefined)
+	private errorHandler = new ErrorHandler(BrowserGetMessage)
 
 	constructor(props: any) {
 		super(props)

@@ -1,6 +1,5 @@
-import { EmojitClient, PageReaction } from "@emogit/emojit-core"
-import { ReactionsComponent, ThemePreferenceType } from "@emogit/emojit-react-core"
-import { progressSpinnerColor } from '@emogit/react-core'
+import { EmojitClient, PageReaction } from '@emogit/emojit-core'
+import { progressSpinnerColor, ReactionsComponent, ThemePreferenceType } from '@emogit/emojit-react-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
 import HistoryIcon from '@material-ui/icons/History'
