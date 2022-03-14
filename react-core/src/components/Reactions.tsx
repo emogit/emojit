@@ -305,7 +305,7 @@ class Reactions extends React.Component<Props, {
 					<Grid container
 						className={classes.reactionGrid}
 						direction="row"
-						justify="center"
+						justifyContent="center"
 						alignItems="center"
 						spacing={1}
 					>
@@ -317,7 +317,7 @@ class Reactions extends React.Component<Props, {
 							const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
 							return <Grid key={`reaction-${pageReaction.reaction}`}
 								container item xs
-								justify="center">
+								justifyContent="center">
 								<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.clickReaction(pageReaction.reaction)}>
 									<span>
 										{pageReaction.reaction}
