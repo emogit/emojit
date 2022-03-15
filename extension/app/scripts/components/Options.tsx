@@ -1,16 +1,19 @@
 import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
 import { ErrorHandler, ThemePreferenceType } from '@emogit/emojit-react-core'
-import { PaletteType } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import Container from '@material-ui/core/Container'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { PaletteMode } from '@mui/material'
+import Button from '@mui/material/Button'
+import Checkbox from '@mui/material/Checkbox'
+import Container from '@mui/material/Container'
+import FormControl from '@mui/material/FormControl'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import { Theme } from '@mui/material/styles'
+import { WithStyles } from '@mui/styles'
+import createStyles from '@mui/styles/createStyles'
+import withStyles from '@mui/styles/withStyles'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
 import { BrowserGetMessage, getMessage } from '../i18n_helper'
@@ -166,7 +169,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	handleThemeChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const themePreference = event.target.value as PaletteType | 'device'
+		const themePreference = event.target.value as PaletteMode | 'device'
 		this.setState({
 			themePreference,
 		})
@@ -222,7 +225,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 						checked={this.state.updateIconTextWithTopPageReaction === true}
 						onChange={this.handleChange}
 					/>}
-					label={getMessage('updateIconTextWithTopPageReactionLabel')}
+					label={getMessage('updateIconTextWithTopPageReactionLabel') || ""}
 				/>
 				<Typography component="p">
 					{getMessage('updateIconTextWithTopPageReactionInfo')}
