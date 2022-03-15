@@ -31,6 +31,12 @@
         },
         {
             "path": "extension"
+        },
+        {
+            "path": "react-core"
+        },
+        {
+            "path": "site"
         }
     ],
     "include": [".*.js", "*.js"],

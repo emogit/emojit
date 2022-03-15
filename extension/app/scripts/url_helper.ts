@@ -1,3 +1,8 @@
+/**
+ * Add URL parameters to the current URL.
+ *
+ * @param values The parameters to add.
+ */
 export function updateUrl(values: { [key: string]: string }): void {
 	const currentUrlParams = new URLSearchParams(window.location.search)
 	for (const [key, value] of Object.entries(values)) {

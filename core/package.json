@@ -2,13 +2,13 @@
   "name": "@emogit/emojit-core",
   "version": "0.1.0",
   "description": "Core code for Emojit.",
+  "license": "BSD-3-Clause",
+  "repository": "git@github.com:emogit/emojit.git",
   "main": "lib/core/src/index.js",
   "types": "lib/core/src/index.d.ts",
   "files": [
     "lib"
   ],
-  "license": "BSD-3-Clause",
-  "repository": "git@github.com:emogit/emojit.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -38,5 +38,5 @@
     "ts-mocha": "^8.0.0",
     "ts-node": "^10.4.0"
   },
-  "packageManager": "yarn@3.1.0"
+  "packageManager": "yarn@3.1.1"
 }

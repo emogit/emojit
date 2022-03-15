@@ -1,4 +1,5 @@
 import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
+import { ErrorHandler, ThemePreferenceType } from '@emogit/emojit-react-core'
 import { PaletteType } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -12,9 +13,8 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
-import { ErrorHandler } from '../error_handler'
-import { getMessage } from '../i18n_helper'
-import { setupUserSettings, ThemePreferenceType } from '../user'
+import { BrowserGetMessage, getMessage } from '../i18n_helper'
+import { setupUserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
 function download(filename: string, text: string) {
@@ -46,13 +46,13 @@ const styles = (theme: Theme) => createStyles({
 })
 
 class Options extends React.Component<WithStyles<typeof styles>, {
-	emojit: EmojitClient | undefined,
-	updateIconTextWithTopPageReaction: boolean | undefined,
+	emojit?: EmojitClient,
+	updateIconTextWithTopPageReaction?: boolean,
 	userId: string,
 	themePreference: ThemePreferenceType | '',
 	serviceUrl: string,
 }> {
-	private errorHandler = new ErrorHandler(undefined)
+	private errorHandler = new ErrorHandler(BrowserGetMessage)
 
 	constructor(props: any) {
 		super(props)
@@ -183,6 +183,8 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 
 	render(): React.ReactNode {
 		const { classes } = this.props
+
+		// FIXME Input fields colors for dark mode: https://github.com/onhello-automation/onhello/blob/main/app/scripts/components/Options.tsx
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">

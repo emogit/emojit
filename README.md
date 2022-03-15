@@ -10,8 +10,6 @@ You can install our extension in various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 * [Firefox](https://addons.mozilla.org/addon/emojit)
 
-It should work for Firefox but we haven't built it and tried it yet.
-
 # Code
 [![Build](https://github.com/emogit/emojit/actions/workflows/build.yml/badge.svg)](https://github.com/emogit/emojit/actions/workflows/build.yml)
 

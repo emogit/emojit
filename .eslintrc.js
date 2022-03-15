@@ -52,6 +52,7 @@ module.exports = {
 		//Other projects
 		'/core/',
 		'/extension/',
+		'/react-core/',
 		'/site/',
 		// Coverage
 		'/coverage/',

@@ -1,5 +1,4 @@
-import { EmojitError, error } from '@emogit/emojit-core'
-import browser from 'webextension-polyfill'
+import { EmojitError, error, GetMessage } from '@emogit/emojit-core'
 
 export interface ShowErrorInput {
 	serviceError?: any
@@ -13,7 +12,9 @@ export class ErrorHandler {
 	/**
 	 * @param errorTextElement The location where to display the error. If not given, the error will be alerted.
 	 */
-	constructor(private errorTextElement: HTMLElement | undefined | null = undefined) {
+	constructor(
+		private getMessage: GetMessage,
+		private errorTextElement: HTMLElement | undefined | null = undefined) {
 	}
 
 	showError(input: Partial<ShowErrorInput> | any): void {
@@ -24,10 +25,10 @@ export class ErrorHandler {
 		} else if (typeof serviceError === 'string' && !errorMsg) {
 			errorMsg = serviceError
 		} else if (serviceError instanceof EmojitError) {
-			errorMsg = browser.i18n.getMessage(`errorCode_${error(serviceError.errorCode)}`) || serviceError.message
+			errorMsg = this.getMessage(`errorCode_${error(serviceError.errorCode)}`) || serviceError.message
 		} else if (serviceError !== undefined && serviceError.responseJSON && serviceError.responseJSON.error) {
 			const { errorCode, message } = serviceError.responseJSON.error
-			errorMsg = browser.i18n.getMessage(`errorCode_${errorCode}`) || message
+			errorMsg = this.getMessage(`errorCode_${errorCode}`) || message
 		} else if (typeof input !== 'string') {
 			errorMsg = JSON.stringify(input)
 		} else {

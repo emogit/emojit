@@ -1,0 +1,52 @@
+{
+	"name": "@emogit/emojit-react-core",
+	"version": "0.1.0",
+	"description": "Core React components.",
+	"license": "BSD-3-Clause",
+	"repository": {
+		"url": "git+https://github.com/emogit/emojit.git",
+		"type": "git"
+	},
+	"main": "lib/react-core/src/index.js",
+	"types": "lib/react-core/src/index.d.ts",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"build": "tsc --build tsconfig.build.json",
+		"dev": "ts-node ./src/index.ts",
+		"test": "true",
+		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+		"lint-fix": "eslint  . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"devDependencies": {
+		"@types/chai": "^4.2.22",
+		"@types/mocha": "^9.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.3.1",
+		"@typescript-eslint/parser": "^5.3.1",
+		"chai": "^4.3.4",
+		"dotenv": "^8.2.0",
+		"eslint": "^8.2.0",
+		"eslint-plugin-react": "^7.25.1",
+		"mocha": "^9.1.3",
+		"ts-loader": "^8.0.13",
+		"ts-mocha": "^8.0.0",
+		"tsconfig-paths-webpack-plugin": "^3.5.2",
+		"typescript": "^4.4.4"
+	},
+	"dependencies": {
+		"@emogit/emojit-core": "^0.1.0",
+		"@joeattardi/emoji-button": "^4.6.2",
+		"@material-ui/core": "^4.12.3",
+		"@material-ui/icons": "^4.11.2",
+		"@types/react": "^17.0.40",
+		"@types/react-dom": "^17.0.13",
+		"immutability-helper": "^3.1.1",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
+	},
+	"packageManager": "yarn@3.1.1",
+	"resolutions": {
+		"@emogit/emojit-core": "portal:../core"
+	}
+}

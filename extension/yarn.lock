@@ -1035,14 +1035,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A.":
+"@emogit/emojit-core@portal:../core::locator=emojit-extension%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@emogit/emojit-core@portal:../core::locator=emojit%40workspace%3A."
+  resolution: "@emogit/emojit-core@portal:../core::locator=emojit-extension%40workspace%3A."
   dependencies:
     "@types/node": ^16.11.6
     axios: ^0.24.0
     typescript: ^4.4.4
     uuid: ^8.3.2
+  languageName: node
+  linkType: soft
+
+"@emogit/emojit-react-core@portal:../react-core::locator=emojit-extension%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@emogit/emojit-react-core@portal:../react-core::locator=emojit-extension%40workspace%3A."
+  dependencies:
+    "@emogit/emojit-core": ^0.1.0
+    "@joeattardi/emoji-button": ^4.6.2
+    "@material-ui/core": ^4.12.3
+    "@material-ui/icons": ^4.11.2
+    "@types/react": ^17.0.40
+    "@types/react-dom": ^17.0.13
+    immutability-helper: ^3.1.1
+    react: ^17.0.2
+    react-dom: ^17.0.2
   languageName: node
   linkType: soft
 
@@ -1148,14 +1164,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-ui/core@npm:^4.11.2":
-  version: 4.11.2
-  resolution: "@material-ui/core@npm:4.11.2"
+"@material-ui/core@npm:^4.12.3":
+  version: 4.12.3
+  resolution: "@material-ui/core@npm:4.12.3"
   dependencies:
     "@babel/runtime": ^7.4.4
-    "@material-ui/styles": ^4.11.2
-    "@material-ui/system": ^4.11.2
-    "@material-ui/types": ^5.1.0
+    "@material-ui/styles": ^4.11.4
+    "@material-ui/system": ^4.12.1
+    "@material-ui/types": 5.1.0
     "@material-ui/utils": ^4.11.2
     "@types/react-transition-group": ^4.2.0
     clsx: ^1.0.4
@@ -1171,7 +1187,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 1eb244ec2a6f06d1e6dc87256827c7823067a92572c2c428bdfdd757d2ad6f4d559f1a159b04cc64096033b43f0ebedef0d13e4d6e385815a7bf16b9c40371d9
+  checksum: f0032b8c04883fa4aed66a949cde21f1df35c622fbab30b91cfe8fae9508729a4847db3843cba9b1c491466dd2100fddb9e691ffc6b86052a7986215dbb4f94c
   languageName: node
   linkType: hard
 
@@ -1192,25 +1208,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-ui/styles@npm:^4.11.2":
-  version: 4.11.2
-  resolution: "@material-ui/styles@npm:4.11.2"
+"@material-ui/styles@npm:^4.11.4":
+  version: 4.11.4
+  resolution: "@material-ui/styles@npm:4.11.4"
   dependencies:
     "@babel/runtime": ^7.4.4
     "@emotion/hash": ^0.8.0
-    "@material-ui/types": ^5.1.0
+    "@material-ui/types": 5.1.0
     "@material-ui/utils": ^4.11.2
     clsx: ^1.0.4
     csstype: ^2.5.2
     hoist-non-react-statics: ^3.3.2
-    jss: ^10.0.3
-    jss-plugin-camel-case: ^10.0.3
-    jss-plugin-default-unit: ^10.0.3
-    jss-plugin-global: ^10.0.3
-    jss-plugin-nested: ^10.0.3
-    jss-plugin-props-sort: ^10.0.3
-    jss-plugin-rule-value-function: ^10.0.3
-    jss-plugin-vendor-prefixer: ^10.0.3
+    jss: ^10.5.1
+    jss-plugin-camel-case: ^10.5.1
+    jss-plugin-default-unit: ^10.5.1
+    jss-plugin-global: ^10.5.1
+    jss-plugin-nested: ^10.5.1
+    jss-plugin-props-sort: ^10.5.1
+    jss-plugin-rule-value-function: ^10.5.1
+    jss-plugin-vendor-prefixer: ^10.5.1
     prop-types: ^15.7.2
   peerDependencies:
     "@types/react": ^16.8.6 || ^17.0.0
@@ -1219,13 +1235,13 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 20fcc50240a510c3f9b1ef7aff74a57485cb1d2f2fe7bf05308a58b86c892fa949240384a8c08932625d7b55ec5c9599042aafccdb1dfed789d2c9feb2df3b9a
+  checksum: ef9abc486c74943df28a69d095ee07d752b17e27e70d6adede6cc368f0811529260bc509c664dff995763f02b5324594c98cf71f5d8981ea98dd25c0e2c1dd39
   languageName: node
   linkType: hard
 
-"@material-ui/system@npm:^4.11.2":
-  version: 4.11.2
-  resolution: "@material-ui/system@npm:4.11.2"
+"@material-ui/system@npm:^4.12.1":
+  version: 4.12.1
+  resolution: "@material-ui/system@npm:4.12.1"
   dependencies:
     "@babel/runtime": ^7.4.4
     "@material-ui/utils": ^4.11.2
@@ -1238,11 +1254,11 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 8f8bad4d124d77c99aa88010a2e157f0217492287c03ab6abb0f6ff73b80e3f38d2df736e2720f56d6b31fa9d59b6e42bb8e097d6f7ba109fd1ace0e559c1856
+  checksum: 2acf20b43090c381530899e2fa85b0a774fc4dfe08aa97a55c8fd58f833175fd1cb17374ecc403f722c2db3b3caffd1fadd5dffe146a08d036bc6031d676659b
   languageName: node
   linkType: hard
 
-"@material-ui/types@npm:^5.1.0":
+"@material-ui/types@npm:5.1.0":
   version: 5.1.0
   resolution: "@material-ui/types@npm:5.1.0"
   peerDependencies:
@@ -1387,12 +1403,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.0":
-  version: 17.0.0
-  resolution: "@types/react-dom@npm:17.0.0"
+"@types/react-dom@npm:^17.0.13":
+  version: 17.0.13
+  resolution: "@types/react-dom@npm:17.0.13"
   dependencies:
     "@types/react": "*"
-  checksum: d0f989e12fabb2572a38d79630c209499afa2edc865cc3ebc50333845715bd73d88ac88e24274977cd62433e46e91ddf94c30c2c12f89e427bbb739682caf677
+  checksum: 62c42a54ac8961c23a0e74b9cdd8b0a78563757e462b1ab665b2aa365bfd8b86a73d3f6eafc09a4a80fb08659321db168f012aa597c41c0df36f645a94e9266b
   languageName: node
   linkType: hard
 
@@ -1405,13 +1421,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^17.0.0":
+"@types/react@npm:*":
   version: 17.0.0
   resolution: "@types/react@npm:17.0.0"
   dependencies:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: 0767d1c635613cb08de1ad6b8f73e3ee01ae0069733fa56382c72a8dbed741849e74f62a17756c7b76ccd2b57dd9891d5767c3134f35788720c6bb9c186a933b
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^17.0.40":
+  version: 17.0.40
+  resolution: "@types/react@npm:17.0.40"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 24d1b210b5bf3c7d49f9a7fe5490db02e005a1d989045a2d67528347557dd0bcb0d7bcf96088152697e97521ac4c9506d1357ee48a2b7d4e701c70d838dc7284
+  languageName: node
+  linkType: hard
+
+"@types/scheduler@npm:*":
+  version: 0.16.2
+  resolution: "@types/scheduler@npm:0.16.2"
+  checksum: b6b4dcfeae6deba2e06a70941860fb1435730576d3689225a421280b7742318d1548b3d22c1f66ab68e414f346a9542f29240bc955b6332c5b11e561077583bc
   languageName: node
   linkType: hard
 
@@ -3296,19 +3330,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emojit@workspace:.":
+"emojit-extension@workspace:.":
   version: 0.0.0-use.local
-  resolution: "emojit@workspace:."
+  resolution: "emojit-extension@workspace:."
   dependencies:
     "@emogit/emojit-core": ^0.1.0
+    "@emogit/emojit-react-core": ^0.1.0
     "@joeattardi/emoji-button": ^4.6.2
-    "@material-ui/core": ^4.11.2
-    "@material-ui/icons": ^4.11.2
     "@types/chai": ^4.2.22
     "@types/jquery": ^3.5.5
     "@types/mocha": ^9.0.0
-    "@types/react": ^17.0.0
-    "@types/react-dom": ^17.0.0
+    "@types/react": ^17.0.40
+    "@types/react-dom": ^17.0.13
     "@types/webextension-polyfill": ^0.8.2
     "@typescript-eslint/eslint-plugin": ^5.3.1
     "@typescript-eslint/parser": ^5.3.1
@@ -3319,8 +3352,6 @@ __metadata:
     immutability-helper: ^3.1.1
     jquery: ^3.5.1
     mocha: ^9.1.3
-    react: ^17.0.1
-    react-dom: ^17.0.1
     ts-loader: ^8.0.13
     ts-mocha: ^8.0.0
     tsconfig-paths-webpack-plugin: ^3.5.2
@@ -4603,15 +4634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"indefinite-observable@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "indefinite-observable@npm:2.0.1"
-  dependencies:
-    symbol-observable: 1.2.0
-  checksum: b4305c999b7596901f8798e569b8faa030361dfb77f8b720e229558a29f544826f7e8987c55cc2a84c37ff2723594a965b96a40a6c71daae92b918f3eb393077
-  languageName: node
-  linkType: hard
-
 "indent-string@npm:^4.0.0":
   version: 4.0.0
   resolution: "indent-string@npm:4.0.0"
@@ -5218,90 +5240,89 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jss-plugin-camel-case@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-camel-case@npm:10.5.0"
+"jss-plugin-camel-case@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-camel-case@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
     hyphenate-style-name: ^1.0.3
-    jss: 10.5.0
-  checksum: 8ae0001046f498e95b89830d1d604f26c7f2b3f62dd7c710b2c9a703d79391e7ab0bfe39d0fb68d7abc2072c298cdcfaa49307b539347611b953604aada3f939
+    jss: 10.9.0
+  checksum: 435c7e3111f1e23b369f7a78bdadb09e91f100215b3156a0e46edad5801c2c002f8029d2afa71c9eafc1cb340988b5d9b81fed633bd63983371d21e3d5be2a4c
   languageName: node
   linkType: hard
 
-"jss-plugin-default-unit@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-default-unit@npm:10.5.0"
+"jss-plugin-default-unit@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-default-unit@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
-    jss: 10.5.0
-  checksum: 9cf6f41496b7d143f18ad2cfab800cccdd65e61727e313aae72ef8e471e540c62f97d50b54ad9fa91d4acaa597fa664171cf127aef780b54fd36ce07c85366ea
+    jss: 10.9.0
+  checksum: 5ff18061b1bf3afb0ae2d435dd2253159fc1927ce9ffd3457692df5b949f2ca39e01f752b728c584dd17dac5457963179ac3e71303bab8344fa8eee0352e8e5c
   languageName: node
   linkType: hard
 
-"jss-plugin-global@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-global@npm:10.5.0"
+"jss-plugin-global@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-global@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
-    jss: 10.5.0
-  checksum: e9a2a91afa51e4995d43b948cb059440e8f930ad7599476c2b27ca53c43183778a63a13228dba247d0fb4516a006c90846f30cdc55de9cc1826975fcef422e64
+    jss: 10.9.0
+  checksum: 1ff11b47131fec7b156cac057d3b749abff778b7ebd219649ef7a8988187e2a9b2c6cbd27f4b3c294df66378d688dc9e14a67e2ef9396a9c76ee2e720d6e224c
   languageName: node
   linkType: hard
 
-"jss-plugin-nested@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-nested@npm:10.5.0"
+"jss-plugin-nested@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-nested@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
-    jss: 10.5.0
+    jss: 10.9.0
     tiny-warning: ^1.0.2
-  checksum: b39430ba11a58f3eb631c7e9d6000b55ad8eca84d4ad6e04203ec23420102ef883f3cbab0e983357d1fb3715d6450c2081ac33c332d9e6ade425f45baf60b941
+  checksum: 46dc4977d014bc67e9348642cd642a09864707ea70b7eac06a20f8505b0c995402199a6895d02faa9bb5282a3429b0e6814a41fe852da2a3b85543e75e60f271
   languageName: node
   linkType: hard
 
-"jss-plugin-props-sort@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-props-sort@npm:10.5.0"
+"jss-plugin-props-sort@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-props-sort@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
-    jss: 10.5.0
-  checksum: d361301a5524dc8cff2a7bd488000526f878dcde9ee8a8c5a931cc495fdde89036c67388c70af396bdf136fb2abae7aeeb3475c651cded1e06a4bd03e9f0deaf
+    jss: 10.9.0
+  checksum: 87eb054d4afa0d8db86ea5d7ace40d9883a11c7cbeada54c4a515da73a92178d777d3cef48b2b2bb52e0eab11212c8a15b9c29ec3d327ab256aaff943fd77c9d
   languageName: node
   linkType: hard
 
-"jss-plugin-rule-value-function@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-rule-value-function@npm:10.5.0"
+"jss-plugin-rule-value-function@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-rule-value-function@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
-    jss: 10.5.0
+    jss: 10.9.0
     tiny-warning: ^1.0.2
-  checksum: b0a97458a46e4d9999039cf51cc2365ae556f963dad42159c45249d3a9d6de144d8b48b84b9787dc4f6fa131d75e51f7545e5ebd4c12dd3826bc5bd89619dcf2
+  checksum: b8d0f4f8b2620f084e5e9e6f2cf54c9ce5857d1a15c4eb9d0f1d7fc4ee79452dba877c8c4039eeb163b132cbaff04ea958df54150fb41d9a9f9e86b93a54813f
   languageName: node
   linkType: hard
 
-"jss-plugin-vendor-prefixer@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss-plugin-vendor-prefixer@npm:10.5.0"
+"jss-plugin-vendor-prefixer@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss-plugin-vendor-prefixer@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
     css-vendor: ^2.0.8
-    jss: 10.5.0
-  checksum: 0d472292713fb269e89eba6791ccbf04929f966d8b1c8e5955e82ef5503ce1c4e4afb08ade4a65524db1034337e8455e81bbd8271a53f1bfd94d1ac636e845bb
+    jss: 10.9.0
+  checksum: 8248908d9788fea2e2060ec82a61c07549935e57de3682a319927b3ee2256867a26c7af95e2169ceffe3712520ebd4b518c84485606b9838340f50d561a6cd22
   languageName: node
   linkType: hard
 
-"jss@npm:10.5.0, jss@npm:^10.0.3":
-  version: 10.5.0
-  resolution: "jss@npm:10.5.0"
+"jss@npm:10.9.0, jss@npm:^10.5.1":
+  version: 10.9.0
+  resolution: "jss@npm:10.9.0"
   dependencies:
     "@babel/runtime": ^7.3.1
     csstype: ^3.0.2
-    indefinite-observable: ^2.0.1
     is-in-browser: ^1.1.3
     tiny-warning: ^1.0.2
-  checksum: c7cb4d861aa3af07a9520742151fc40d40a14e89629e5da4a6a9dc6c5261f4349d14df0f7568c652b9f48e97c502e5b8a7af18b9ccb1201aa8956a5ebd0eac8c
+  checksum: 29d3f133afc45ac8b392c1cda697ca0dc62b8a8b1f6a445054b9801f93c6beb95af81ef9c2f7c1583f99517234229adfc16067d163a29334a1d072cbd25df1b7
   languageName: node
   linkType: hard
 
@@ -6656,16 +6677,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.1":
-  version: 17.0.1
-  resolution: "react-dom@npm:17.0.1"
+"react-dom@npm:^17.0.2":
+  version: 17.0.2
+  resolution: "react-dom@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-    scheduler: ^0.20.1
+    scheduler: ^0.20.2
   peerDependencies:
-    react: 17.0.1
-  checksum: df2af300dd4f49a5daaccc38f5a307def2a9ae2b7ebffa3dce8fb9986129057696b86a2c94e5ae36133057c69428c500e4ee3bf5884eb44e5632ace8b7ace41f
+    react: 17.0.2
+  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
   languageName: node
   linkType: hard
 
@@ -6698,13 +6719,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^17.0.1":
-  version: 17.0.1
-  resolution: "react@npm:17.0.1"
+"react@npm:^17.0.2":
+  version: 17.0.2
+  resolution: "react@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-  checksum: 83b9df9529a2b489f00a4eaa608fc7d55518b258e046c100344ae068713e43ae64e477a140f87e38cfe75489bcfd26d27fce5818f89f4ec41bdbda7ead4bb426
+  checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
   languageName: node
   linkType: hard
 
@@ -7059,13 +7080,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.20.1":
-  version: 0.20.1
-  resolution: "scheduler@npm:0.20.1"
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-  checksum: ace896fff8ccc516a4b5a249c712fc88d4e2456587d991acc220b54690362d6a2b9d426a7f030454cb439f6f5ff2706b13ee8c44ccb953884c4756304a2f8ad6
+  checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
   languageName: node
   linkType: hard
 
@@ -7663,13 +7684,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"symbol-observable@npm:1.2.0":
-  version: 1.2.0
-  resolution: "symbol-observable@npm:1.2.0"
-  checksum: 48ffbc22e3d75f9853b3ff2ae94a44d84f386415110aea5effc24d84c502e03a4a6b7a8f75ebaf7b585780bda34eb5d6da3121f826a6f93398429d30032971b6
-  languageName: node
-  linkType: hard
-
 "tabbable@npm:^4.0.0":
   version: 4.0.0
   resolution: "tabbable@npm:4.0.0"
@@ -8040,7 +8054,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
   version: 4.4.4
-  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"
+  resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

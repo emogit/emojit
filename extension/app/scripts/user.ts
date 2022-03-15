@@ -1,8 +1,7 @@
 import { createNewUserId, DEFAULT_SERVICE_URL, EmojitClient } from '@emogit/emojit-core'
-import { PaletteType } from '@material-ui/core'
+import { ThemePreferenceType } from '@emogit/emojit-react-core'
 import browser from 'webextension-polyfill'
 
-export type ThemePreferenceType = PaletteType | 'device'
 
 export interface UserSettings {
 	emojit: EmojitClient

@@ -32,6 +32,7 @@ jobs:
         # Split Lint into a separate task so that it can always run.
         run: yarn lint
 
+      # Core
       - name: "Core: Install"
         run: |
           set -ex
@@ -41,7 +42,7 @@ jobs:
       - name: "Core: Test"
         run: yarn test --invert --fgrep Integration
         working-directory: core
-      
+
       - name: "Core: Lint"
         # Split Lint into a separate task so that it can always run even if the tests fail.
         run: yarn lint
@@ -67,6 +68,39 @@ jobs:
         env:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # React Core
+      - name: "React Core: Install"
+        run: |
+          set -ex
+          yarn install
+        working-directory: react-core
+
+      - name: "React Core: Test"
+        run: yarn test
+        working-directory: react-core
+
+      - name: "React Core: Lint"
+        # Split Lint into a separate task so that it can always run even if the tests fail.
+        run: yarn lint
+        working-directory: react-core
+        if: success() || failure()
+
+      - name: "React Core: Build"
+        run: |
+          set -ex
+          yarn build
+        working-directory: react-core
+
+      - name: "React Core: Publish"
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -ex
+          yarn npm publish || echo "Might already be published."
+          # TODO Publish the beta or next version.
+        working-directory: react-core
+        env:
+          EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Extension
       - name: "Extension: Install"
         run: yarn install
@@ -86,12 +120,12 @@ jobs:
         run: |
           set -ex
           yarn build chrome
-          # Make sure the packages gets created.
-          ls packages/emojit.v*chrome.zip
+          # Make sure the packages get created.
+          ls packages/emojit-extension.v*chrome.zip
           yarn build firefox
-          ls packages/emojit.v*firefox.xpi.zip
+          ls packages/emojit-extension.v*firefox.xpi.zip
           md5sum packages/*
-          sha256sum packages/*          
+          sha256sum packages/*
         working-directory: extension
 
       - name: "Upload Chrome Artifact"
