@@ -80,7 +80,8 @@
   "include": [
     "src/**/*",
     // Seems like this is needed https://stackoverflow.com/a/57942799/1226799
-    "../core/src/**/*.ts",
+    // Maybe not needed now that tsconfig.build.json has references.
+    // "../core/src/**/*.ts",
     ".*.js",
     "*.js"
   ],
@@ -90,5 +91,5 @@
     "packages",
     "./lib",
     "../core/src/**/*.test.ts",
-  ]
+  ],
 }

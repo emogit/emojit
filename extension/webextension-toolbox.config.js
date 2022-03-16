@@ -34,7 +34,19 @@ module.exports = {
 		)
 		config.module.rules.push({
 			test: /\.tsx?$/,
-			loader: 'ts-loader'
+			loader: 'ts-loader',
+			exclude: /node_modules|\.d\.ts$/
+		})
+		config.module.rules.push({
+			test: /\.d\.ts$/,
+			loader: 'ignore-loader'
+		})
+		config.module.rules.push({
+			test: /\.css$/,
+			use: [
+				'style-loader',
+				'css-loader',
+			],
 		})
 
 		return config

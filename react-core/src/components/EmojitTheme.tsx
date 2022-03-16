@@ -1,7 +1,6 @@
-import { ThemeOptions, ThemeProvider } from '@mui/material'
 import blue from '@mui/material/colors/blue'
 import CssBaseline from '@mui/material/CssBaseline'
-import { createTheme } from '@mui/material/styles'
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
 import { isDarkModePreferred, ThemePreferenceType } from '../theme'
 

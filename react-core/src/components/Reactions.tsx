@@ -13,19 +13,11 @@ import { ErrorHandler } from '../error_handler'
 import { ThemePreferenceType } from '../theme'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
-
+import classes from '../styles/Reactions.module.css'
 
 const MAX_NUM_EMOJIS = 5
 
 const styles = (theme: Theme) => createStyles({
-	header: {
-		marginBottom: theme.spacing(1),
-	},
-	gridDiv: {
-		flexGrow: 1,
-		// Make sure there is an even amount of spacing on the left and right.
-		overflowX: 'hidden',
-	},
 	reactionGrid: {
 		marginTop: theme.spacing(1.5),
 		minHeight: '8em',
@@ -298,9 +290,7 @@ class Reactions extends React.Component<Props, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
-
-		// `pageReactions` already includes the user's reactions.
+		// `this.state.pageReactions` already includes the user's reactions.
 
 		return <div>
 			<EmojitTheme themePreference={this.props.themePreference}>

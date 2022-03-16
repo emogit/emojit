@@ -1,0 +1,5 @@
+.gridDiv {
+    flex-grow: 1;
+    /* Make sure there is an even amount of spacing on the left and right. */
+    overflow-x: 'hidden';
+}

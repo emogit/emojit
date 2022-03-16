@@ -10,6 +10,7 @@ import React from 'react'
 import browser from 'webextension-polyfill'
 import { BrowserGetMessage } from '../i18n_helper'
 import { setupUserSettings } from '../user'
+import classes2 from '../styles/Reactions.module.css'
 
 
 function openBadges(): void {
@@ -121,6 +122,7 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
+		console.debug(classes2)
 		const { classes } = this.props
 		const { emojit, pageUrl, tab, themePreference } = this.state
 
