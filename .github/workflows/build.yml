@@ -33,12 +33,6 @@ jobs:
         run: yarn lint
 
       # Core
-      - name: "Core: Install"
-        run: |
-          set -ex
-          yarn install
-        working-directory: core
-
       - name: "Core: Test"
         run: yarn test --invert --fgrep Integration
         working-directory: core
@@ -69,12 +63,6 @@ jobs:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # React Core
-      - name: "React Core: Install"
-        run: |
-          set -ex
-          yarn install
-        working-directory: react-core
-
       - name: "React Core: Test"
         run: yarn test
         working-directory: react-core
@@ -102,10 +90,6 @@ jobs:
           EMOGIT_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Extension
-      - name: "Extension: Install"
-        run: yarn install
-        working-directory: extension
-
       - name: "Extension: Test"
         run: yarn test
         working-directory: extension
