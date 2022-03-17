@@ -41,16 +41,6 @@ export class EmojitTheme extends React.Component<Props> {
 			themeOptions.palette.primary = {
 				main: blue[300],
 			}
-
-			// TODO See if still needed after upgrading to mui v5.
-			// const backgroundColor = DARK_MODE_INPUT_BACKGROUND_COLOR
-			// const color = DARK_MODE_INPUT_COLOR
-			// themeOptions.props = {}
-			// themeOptions.props.MuiTextField = {
-			// 	inputProps: {
-			// 		style: { backgroundColor, color, },
-			// 	},
-			// }
 		}
 		const theme = createTheme(themeOptions)
 		return (
