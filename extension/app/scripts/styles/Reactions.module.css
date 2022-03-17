@@ -1,0 +1,38 @@
+.header {
+	margin-bottom: 0.5rem;
+}
+
+.end {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+
+.historyButton {
+	background-color: inherit;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	font-size: 2em;
+	/* Make the buttons line up. */
+	position: relative;
+	top: 9px;
+}
+
+.badgesButton {
+	background-color: inherit;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	font-size: 1.5em;
+}
+
+.optionsButton {
+	background-color: inherit;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	/* Make sure it align with the right side. */
+	padding-right: 0.25rem;
+	font-size: 1.5em;
+}

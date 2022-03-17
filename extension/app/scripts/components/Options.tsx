@@ -1,19 +1,19 @@
 import { DEFAULT_SERVICE_URL, EmojitClient, isValidUserId } from '@emogit/emojit-core'
 import { ErrorHandler, ThemePreferenceType } from '@emogit/emojit-react-core'
-import { PaletteType } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import Container from '@material-ui/core/Container'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { PaletteMode } from '@mui/material'
+import Button from '@mui/material/Button'
+import Checkbox from '@mui/material/Checkbox'
+import Container from '@mui/material/Container'
+import FormControl from '@mui/material/FormControl'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
 import { BrowserGetMessage, getMessage } from '../i18n_helper'
+import classes from '../styles/Options.module.css'
 import { setupUserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
@@ -30,22 +30,7 @@ function download(filename: string, text: string) {
 	document.body.removeChild(element)
 }
 
-const styles = (theme: Theme) => createStyles({
-	title: {
-		marginBottom: theme.spacing(1),
-	},
-	section: {
-		marginBottom: theme.spacing(2),
-	},
-	buttonHolder: {
-		paddingTop: '4px',
-	},
-	themeSelection: {
-		marginLeft: theme.spacing(2),
-	},
-})
-
-class Options extends React.Component<WithStyles<typeof styles>, {
+class Options extends React.Component<unknown, {
 	emojit?: EmojitClient,
 	updateIconTextWithTopPageReaction?: boolean,
 	userId: string,
@@ -166,7 +151,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	handleThemeChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const themePreference = event.target.value as PaletteType | 'device'
+		const themePreference = event.target.value as PaletteMode | 'device'
 		this.setState({
 			themePreference,
 		})
@@ -182,10 +167,6 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
-
-		// FIXME Input fields colors for dark mode: https://github.com/onhello-automation/onhello/blob/main/app/scripts/components/Options.tsx
-
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				{getMessage('optionsPageTitle') || "⚙️ Options"}
@@ -222,7 +203,7 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 						checked={this.state.updateIconTextWithTopPageReaction === true}
 						onChange={this.handleChange}
 					/>}
-					label={getMessage('updateIconTextWithTopPageReactionLabel')}
+					label={getMessage('updateIconTextWithTopPageReactionLabel') || ""}
 				/>
 				<Typography component="p">
 					{getMessage('updateIconTextWithTopPageReactionInfo')}
@@ -288,4 +269,4 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(Options)
+export default Options

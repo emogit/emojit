@@ -59,6 +59,8 @@ module.exports = {
 		// Build
 		'/build/',
 		'/dist/',
+		'/lib/',
+		'/out/',
 		// Other
 		'node_modules/',
 		'/.yarn/',

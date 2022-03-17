@@ -1,0 +1,47 @@
+.historyIcon {
+	margin-right: 0.5rem;
+	position: relative;
+	top: 5px;
+}
+
+.title {
+	margin-top: 0.75rem !important;
+	margin-bottom: 0.5rem !important;
+}
+
+.deleteButton {
+	margin-bottom: 0.25rem !important;
+}
+
+.search {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.5rem !important;
+	width: 100%;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.pageUrlP {
+	font-size: 1.2em !important;
+}
+
+.historyGrid {
+	flex-grow: 1;
+}
+
+.card {
+	height: 100%;
+	word-break: break-word;
+}
+
+.cartContent {
+	padding: 12px !important;
+}
+
+.pageReactions {
+	font-size: 1.2em;
+}

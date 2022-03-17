@@ -1,7 +1,6 @@
-import { ThemeOptions, ThemeProvider } from '@material-ui/core'
-import blue from '@material-ui/core/colors/blue'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { createTheme } from '@material-ui/core/styles'
+import blue from '@mui/material/colors/blue'
+import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
 import { isDarkModePreferred, ThemePreferenceType } from '../theme'
 
@@ -30,7 +29,7 @@ export class EmojitTheme extends React.Component<Props> {
 
 		const themeOptions: ThemeOptions = {
 			palette: {
-				type: themePreference,
+				mode: themePreference,
 			}
 		}
 
@@ -41,15 +40,6 @@ export class EmojitTheme extends React.Component<Props> {
 			}
 			themeOptions.palette.primary = {
 				main: blue[300],
-			}
-
-			const backgroundColor = DARK_MODE_INPUT_BACKGROUND_COLOR
-			const color = DARK_MODE_INPUT_COLOR
-			themeOptions.props = {}
-			themeOptions.props.MuiTextField = {
-				inputProps: {
-					style: { backgroundColor, color, },
-				},
 			}
 		}
 		const theme = createTheme(themeOptions)

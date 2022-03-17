@@ -79,8 +79,6 @@
   "lib": ["es2020", "dom"],
   "include": [
     "src/**/*",
-    // Seems like this is needed https://stackoverflow.com/a/57942799/1226799
-    "../core/src/**/*.ts",
     ".*.js",
     "*.js"
   ],
@@ -90,5 +88,5 @@
     "packages",
     "./lib",
     "../core/src/**/*.test.ts",
-  ]
+  ],
 }

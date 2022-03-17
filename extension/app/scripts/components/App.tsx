@@ -1,44 +1,17 @@
 import { EmojitTheme, ThemePreferenceType } from '@emogit/emojit-react-core'
-import Container from '@material-ui/core/Container'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import HistoryIcon from '@material-ui/icons/History'
+import HistoryIcon from '@mui/icons-material/History'
+import Container from '@mui/material/Container'
 import React from 'react'
 import browser from 'webextension-polyfill'
+import classes from '../styles/App.module.css'
 import { updateUrl } from '../url_helper'
 import { setupUserSettings } from '../user'
 import Badges from './Badges'
 import History from './History'
 import Options from './Options'
 
-const styles = (theme: Theme) => createStyles({
-	headerSection: {
-		marginBottom: theme.spacing(1),
-	},
-	end: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	pageButton: {
-		// Make it look like a button since I couldn't figure out how to remove the background color of a Button.
-		cursor: 'pointer',
-		textDecoration: 'none',
-		padding: '4px',
-		marginRight: theme.spacing(2),
-		fontSize: '1.5em',
-		opacity: 0.4,
-	},
-	historyButton: {
-		// Make the buttons line up.
-		position: 'relative',
-		top: '5px',
-	},
-	selectedPageButton: {
-		opacity: 1,
-	},
-})
 
-class App extends React.Component<WithStyles<typeof styles>, {
+class App extends React.Component<unknown, {
 	page: string
 	themePreference?: ThemePreferenceType
 }> {
@@ -90,7 +63,6 @@ class App extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
 		const { themePreference } = this.state
 
 		return <div>
@@ -130,4 +102,4 @@ class App extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(App)
+export default App

@@ -1,0 +1,30 @@
+.headerSection {
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.5rem !important;
+}
+
+.end {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+
+.pageButton {
+	/* Make it look like a button since I couldnt figure out how to remove the background color of a Button. */
+	cursor: pointer;
+	text-decoration: none;
+	padding: 4px;
+	margin-right: 1rem;
+	font-size: 1.5em;
+	opacity: 0.4;
+}
+
+.historyButton {
+	/* Make the buttons line up. */
+	position: relative;
+	top: 5px;
+}
+
+.selectedPageButton {
+	opacity: 1;
+}

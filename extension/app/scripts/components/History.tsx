@@ -1,65 +1,24 @@
 import { EmojitClient, PageReactions } from '@emogit/emojit-core'
 import { ErrorHandler, progressSpinnerColor } from '@emogit/emojit-react-core'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Checkbox from '@material-ui/core/Checkbox'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
-import Link from '@material-ui/core/Link'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import HistoryIcon from '@material-ui/icons/History'
+import HistoryIcon from '@mui/icons-material/History'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Checkbox from '@mui/material/Checkbox'
+import CircularProgress from '@mui/material/CircularProgress'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import update from 'immutability-helper'
 import React, { ChangeEvent } from 'react'
 import { BrowserGetMessage, getMessage } from '../i18n_helper'
+import classes from '../styles/History.module.css'
 import { setupUserSettings } from '../user'
 
 
-const styles = (theme: Theme) => createStyles({
-	historyIcon: {
-		marginRight: theme.spacing(1),
-		position: 'relative',
-		top: '5px',
-	},
-	title: {
-		marginTop: theme.spacing(1.5),
-		marginBottom: theme.spacing(1),
-	},
-	deleteButton: {
-		marginBottom: theme.spacing(0.5),
-	},
-	search: {
-		marginTop: theme.spacing(1),
-		marginBottom: theme.spacing(1),
-		width: '100%',
-	},
-	center: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	pageUrlP: {
-		fontSize: '1.3em',
-	},
-	historyGrid: {
-		flexGrow: 1,
-	},
-	card: {
-		height: '100%',
-		wordBreak: 'break-word',
-	},
-	cartContent: {
-		padding: '12px !important',
-	},
-	pageReactions: {
-		fontSize: '1.2em',
-	},
-})
-
-class History extends React.Component<WithStyles<typeof styles>, {
+class History extends React.Component<unknown, {
 	emojit?: EmojitClient
 	history?: { pages: PageReactions[] },
 	shownHistory?: { pages: PageReactions[] },
@@ -129,8 +88,6 @@ class History extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
-
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				<HistoryIcon className={classes.historyIcon} color="primary" fontSize="large" />
@@ -224,4 +181,4 @@ class History extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(History)
+export default History

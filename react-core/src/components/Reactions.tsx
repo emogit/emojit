@@ -1,84 +1,19 @@
 import { EmojitClient, GetMessage, PageReaction, ReactRequest } from '@emogit/emojit-core'
 import { EmojiButton } from '@joeattardi/emoji-button'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Grid from '@material-ui/core/Grid'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@mui/material/CircularProgress'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import update from 'immutability-helper'
 import React from 'react'
 import { ErrorHandler } from '../error_handler'
+import classes from '../styles/Reactions.module.css'
 import { ThemePreferenceType } from '../theme'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
 
-
 const MAX_NUM_EMOJIS = 5
 
-const styles = (theme: Theme) => createStyles({
-	header: {
-		marginBottom: theme.spacing(1),
-	},
-	gridDiv: {
-		flexGrow: 1,
-		// Make sure there is an even amount of spacing on the left and right.
-		overflowX: 'hidden',
-	},
-	reactionGrid: {
-		marginTop: theme.spacing(1.5),
-		minHeight: '8em',
-		fontSize: '1.2em',
-		marginBottom: theme.spacing(0.5),
-		paddingLeft: theme.spacing(1),
-		paddingRight: theme.spacing(1),
-	},
-	reactionButton: {
-		backgroundColor: 'inherit',
-		fontSize: 'inherit',
-		cursor: 'pointer',
-		outline: 'none',
-		borderRadius: '16px',
-		borderColor: 'lightgrey',
-		minWidth: 'max-content',
-		padding: '4px',
-		paddingRight: '6px',
-		paddingLeft: '6px',
-	},
-	reactionButtonPicked: {
-		backgroundColor: 'dodgerblue',
-	},
-	reactionCount: {
-		fontSize: '1em',
-		color: 'grey',
-		paddingLeft: '0.5em',
-	},
-	reactionPickedCount: {
-		color: 'floralwhite',
-	},
-	errorSection: {
-		color: 'red',
-		fontSize: '1.0em',
-		wordBreak: 'break-word',
-		paddingLeft: theme.spacing(1),
-		paddingRight: theme.spacing(1),
-	},
-	center: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	emojiTrigger: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		outline: 'none',
-		borderRadius: '16px',
-		borderColor: 'lightgrey',
-		padding: '4px',
-		margin: '2px',
-		fontSize: '2em',
-	}
-})
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
 	emojitClient: EmojitClient
 	pageUrl: string
 	themePreference: ThemePreferenceType
@@ -149,11 +84,21 @@ class Reactions extends React.Component<Props, {
 		})
 	}
 
+	/**
+	 * Condense the size of the popup for the extension.
+	 * TODO Move to the extension code.
+	 */
 	condensePopup(): void {
-		document.getElementById('main-popup')!.style.height = '280px'
+		// TODO Get original size in componentDidMount.
+		document.getElementById('main-popup')!.style.height = '320px'
 	}
 
+	/**
+	 * Increase the size of the popup for the extension.
+	 * TODO Move to the extension code.
+	 */
 	expandPopup(): void {
+		// TODO Add to current size if less than a certain amount.
 		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
@@ -195,8 +140,8 @@ class Reactions extends React.Component<Props, {
 		}, () => {
 			this.react([{ reaction, count: +1 }]).catch((serviceError: any) => {
 				this.errorHandler!.showError({ serviceError })
-				// Remove the reaction.
 
+				// Remove the reaction.
 				const index = this.state.userReactions!.indexOf(reaction)
 				if (index > -1) {
 					this.updatePageReactions({ reaction, count: -1 })
@@ -295,12 +240,13 @@ class Reactions extends React.Component<Props, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
+		// `this.state.pageReactions` already includes the user's reactions.
 
-		// `pageReactions` already includes the user's reactions.
-
-		return <div>
+		return (<>
 			<EmojitTheme themePreference={this.props.themePreference}>
+				<div className={classes.reactingLoader}>
+					{this.state.showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+				</div>
 				<div className={classes.gridDiv}>
 					<Grid container
 						className={classes.reactionGrid}
@@ -344,8 +290,8 @@ class Reactions extends React.Component<Props, {
 					</button>
 				</div>
 			</EmojitTheme>
-		</div>
+		</>)
 	}
 }
 
-export const ReactionsComponent = withStyles(styles)(Reactions)
+export const ReactionsComponent = Reactions
