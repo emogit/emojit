@@ -79,9 +79,6 @@
   "lib": ["es2020", "dom"],
   "include": [
     "src/**/*",
-    // Seems like this is needed https://stackoverflow.com/a/57942799/1226799
-    // Maybe not needed now that tsconfig.build.json has references.
-    // "../core/src/**/*.ts",
     ".*.js",
     "*.js"
   ],
