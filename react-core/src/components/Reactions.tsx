@@ -2,78 +2,18 @@ import { EmojitClient, GetMessage, PageReaction, ReactRequest } from '@emogit/em
 import { EmojiButton } from '@joeattardi/emoji-button'
 import CircularProgress from '@mui/material/CircularProgress'
 import Grid from '@mui/material/Grid'
-import { Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import { WithStyles } from '@mui/styles'
-import createStyles from '@mui/styles/createStyles'
-import withStyles from '@mui/styles/withStyles'
 import update from 'immutability-helper'
 import React from 'react'
 import { ErrorHandler } from '../error_handler'
+import classes from '../styles/Reactions.module.css'
 import { ThemePreferenceType } from '../theme'
 import { progressSpinnerColor } from './constants'
 import { EmojitTheme } from './EmojitTheme'
-import classes from '../styles/Reactions.module.css'
 
 const MAX_NUM_EMOJIS = 5
 
-const styles = (theme: Theme) => createStyles({
-	reactionGrid: {
-		marginTop: theme.spacing(1.5),
-		minHeight: '8em',
-		fontSize: '1.2em',
-		marginBottom: theme.spacing(0.5),
-		paddingLeft: theme.spacing(1),
-		paddingRight: theme.spacing(1),
-	},
-	reactionButton: {
-		backgroundColor: 'inherit',
-		fontSize: 'inherit',
-		cursor: 'pointer',
-		outline: 'none',
-		borderRadius: '16px',
-		borderColor: 'lightgrey',
-		minWidth: 'max-content',
-		padding: '4px',
-		paddingRight: '6px',
-		paddingLeft: '6px',
-	},
-	reactionButtonPicked: {
-		backgroundColor: 'dodgerblue',
-	},
-	reactionCount: {
-		fontSize: '1em',
-		color: 'grey',
-		paddingLeft: '0.5em',
-	},
-	reactionPickedCount: {
-		color: 'floralwhite',
-	},
-	errorSection: {
-		color: 'red',
-		fontSize: '1.0em',
-		wordBreak: 'break-word',
-		paddingLeft: theme.spacing(1),
-		paddingRight: theme.spacing(1),
-	},
-	center: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	emojiTrigger: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		outline: 'none',
-		borderRadius: '16px',
-		borderColor: 'lightgrey',
-		padding: '4px',
-		margin: '2px',
-		fontSize: '2em',
-	}
-})
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
 	emojitClient: EmojitClient
 	pageUrl: string
 	themePreference: ThemePreferenceType
@@ -341,4 +281,4 @@ class Reactions extends React.Component<Props, {
 	}
 }
 
-export const ReactionsComponent = withStyles(styles)(Reactions)
+export const ReactionsComponent = Reactions

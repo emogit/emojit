@@ -5,13 +5,10 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
-import { Theme } from '@mui/material/styles'
-import { WithStyles } from '@mui/styles'
-import createStyles from '@mui/styles/createStyles'
-import withStyles from '@mui/styles/withStyles'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import { getMessage } from '../i18n_helper'
+import classes from '../styles/Badges.module.css'
 import { setupUserSettings } from '../user'
 
 interface Badge {
@@ -22,28 +19,7 @@ interface Badge {
 	currentReactions: string[] | null | undefined
 }
 
-const styles = (theme: Theme) => createStyles({
-	title: {
-		marginTop: theme.spacing(1.5),
-		marginBottom: theme.spacing(1),
-	},
-	center: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	badgeGrid: {
-		flexGrow: 1,
-	},
-	card: {
-		height: '100%',
-		wordBreak: 'break-word',
-	},
-	badgeName: {
-	},
-})
-
-class Badges extends React.Component<WithStyles<typeof styles>, {
+class Badges extends React.Component<unknown, {
 	badges: { badges: Badge[] } | undefined,
 	errorGettingBadges: string | undefined,
 }> {
@@ -68,8 +44,6 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
-
 		const badgeSummary: { [badgeName: string]: number | undefined } = {}
 		if (this.state.badges !== undefined) {
 			for (const badge of this.state.badges.badges) {
@@ -108,7 +82,7 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 					<Grid key={`badgeSummary-${index}`} item xs={12} sm={4} md={3}>
 						<Card className={classes.card} raised={true}>
 							<CardContent>
-								<Typography className={`${classes.badgeName} ${classes.center}`} variant="h6">
+								<Typography className={classes.center} variant="h6">
 									{getMessage(`badge_${badgeName}`) || badgeName}
 								</Typography>
 								<Typography className={classes.center} color="textSecondary" component="p">
@@ -152,4 +126,4 @@ class Badges extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(Badges)
+export default Badges

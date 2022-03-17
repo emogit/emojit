@@ -1,16 +1,12 @@
 import { EmojitClient, PageReaction } from '@emogit/emojit-core'
 import { progressSpinnerColor, ReactionsComponent, ThemePreferenceType } from '@emogit/emojit-react-core'
-import CircularProgress from '@mui/material/CircularProgress'
-import { Theme } from '@mui/material/styles'
-import { WithStyles } from '@mui/styles'
-import createStyles from '@mui/styles/createStyles'
-import withStyles from '@mui/styles/withStyles'
 import HistoryIcon from '@mui/icons-material/History'
+import CircularProgress from '@mui/material/CircularProgress'
 import React from 'react'
 import browser from 'webextension-polyfill'
 import { BrowserGetMessage } from '../i18n_helper'
+import classes from '../styles/Reactions.module.css'
 import { setupUserSettings } from '../user'
-import classes2 from '../styles/Reactions.module.css'
 
 
 function openBadges(): void {
@@ -25,50 +21,9 @@ function openOptions(): void {
 	browser.runtime.openOptionsPage()
 }
 
-const styles = (theme: Theme) => createStyles({
-	header: {
-		marginBottom: theme.spacing(1),
-	},
-	reactingLoader: {
-		position: 'relative',
-		top: '-2px',
-		paddingRight: '2px',
-	},
-	end: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	historyButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		fontSize: '2em',
-		// Make the buttons line up.
-		position: 'relative',
-		top: '9px',
-	},
-	badgesButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		fontSize: '1.5em',
-	},
-	optionsButton: {
-		backgroundColor: 'inherit',
-		cursor: 'pointer',
-		border: 'none',
-		outline: 'none',
-		// Make sure it align with the right side.
-		paddingRight: theme.spacing(0.5),
-		fontSize: '1.5em',
-	},
-})
+// type Props = unknown
 
-
-class Reactions extends React.Component<WithStyles<typeof styles>, {
+class Reactions extends React.Component<unknown, {
 	emojit?: EmojitClient
 	pageUrl?: string
 	tab?: browser.Tabs.Tab
@@ -122,8 +77,6 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		console.debug(classes2)
-		const { classes } = this.props
 		const { emojit, pageUrl, tab, themePreference } = this.state
 
 		if (emojit === undefined || themePreference === undefined || pageUrl === undefined || tab === undefined) {
@@ -162,4 +115,4 @@ class Reactions extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(Reactions)
+export default Reactions

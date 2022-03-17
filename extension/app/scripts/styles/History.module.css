@@ -1,0 +1,47 @@
+.historyIcon {
+	margin-right: 0.5rem;
+	position: relative;
+	top: 5px;
+}
+
+.title {
+	margin-top: 0.75rem;
+	margin-bottom: 0.5rem;
+}
+
+.deleteButton {
+	margin-bottom: 0.25rem;
+}
+
+.search {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	width: 100%;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.pageUrlP {
+	font-size: 1.3em;
+}
+
+.historyGrid {
+	flex-grow: 1;
+}
+
+.card {
+	height: 100%;
+	word-break: break-word;
+}
+
+.cartContent {
+	padding: 12px !important;
+}
+
+.pageReactions {
+	font-size: 1.2em;
+}

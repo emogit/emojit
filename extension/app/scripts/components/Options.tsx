@@ -8,15 +8,12 @@ import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
-import { Theme } from '@mui/material/styles'
-import { WithStyles } from '@mui/styles'
-import createStyles from '@mui/styles/createStyles'
-import withStyles from '@mui/styles/withStyles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import browser from 'webextension-polyfill'
 import { BrowserGetMessage, getMessage } from '../i18n_helper'
+import classes from '../styles/Options.module.css'
 import { setupUserSettings } from '../user'
 
 // Modified from https://stackoverflow.com/a/18197341/1226799
@@ -33,22 +30,7 @@ function download(filename: string, text: string) {
 	document.body.removeChild(element)
 }
 
-const styles = (theme: Theme) => createStyles({
-	title: {
-		marginBottom: theme.spacing(1),
-	},
-	section: {
-		marginBottom: theme.spacing(2),
-	},
-	buttonHolder: {
-		paddingTop: '4px',
-	},
-	themeSelection: {
-		marginLeft: theme.spacing(2),
-	},
-})
-
-class Options extends React.Component<WithStyles<typeof styles>, {
+class Options extends React.Component<unknown, {
 	emojit?: EmojitClient,
 	updateIconTextWithTopPageReaction?: boolean,
 	userId: string,
@@ -185,10 +167,6 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 
 	render(): React.ReactNode {
-		const { classes } = this.props
-
-		// FIXME Input fields colors for dark mode: https://github.com/onhello-automation/onhello/blob/main/app/scripts/components/Options.tsx
-
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				{getMessage('optionsPageTitle') || "⚙️ Options"}
@@ -291,4 +269,4 @@ class Options extends React.Component<WithStyles<typeof styles>, {
 	}
 }
 
-export default withStyles(styles)(Options)
+export default Options

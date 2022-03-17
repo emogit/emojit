@@ -1,5 +1,68 @@
+/* theme.spacing(1) = 0.5rem = 8px */
 .gridDiv {
-    flex-grow: 1;
-    /* Make sure there is an even amount of spacing on the left and right. */
-    overflow-x: 'hidden';
+	flex-grow: 1;
+	/* Make sure there is an even amount of spacing on the left and right. */
+	overflow-x: hidden;
+}
+
+.reactionGrid {
+	margin-top: 0.75rem;
+	min-height: 8em;
+	font-size: 1.2em;
+	margin-bottom: 0.25rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+.reactionButton {
+	background-color: inherit;
+	font-size: inherit;
+	cursor: pointer;
+	outline: none;
+	border-radius: 16px;
+	border-color: lightgrey;
+	min-width: max-content;
+	padding: 4px;
+	padding-right: 6px;
+	padding-left: 6px;
+}
+
+.reactionButtonPicked {
+	background-color: dodgerblue;
+}
+
+.reactionCount {
+	font-size: 1em;
+	color: grey;
+	padding-left: 0.5em;
+}
+
+.reactionPickedCount {
+	color: floralwhite;
+}
+
+.errorSection {
+	color: red;
+	font-size: 1.0em;
+	word-break: break-word;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+/* TODO Move to a global place and try to import the globals. */
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.emojiTrigger {
+	background-color: inherit;
+	cursor: pointer;
+	outline: none;
+	border-radius: 16px;
+	border-color: lightgrey;
+	padding: 4px;
+	margin: 2px;
+	font-size: 2em;
 }
