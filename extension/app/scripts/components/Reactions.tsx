@@ -21,21 +21,15 @@ function openOptions(): void {
 	browser.runtime.openOptionsPage()
 }
 
-// type Props = unknown
-
 class Reactions extends React.Component<unknown, {
 	emojit?: EmojitClient
 	pageUrl?: string
 	tab?: browser.Tabs.Tab
 	themePreference?: ThemePreferenceType
-	// TODO Maybe use redux for showReactingLoader so that it synced with other component that are loading?
-	showReactingLoader: boolean
 }> {
 	constructor(props: any) {
 		super(props)
-		this.state = {
-			showReactingLoader: false,
-		}
+		this.state = {}
 
 		this.updateBadgeText = this.updateBadgeText.bind(this)
 	}
@@ -64,6 +58,8 @@ class Reactions extends React.Component<unknown, {
 			this.setState({ pageUrl, tab: tabs[0] })
 		})
 
+		// Change the theme when the user changes the theme preference.
+		// Useful if the extension is open in another window.
 		browser.storage.onChanged.addListener((changes, areaName) => {
 			if (areaName === 'local' && changes.themePreference) {
 				const themePreference = changes.themePreference.newValue
@@ -86,7 +82,6 @@ class Reactions extends React.Component<unknown, {
 		} else {
 			return (<div>
 				<div className={`${classes.header} ${classes.end}`}>
-					{this.state.showReactingLoader && <CircularProgress className={classes.reactingLoader} size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
 					<button className={classes.historyButton}
 						onClick={openHistory}>
 						<HistoryIcon color="primary" fontSize="inherit" />

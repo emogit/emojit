@@ -1,4 +1,8 @@
-/* theme.spacing(1) = 0.5rem = 8px */
+.reactingLoader {
+	margin-left: 1rem;
+	min-height: 2rem;
+}
+
 .gridDiv {
 	flex-grow: 1;
 	/* Make sure there is an even amount of spacing on the left and right. */

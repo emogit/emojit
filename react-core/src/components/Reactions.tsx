@@ -84,11 +84,21 @@ class Reactions extends React.Component<Props, {
 		})
 	}
 
+	/**
+	 * Condense the size of the popup for the extension.
+	 * TODO Move to the extension code.
+	 */
 	condensePopup(): void {
-		document.getElementById('main-popup')!.style.height = '280px'
+		// TODO Get original size in componentDidMount.
+		document.getElementById('main-popup')!.style.height = '320px'
 	}
 
+	/**
+	 * Increase the size of the popup for the extension.
+	 * TODO Move to the extension code.
+	 */
 	expandPopup(): void {
+		// TODO Add to current size if less than a certain amount.
 		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
@@ -130,8 +140,8 @@ class Reactions extends React.Component<Props, {
 		}, () => {
 			this.react([{ reaction, count: +1 }]).catch((serviceError: any) => {
 				this.errorHandler!.showError({ serviceError })
-				// Remove the reaction.
 
+				// Remove the reaction.
 				const index = this.state.userReactions!.indexOf(reaction)
 				if (index > -1) {
 					this.updatePageReactions({ reaction, count: -1 })
@@ -232,8 +242,11 @@ class Reactions extends React.Component<Props, {
 	render(): React.ReactNode {
 		// `this.state.pageReactions` already includes the user's reactions.
 
-		return <div>
+		return (<>
 			<EmojitTheme themePreference={this.props.themePreference}>
+				<div className={classes.reactingLoader}>
+					{this.state.showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+				</div>
 				<div className={classes.gridDiv}>
 					<Grid container
 						className={classes.reactionGrid}
@@ -277,7 +290,7 @@ class Reactions extends React.Component<Props, {
 					</button>
 				</div>
 			</EmojitTheme>
-		</div>
+		</>)
 	}
 }
 

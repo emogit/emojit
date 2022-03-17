@@ -2,12 +2,6 @@
 	margin-bottom: 0.5rem;
 }
 
-.reactingLoader {
-	position: relative;
-	top: -2px;
-	padding-right: 2px;
-}
-
 .end {
 	display: flex;
 	justify-content: flex-end;
