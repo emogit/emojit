@@ -12,8 +12,9 @@ You will need install and build the dependencies in this repo first:
 pushd ..
 yarn install
 cd core
-yarn install
-yarn build
+yarn install && yarn build
+cd react-core
+yarn install && yarn build
 popd
 ```
 
