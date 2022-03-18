@@ -1,7 +1,3 @@
-// browser.runtime.onInstalled.addListener((details) => {
-//   console.log('previousVersion', details.previousVersion)
-// })
-
 import browser from 'webextension-polyfill'
 import { setupUserSettings } from './user'
 
@@ -26,6 +22,7 @@ browser.tabs.onActivated.addListener(async ({ tabId, }) => {
 	let tabInfo = tabInfos[tabId]
 	// console.debug("tabInfo:", tabInfo)
 	if (tabInfo === undefined || tabInfo.url === undefined) {
+		// console.debug("tabInfo.url:", tabInfo.url)
 		// Mainly for when the page refreshes and they return to the tab.
 		// Needs "tabs" permission.
 		const tabs = await browser.tabs.query({ active: true, currentWindow: true })
@@ -77,13 +74,15 @@ browser.tabs.onRemoved.addListener(tabId => {
 // Needs "tabs" permission.
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	// console.debug("onUpdated tabId:", tabId)
-	console.debug("onUpdated changeInfo:", changeInfo, "tab:", tab)
+	// console.debug("onUpdated changeInfo:", changeInfo, "tab:", tab)
 	const { status } = changeInfo
 	const { url } = tab
 	// Sometimes the status: 'complete' can come in multiple times.
 	if (status !== 'complete' || url === undefined) {
 		return
 	}
+
+	// console.debug("onUpdated changeInfo:", changeInfo, "tab:", tab)
 
 	// The URL changed so we should clear the top reaction.
 	browser.browserAction.setBadgeText({ tabId, text: null })
