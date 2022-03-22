@@ -141,7 +141,8 @@ jobs:
 
           # Delete extra files.
           cd packages
-          zip -d *.zip */*.ts scripts/*/*.{ts,tsx} */*.d.js scripts/{i18n_helper,url_helper,user}.js scripts/styles/*
+          zip -d emojit-extension.v*chrome.zip */*.ts scripts/*/*.{ts,tsx} */*.d.js scripts/{i18n_helper,url_helper,user}.js scripts/styles/*
+          zip -d emojit-extension.v*firefox.xpi.zip */*.ts scripts/*/*.{ts,tsx} */*.d.js scripts/{i18n_helper,url_helper,user}.js scripts/styles/*
           ls -lh
 
           md5sum *
