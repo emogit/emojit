@@ -4,9 +4,23 @@ on:
   push:
     branches:
     - main
+    paths-ignore:
+    - .gitignore
+    - .gitattributes
+    - *.md
+    - *.txt
+    - */*.md
+    - */.gitignore
   pull_request:
     branches:
     - main
+    paths-ignore:
+    - .gitignore
+    - .gitattributes
+    - *.md
+    - *.txt
+    - */*.md
+    - */.gitignore
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -121,11 +135,17 @@ jobs:
           set -ex
           yarn build chrome
           # Make sure the packages get created.
-          ls packages/emojit-extension.v*chrome.zip
+          ls -lh packages/emojit-extension.v*chrome.zip
           yarn build firefox
-          ls packages/emojit-extension.v*firefox.xpi.zip
-          md5sum packages/*
-          sha256sum packages/*
+          ls -lh packages/emojit-extension.v*firefox.xpi.zip
+
+          # Delete extra files.
+          cd packages
+          zip -d *.zip */*.ts scripts/*/*.{ts,tsx} */*.d.js scripts/{i18n_helper,url_helper,user}.js scripts/styles/*
+          ls -lh
+
+          md5sum *
+          sha256sum *
         working-directory: extension
 
       - name: "Upload Chrome Artifact"

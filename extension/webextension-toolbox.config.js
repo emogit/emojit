@@ -12,23 +12,20 @@ module.exports = {
 		} else {
 			config.resolve.plugins = [new TsconfigPathsPlugin()]
 		}
-		// Add typescript loader. supports .ts and .tsx files as entry points.
-		config.resolve.extensions.push('.ts')
-		config.resolve.extensions.push('.tsx')
+		// Add typescript loader. Supports .ts and .tsx files as entry points.
+		config.resolve.extensions.push('.ts', '.tsx')
 		config.entry = GlobEntriesPlugin.getEntries(
 			[
 				resolve('app', '*.{js,mjs,jsx,ts,tsx}'),
 				resolve('app', '?(scripts)/*.{js,mjs,jsx,ts,tsx}'),
-				// Try to get imports from core working.
-				// resolve('../core/src', '*.{js,mjs,jsx,ts,tsx}'),
 			],
 			{
-				// FIXME Try to exclude test files.
 				ignore: [
 					'app/scripts/__tests__/*',
 					'scripts/__tests__/*',
 					'*/__tests__/*',
-					'*/*/__tests__/*',
+					'**/__tests__/*',
+					'*/**/__tests__/*',
 				]
 			}
 		)
