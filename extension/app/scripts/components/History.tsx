@@ -20,10 +20,11 @@ import { setupUserSettings } from '../user'
 
 class History extends React.Component<unknown, {
 	emojit?: EmojitClient
-	history?: { pages: PageReactions[] },
-	shownHistory?: { pages: PageReactions[] },
-	checkedPages: string[],
-	errorGettingHistory?: string,
+	history?: { pages: PageReactions[] }
+	shownHistory?: { pages: PageReactions[] }
+	/** The URLs for the pages that the user has selected (checked off). */
+	checkedPages: string[]
+	errorGettingHistory?: string
 }> {
 	private errorHandler = new ErrorHandler(BrowserGetMessage)
 
@@ -70,19 +71,47 @@ class History extends React.Component<unknown, {
 		}
 	}
 
+	private getIndices(pages: PageReactions[], checkedPageUrls: string[]): number[] {
+		const result = []
+		const pageUrlsSet = new Set(checkedPageUrls)
+		for (let i = 0; i < pages.length; ++i) {
+			if (pageUrlsSet.has(pages[i].pageUrl)) {
+				result.push(i)
+			}
+		}
+		return result
+	}
+
 	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
-			// Make the loading spinner show.
 			const { checkedPages } = this.state
+			let { history, shownHistory } = this.state
+			// Make the loading spinner show.
 			this.setState({ history: undefined, shownHistory: undefined, checkedPages: [] }, async () => {
 				try {
 					await this.state.emojit!.deleteUserReactions(checkedPages)
 					this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
-					const history = await this.state.emojit!.getAllUserReactions()
-					this.setState({ history, shownHistory: history })
+
+					if (history) {
+						const indices = this.getIndices(history.pages, checkedPages)
+						indices.sort((a, b) => b - a)
+						for (const index of indices) {
+							history.pages.splice(index, 1)
+						}
+					}
+
+					if (shownHistory) {
+						const indices = this.getIndices(shownHistory.pages, checkedPages)
+						indices.sort((a, b) => b - a)
+						for (const index of indices) {
+							shownHistory.pages.splice(index, 1)
+						}
+					}
 				} catch (serviceError) {
 					this.errorHandler.showError({ serviceError })
 				}
+
+				this.setState({ history, shownHistory })
 			})
 		}
 	}
