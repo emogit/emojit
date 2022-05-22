@@ -1,4 +1,4 @@
-import { EmojitClient, PageReactions } from '@emogit/emojit-core'
+import { EmojitClient, PageReactions, UserReactionsResponse } from '@emogit/emojit-core'
 import { ErrorHandler, progressSpinnerColor } from '@emogit/emojit-react-core'
 import HistoryIcon from '@mui/icons-material/History'
 import Button from '@mui/material/Button'
@@ -17,6 +17,10 @@ import { BrowserGetMessage, getMessage } from '../i18n_helper'
 import classes from '../styles/History.module.css'
 import { setupUserSettings } from '../user'
 
+interface ReactionCount {
+	reaction: string
+	count: number
+}
 
 class History extends React.Component<unknown, {
 	emojit?: EmojitClient
@@ -24,6 +28,7 @@ class History extends React.Component<unknown, {
 	shownHistory?: { pages: PageReactions[] }
 	/** The URLs for the pages that the user has selected (checked off). */
 	checkedPages: string[]
+	reactionCounts?: ReactionCount[]
 	errorGettingHistory?: string
 }> {
 	private errorHandler = new ErrorHandler(BrowserGetMessage)
@@ -46,12 +51,32 @@ class History extends React.Component<unknown, {
 		const { emojit } = await setupUserSettings(['emojit'])
 		try {
 			const history = await emojit.getAllUserReactions()
-			this.setState({ emojit, history, shownHistory: history })
+			const reactionCounts = this.getReactionCounts(history)
+			this.setState({ emojit, history, shownHistory: history, reactionCounts })
 		} catch (err) {
 			console.error(err)
 			const errorGettingHistory = getMessage('errorGettingHistory')
 			this.setState({ errorGettingHistory })
 		}
+	}
+
+	private getReactionCounts(history: UserReactionsResponse) {
+		const reactionsCounter = new Map<string, number>()
+		for (const page of history.pages) {
+			for (const reaction of page.currentReactions) {
+				if (reactionsCounter.has(reaction)) {
+					reactionsCounter.set(reaction, reactionsCounter.get(reaction)! + 1)
+				} else {
+					reactionsCounter.set(reaction, 1)
+				}
+			}
+		}
+		const reactionCounts = Array.from(reactionsCounter.entries()).map(([reaction, count]) => ({
+			reaction,
+			count,
+		}))
+		reactionCounts.sort((a, b) => b.count - a.count)
+		return reactionCounts
 	}
 
 	handleDeleteCheckbox(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -85,9 +110,9 @@ class History extends React.Component<unknown, {
 	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
 			const { checkedPages } = this.state
-			let { history, shownHistory } = this.state
+			let { history, shownHistory, reactionCounts } = this.state
 			// Make the loading spinner show.
-			this.setState({ history: undefined, shownHistory: undefined, checkedPages: [] }, async () => {
+			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPages: [] }, async () => {
 				try {
 					await this.state.emojit!.deleteUserReactions(checkedPages)
 					this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
@@ -98,6 +123,8 @@ class History extends React.Component<unknown, {
 						for (const index of indices) {
 							history.pages.splice(index, 1)
 						}
+
+						reactionCounts = this.getReactionCounts(history)
 					}
 
 					if (shownHistory) {
@@ -111,7 +138,7 @@ class History extends React.Component<unknown, {
 					this.errorHandler.showError({ serviceError })
 				}
 
-				this.setState({ history, shownHistory })
+				this.setState({ history, shownHistory, reactionCounts })
 			})
 		}
 	}
@@ -123,7 +150,29 @@ class History extends React.Component<unknown, {
 				{getMessage('historyPageTitle') || "History"}
 			</Typography>
 
+
 			{this.state.history !== undefined && this.state.history.pages.length > 0 && <div>
+				<Grid container spacing={2}>
+					{this.state.reactionCounts?.map(({ reaction, count }) =>
+						<Grid item key={reaction} xs={6} sm={4} md={3} lg={1}>
+							{/* TODO Make toggleable to search. */}
+							<Card className={classes.card} raised={true}>
+								<CardContent>
+									<Typography className={classes.center} variant="h6">
+										{reaction}
+									</Typography>
+									<Typography className={classes.center} color="textSecondary" component="p">
+										{"x "}{count}
+									</Typography>
+								</CardContent>
+							</Card>
+						</Grid>)}
+				</Grid>
+
+
+
+
+
 				<Button className={classes.deleteButton}
 					disabled={this.state.checkedPages.length === 0}
 					color="secondary"
