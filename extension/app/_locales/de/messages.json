@@ -111,7 +111,7 @@
 		"message": "Verlauf für die ausgewählte(n) Seite(n) gelöscht."
 	},
 	"currentReactionsIdentifier": {
-		"message": "Deine momentane(n) Reaktion(en): "
+		"message": ""
 	},
 	"badgesIdentifier": {
 		"message": "🏆 Dein(e) Abzeichen: "
@@ -132,6 +132,6 @@
 		"message": "💯 Abzeichen 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅: "
+		"message": "📅 "
 	}
 }

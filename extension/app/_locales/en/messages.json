@@ -111,7 +111,7 @@
 		"message": "Successfully deleted the history for the selected page(s)."
 	},
 	"currentReactionsIdentifier": {
-		"message": "Your current reaction(s): "
+		"message": ""
 	},
 	"badgesIdentifier": {
 		"message": "🏆 Your badge(s): "
@@ -132,6 +132,6 @@
 		"message": "💯 Badges 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅: "
+		"message": "📅 "
 	}
 }
