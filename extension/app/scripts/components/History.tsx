@@ -129,7 +129,7 @@ class History extends React.Component<unknown, {
 					color="secondary"
 					variant="contained"
 					onClick={this.deletePages}>
-					{`Delete  ${this.state.checkedPages.length} selected`}
+					{getMessage('deleteSelectedPages', this.state.checkedPages.length)}
 				</Button>
 
 				<TextField className={classes.search}

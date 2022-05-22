@@ -98,6 +98,14 @@
 	"historyPageTitle": {
 		"message": "Geschichte"
 	},
+	"deleteSelectedPages":{
+		"message": "$count$ löschen",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
 	"errorGettingHistory": {
 		"message": "Beim Abrufen deines Verlaufs ist ein Fehler aufgetreten."
 	},
