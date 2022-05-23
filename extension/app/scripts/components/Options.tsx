@@ -49,6 +49,8 @@ class Options extends React.Component<unknown, {
 			serviceUrl: "",
 		}
 
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('optionsPageTitle') || "Options")
+
 		this.deleteAllUserData = this.deleteAllUserData.bind(this)
 		this.exportData = this.exportData.bind(this)
 		this.handleChange = this.handleChange.bind(this)

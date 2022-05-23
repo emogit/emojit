@@ -98,6 +98,14 @@
 	"historyPageTitle": {
 		"message": "Geschichte"
 	},
+	"deleteSelectedPages":{
+		"message": "$count$ löschen",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
 	"errorGettingHistory": {
 		"message": "Beim Abrufen deines Verlaufs ist ein Fehler aufgetreten."
 	},
@@ -111,7 +119,7 @@
 		"message": "Verlauf für die ausgewählte(n) Seite(n) gelöscht."
 	},
 	"currentReactionsIdentifier": {
-		"message": "Deine momentane(n) Reaktion(en): "
+		"message": ""
 	},
 	"badgesIdentifier": {
 		"message": "🏆 Dein(e) Abzeichen: "
@@ -132,6 +140,6 @@
 		"message": "💯 Abzeichen 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅: "
+		"message": "📅 "
 	}
 }

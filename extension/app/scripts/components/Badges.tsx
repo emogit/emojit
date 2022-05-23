@@ -1,3 +1,4 @@
+import { Badge } from '@emogit/emojit-core'
 import { progressSpinnerColor } from '@emogit/emojit-react-core'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -11,14 +12,6 @@ import { getMessage } from '../i18n_helper'
 import classes from '../styles/Badges.module.css'
 import { setupUserSettings } from '../user'
 
-interface Badge {
-	name: string
-	time: Date | null | undefined
-	progress: number
-	pageUrl: string | null | undefined
-	currentReactions: string[] | null | undefined
-}
-
 class Badges extends React.Component<unknown, {
 	badges: { badges: Badge[] } | undefined,
 	errorGettingBadges: string | undefined,
@@ -29,6 +22,7 @@ class Badges extends React.Component<unknown, {
 			badges: undefined,
 			errorGettingBadges: undefined,
 		}
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('badgesPageTitle') || "Your Badges")
 	}
 
 	async componentDidMount() {
@@ -57,7 +51,7 @@ class Badges extends React.Component<unknown, {
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
-				{getMessage('badgesPageTitle') || "🏆 Badges 🎉"}
+				{getMessage('badgesPageTitle') || "🏆 Your Badges 🎉"}
 			</Typography>
 			{this.state.badges === undefined && this.state.errorGettingBadges === undefined && <div className={classes.center}>
 				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
@@ -112,9 +106,12 @@ class Badges extends React.Component<unknown, {
 									</Link>
 								</Typography>}
 								{badge.currentReactions && <Typography variant="body2" component="p">
-									{getMessage('currentReactionsIdentifier') || "Your current reaction(s): "}{badge.currentReactions.join("")}
+									{getMessage('currentReactionsIdentifier') || ""}
+									<span className={classes.badgeReactions}>
+										{badge.currentReactions.join("")}
+									</span>
 								</Typography>}
-								{badge.time && <Typography variant="body2" component="p">
+								{badge.time && <Typography variant="body2" component="p" color="textSecondary">
 									{getMessage('earnedTimeIdentifier') || "📅 "}{new Date(badge.time).toString()}
 								</Typography>}
 							</CardContent>

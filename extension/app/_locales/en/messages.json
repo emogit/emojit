@@ -81,7 +81,7 @@
 		"message": "The URL is too long. It might contain private information."
 	},
 	"badgesPageTitle": {
-		"message": "🏆 Badges 🎉"
+		"message": "🏆 Your Badges 🎉"
 	},
 	"badgeSummaryTitle": {
 		"message": "Summary"
@@ -98,6 +98,14 @@
 	"historyPageTitle": {
 		"message": "History"
 	},
+	"deleteSelectedPages":{
+		"message": "Delete $count$ selected",
+		"placeholders": {
+			"count": {
+				"content": "$1"
+			}
+		}
+	},
 	"errorGettingHistory": {
 		"message": "There was an error getting your history."
 	},
@@ -111,7 +119,7 @@
 		"message": "Successfully deleted the history for the selected page(s)."
 	},
 	"currentReactionsIdentifier": {
-		"message": "Your current reaction(s): "
+		"message": ""
 	},
 	"badgesIdentifier": {
 		"message": "🏆 Your badge(s): "
@@ -132,6 +140,6 @@
 		"message": "💯 Badges 🏆"
 	},
 	"earnedTimeIdentifier": {
-		"message": "📅: "
+		"message": "📅 "
 	}
 }

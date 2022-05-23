@@ -119,7 +119,7 @@ class Reactions extends React.Component<Props, {
 	}
 
 	hasMaxReactions(): boolean {
-		return !this.state.userReactions || this.state.userReactions.length >= MAX_NUM_EMOJIS
+		return this.state.userReactions === undefined || this.state.userReactions.length >= MAX_NUM_EMOJIS
 	}
 
 	addEmoji(reaction: string): void {
