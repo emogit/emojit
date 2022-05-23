@@ -146,7 +146,6 @@ class History extends React.Component<unknown, State> {
 			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPageUrls: [] }, async () => {
 				try {
 					await this.state.emojit!.deleteUserReactions(checkedPageUrls)
-					this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
 
 					const checkedPageUrlsSet = new Set(checkedPageUrls)
 					if (history) {
@@ -166,7 +165,11 @@ class History extends React.Component<unknown, State> {
 					this.errorHandler.showError({ serviceError })
 				}
 
-				this.setState({ history, reactionCounts, reactionsFilter, searchText, shownHistory })
+				this.setState(
+					{ history, reactionCounts, reactionsFilter, searchText, shownHistory },
+					() => {
+						this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
+					})
 			})
 		}
 	}
@@ -212,13 +215,21 @@ class History extends React.Component<unknown, State> {
 	}
 
 	render(): React.ReactNode {
-		const { history, reactionsFilter, shownHistory } = this.state
+		const { errorGettingHistory, history, reactionsFilter, shownHistory } = this.state
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				<HistoryIcon className={classes.historyIcon} color="primary" fontSize="large" />
 				{getMessage('historyPageTitle') || "History"}
 			</Typography>
+			{shownHistory === undefined && errorGettingHistory !== undefined && <Typography variant="body2" component="p" color="error">
+				{errorGettingHistory}
+			</Typography>}
+			{shownHistory === undefined && errorGettingHistory === undefined && <div className={`${classes.loadingSpinner} ${classes.center}`}>
+				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
+				/>
+			</div>
+			}
 
 			{history !== undefined && history.pages.length > 0 && shownHistory !== undefined && <div>
 				{/* Toggleable reactions summary for searching. */}
@@ -276,14 +287,6 @@ class History extends React.Component<unknown, State> {
 					}}
 				/>
 			</div>}
-			{shownHistory === undefined && this.state.errorGettingHistory !== undefined && <Typography variant="body2" component="p" color="error">
-				{this.state.errorGettingHistory}
-			</Typography>}
-			{shownHistory === undefined && this.state.errorGettingHistory === undefined && <div className={classes.center}>
-				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
-				/>
-			</div>
-			}
 			{history !== undefined && history.pages.length === 0 && <div>
 				<Typography variant="body2" component="p" >
 					{getMessage("noHistory")}

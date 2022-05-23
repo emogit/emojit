@@ -9,6 +9,10 @@
 	margin-bottom: 0.5rem !important;
 }
 
+div.loadingSpinner {
+	margin-top: 20%;
+}
+
 /* Toggleable reactions summary for searching. */
 /* Should look very similar to the grid for reacting to a page. */
 div.reactionsSummaryGrid {
