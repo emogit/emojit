@@ -143,7 +143,8 @@ class History extends React.Component<unknown, State> {
 	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
 			const { checkedPageUrls } = this.state
-			let { history, reactionCounts, reactionsFilter, searchText, shownHistory } = this.state
+			const { history } = this.state
+			let { reactionCounts, reactionsFilter, searchText, shownHistory } = this.state
 			// Make the loading spinner show.
 			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPageUrls: [] }, async () => {
 				try {
