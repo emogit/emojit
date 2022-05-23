@@ -48,18 +48,21 @@ div.reactionsSummaryGrid {
 }
 
 .reactionCount {
-	font-size: 1.1em;
-	color: lightgrey;
+	font-size: 1em;
+	color: grey;
 	padding-left: 0.5em;
 }
 
 button:disabled > .reactionCount {
-	color: #666;
+	/* An opacity too high doesn't look right in light mode
+	and too low doesn't look right in dark mode, so use a value in the middle. */
+	opacity: 50%;
 }
 
 .reactionPickedCount {
 	color: floralwhite;
 }
+
 /* END Toggleable reactions summary for searching. */
 
 .deleteButton {
