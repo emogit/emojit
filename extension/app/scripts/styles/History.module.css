@@ -10,7 +10,7 @@
 }
 
 /* Toggleable reactions summary for searching. */
-/* Should look like the grid for reacting to a page. */
+/* Should look very similar to the grid for reacting to a page. */
 div.reactionsSummaryGrid {
 	flex-grow: 1;
 	/* Make sure there is an even amount of spacing on the left and right. */
@@ -44,9 +44,13 @@ div.reactionsSummaryGrid {
 }
 
 .reactionCount {
-	font-size: 1em;
-	color: grey;
+	font-size: 1.1em;
+	color: lightgrey;
 	padding-left: 0.5em;
+}
+
+button:disabled > .reactionCount {
+	color: #666;
 }
 
 .reactionPickedCount {
@@ -55,6 +59,7 @@ div.reactionsSummaryGrid {
 /* END Toggleable reactions summary for searching. */
 
 .deleteButton {
+	margin-top: 0.5rem !important;
 	margin-bottom: 0.25rem !important;
 }
 
