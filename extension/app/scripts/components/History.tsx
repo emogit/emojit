@@ -181,24 +181,15 @@ class History extends React.Component<unknown, State> {
 		this.setState({ reactionsFilter, shownHistory })
 	}
 
-	// TODO Move to a more common utils place.
-	private anyInIntersection(a: Set<string>, b: string[]): boolean {
-		for (const item of b) {
-			if (a.has(item)) {
-				return true
-			}
-		}
-		return false
-	}
-
 	private getSearchResults(history: ReactionHistory, searchText: string | undefined, reactionsFilter: Set<string>): ReactionHistory {
 		if (searchText || reactionsFilter.size > 0) {
 			return {
-				pages: history.pages.filter(page => {
-					return (searchText === undefined
+				pages: history.pages.filter(page =>
+					(searchText === undefined
 						|| page.pageUrl.toLocaleLowerCase().indexOf(searchText) > -1)
-						&& (reactionsFilter.size === 0 || this.anyInIntersection(reactionsFilter, page.currentReactions))
-				})
+					&& (reactionsFilter.size === 0
+						|| reactionsFilter, page.currentReactions.findIndex(reaction => reactionsFilter.has(reaction)) > -1)
+				),
 			}
 		} else {
 			return history
@@ -206,29 +197,43 @@ class History extends React.Component<unknown, State> {
 	}
 
 	render(): React.ReactNode {
+		const { history, reactionsFilter } = this.sate
+
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
 				<HistoryIcon className={classes.historyIcon} color="primary" fontSize="large" />
 				{getMessage('historyPageTitle') || "History"}
 			</Typography>
 
-			{this.state.history !== undefined && this.state.history.pages.length > 0 && <div>
-				<Grid container spacing={2}>
-					{this.state.reactionCounts?.map(({ reaction, count }) =>
-						<Grid item key={reaction} xs={6} sm={4} md={3} lg={1}>
-							<Card className={classes.card} raised={true}
-								onClick={() => this.onClickedReaction(reaction)}>
-								<CardContent>
-									<Typography className={classes.center} variant="h6">
+			{history !== undefined && history.pages.length > 0 && <div>
+				{/* Toggleable reactions summary for searching. */}
+				{/* Should look like the grid for reacting to a page. */}
+				<div className={classes.reactionsSummaryGrid}>
+					<Grid container
+						className={classes.reactionGrid}
+						direction="row"
+						justifyContent="center"
+						alignItems="center"
+						spacing={1}
+					>
+						{this.state.reactionCounts?.map(rc => {
+							const { reaction, count } = rc
+							const isPicked = reactionsFilter.has(reaction)
+							return (<Grid key={reaction}
+								container item xs
+								justifyContent="center">
+								<button className={`${classes.reactionButton} ${isPicked ? classes.reactionButtonPicked : ''}`} onClick={() => this.onClickedReaction(reaction)}>
+									<span>
 										{reaction}
-									</Typography>
-									<Typography className={classes.center} color="textSecondary" component="p">
-										{"x "}{count}
-									</Typography>
-								</CardContent>
-							</Card>
-						</Grid>)}
-				</Grid>
+									</span>
+									<span className={`${classes.reactionCount} ${isPicked ? classes.reactionPickedCount : ''}`}>
+										{count}
+									</span>
+								</button>
+							</Grid>)
+						})}
+					</Grid>
+				</div>
 
 				<Button className={classes.deleteButton}
 					disabled={this.state.checkedPageUrls.length === 0}
@@ -241,9 +246,9 @@ class History extends React.Component<unknown, State> {
 				<TextField className={classes.search}
 					label="Enter a URL or emoji to search" variant="outlined"
 					onChange={(event: ChangeEvent<any>) => {
-						const { reactionsFilter } = this.state
+						const { history, reactionsFilter } = this.state
 						const searchText = (event.target.value || "").toLocaleLowerCase()
-						const shownHistory = this.getSearchResults(searchText, reactionsFilter)
+						const shownHistory = this.getSearchResults(history!, searchText, reactionsFilter)
 						this.setState({ shownHistory })
 					}}
 				/>
