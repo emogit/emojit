@@ -53,7 +53,6 @@ interface State {
 
 	/**
 	 * Text entered into the search box.
-	 * Locale lower-cased.
 	 */
 	searchText?: string
 
@@ -142,7 +141,7 @@ class History extends React.Component<unknown, State> {
 	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
 			const { checkedPageUrls } = this.state
-			let { history, shownHistory, reactionCounts } = this.state
+			let { history, reactionCounts, reactionsFilter, searchText, shownHistory } = this.state
 			// Make the loading spinner show.
 			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPageUrls: [] }, async () => {
 				try {
@@ -157,19 +156,23 @@ class History extends React.Component<unknown, State> {
 
 					if (shownHistory) {
 						this.removeFromHistory(shownHistory, checkedPageUrlsSet)
+						if (shownHistory.pages.length === 0) {
+							reactionsFilter = new Set<string>()
+							searchText = undefined
+							shownHistory = history
+						}
 					}
 				} catch (serviceError) {
 					this.errorHandler.showError({ serviceError })
 				}
 
-				this.setState({ history, shownHistory, reactionCounts })
+				this.setState({ history, reactionCounts, reactionsFilter, searchText, shownHistory })
 			})
 		}
 	}
 
 	private onClickedReaction(reaction: string) {
 		const { reactionsFilter, searchText } = this.state
-		console.debug("searchText:", searchText)
 		let shownHistory
 		if (reactionsFilter.has(reaction)) {
 			reactionsFilter.delete(reaction)
@@ -193,6 +196,7 @@ class History extends React.Component<unknown, State> {
 	}
 
 	private getSearchResults(history: ReactionHistory, searchText: string | undefined, reactionsFilter: Set<string>): ReactionHistory {
+		searchText = (searchText || "").toLocaleLowerCase()
 		if (searchText || reactionsFilter.size > 0) {
 			return {
 				...history,
@@ -257,14 +261,16 @@ class History extends React.Component<unknown, State> {
 					color="secondary"
 					variant="contained"
 					onClick={this.deletePages}>
-					{getMessage('deleteSelectedPages', this.state.checkedPageUrls.length)}
+					{getMessage('deleteSelectedPages', this.state.checkedPageUrls.length.toString())}
 				</Button>
 
 				<TextField className={classes.search}
-					label="Enter a URL to search" variant="outlined"
+					value={this.state.searchText || ""}
+					label="Enter a URL to search"
+					variant="outlined"
 					onChange={(event: ChangeEvent<any>) => {
 						const { history, reactionsFilter } = this.state
-						const searchText = (event.target.value || "").toLocaleLowerCase()
+						const searchText = event.target.value
 						const shownHistory = this.getSearchResults(history!, searchText, reactionsFilter)
 						this.setState({ searchText, shownHistory })
 					}}
