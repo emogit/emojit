@@ -49,6 +49,8 @@ class Options extends React.Component<unknown, {
 			serviceUrl: "",
 		}
 
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('optionsPageTitle') || "Options")
+
 		this.deleteAllUserData = this.deleteAllUserData.bind(this)
 		this.exportData = this.exportData.bind(this)
 		this.handleChange = this.handleChange.bind(this)
@@ -56,10 +58,6 @@ class Options extends React.Component<unknown, {
 		this.resetServiceUrl = this.resetServiceUrl.bind(this)
 		this.setServiceUrl = this.setServiceUrl.bind(this)
 		this.setUserId = this.setUserId.bind(this)
-	}
-
-	componentWillMount(): void {
-		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('optionsPageTitle') || "Options")
 	}
 
 	componentDidMount(): void {

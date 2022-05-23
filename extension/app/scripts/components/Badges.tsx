@@ -22,9 +22,6 @@ class Badges extends React.Component<unknown, {
 			badges: undefined,
 			errorGettingBadges: undefined,
 		}
-	}
-
-	componentWillMount(): void {
 		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('badgesPageTitle') || "Your Badges")
 	}
 

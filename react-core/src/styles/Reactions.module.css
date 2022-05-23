@@ -70,3 +70,9 @@
 	margin: 2px;
 	font-size: 2em;
 }
+
+/* It wasn't clear when the button was disabled in. */
+/* This enforces showing it clearly disabled when it's disabled. */
+button.emojiTrigger:disabled {
+	opacity: 0.5;
+}

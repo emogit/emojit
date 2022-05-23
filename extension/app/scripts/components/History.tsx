@@ -77,12 +77,10 @@ class History extends React.Component<unknown, State> {
 			shownHistory: undefined,
 		}
 
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('historyPageTitle') || "History")
+
 		this.deletePages = this.deletePages.bind(this)
 		this.handleDeleteCheckbox = this.handleDeleteCheckbox.bind(this)
-	}
-
-	componentWillMount(): void {
-		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('historyPageTitle') || "History")
 	}
 
 	async componentDidMount() {
@@ -244,7 +242,7 @@ class History extends React.Component<unknown, State> {
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
-						spacing={1}
+						spacing={1.8}
 					>
 						{this.state.reactionCounts?.map(rc => {
 							const { reaction, count } = rc
