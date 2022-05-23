@@ -22,25 +22,60 @@ interface ReactionCount {
 	count: number
 }
 
-class History extends React.Component<unknown, {
-	emojit?: EmojitClient
-	history?: { pages: PageReactions[] }
-	shownHistory?: { pages: PageReactions[] }
+interface ReactionHistory {
+	pages: PageReactions[]
+}
+
+interface State {
 	/** The URLs for the pages that the user has selected (checked off). */
-	checkedPages: string[]
-	reactionCounts?: ReactionCount[]
+	checkedPageUrls: string[]
+
 	errorGettingHistory?: string
-}> {
+
+	emojit?: EmojitClient
+
+	/**
+	 * All of the user's reaction history.
+	 * For now we assume that users don't have too much history,
+	 * eventually we can do pagination.
+	 */
+	history?: ReactionHistory
+
+	/**
+	 * A summary of all the reactions in the user's history.
+	 */
+	reactionCounts?: ReactionCount[]
+
+	/**
+	 * Reactions that the user has selected to filter by.
+	 */
+	reactionsFilter: Set<string>
+
+	/**
+	 * Text entered into the search box.
+	 * Locale lower-cased.
+	 */
+	searchText?: string
+
+	/**
+	 * The history to display.
+	 * After searching, this is the filtered history.
+	 */
+	shownHistory?: ReactionHistory
+}
+
+class History extends React.Component<unknown, State> {
 	private errorHandler = new ErrorHandler(BrowserGetMessage)
 
 	constructor(props: any) {
 		super(props)
 		this.state = {
+			checkedPageUrls: [],
 			emojit: undefined,
-			history: undefined,
-			shownHistory: undefined,
-			checkedPages: [],
 			errorGettingHistory: undefined,
+			history: undefined,
+			reactionsFilter: new Set<string>(),
+			shownHistory: undefined,
 		}
 
 		this.deletePages = this.deletePages.bind(this)
@@ -84,55 +119,44 @@ class History extends React.Component<unknown, {
 		const pageUrl = event.target.name
 		if (checked) {
 			this.setState({
-				checkedPages: update(this.state.checkedPages, { $push: [pageUrl] }),
+				checkedPageUrls: update(this.state.checkedPageUrls, { $push: [pageUrl] }),
 			})
 		} else {
-			const index = this.state.checkedPages.indexOf(pageUrl)
+			const index = this.state.checkedPageUrls.indexOf(pageUrl)
 			if (index > -1) {
 				this.setState({
-					checkedPages: update(this.state.checkedPages, { $splice: [[index, 1]] }),
+					checkedPageUrls: update(this.state.checkedPageUrls, { $splice: [[index, 1]] }),
 				})
 			}
 		}
 	}
 
-	private getIndices(pages: PageReactions[], checkedPageUrls: string[]): number[] {
-		const result = []
-		const pageUrlsSet = new Set(checkedPageUrls)
-		for (let i = 0; i < pages.length; ++i) {
-			if (pageUrlsSet.has(pages[i].pageUrl)) {
-				result.push(i)
+	private removeFromHistory(history: ReactionHistory, checkedPageUrls: Set<string>): void {
+		for (let i = history.pages.length - 1; i >= 0; --i) {
+			if (checkedPageUrls.has(history.pages[i].pageUrl)) {
+				history.pages.splice(i, 1)
 			}
 		}
-		return result
 	}
 
 	deletePages(): void {
 		if (confirm(getMessage('deleteSelectedPagesConfirmation'))) {
-			const { checkedPages } = this.state
+			const { checkedPageUrls } = this.state
 			let { history, shownHistory, reactionCounts } = this.state
 			// Make the loading spinner show.
-			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPages: [] }, async () => {
+			this.setState({ history: undefined, shownHistory: undefined, reactionCounts: undefined, checkedPageUrls: [] }, async () => {
 				try {
-					await this.state.emojit!.deleteUserReactions(checkedPages)
+					await this.state.emojit!.deleteUserReactions(checkedPageUrls)
 					this.errorHandler.showError({ errorMsg: getMessage('deleteUserPageReactionsSuccess') })
 
+					const checkedPageUrlsSet = new Set(checkedPageUrls)
 					if (history) {
-						const indices = this.getIndices(history.pages, checkedPages)
-						indices.sort((a, b) => b - a)
-						for (const index of indices) {
-							history.pages.splice(index, 1)
-						}
-
+						this.removeFromHistory(history, checkedPageUrlsSet)
 						reactionCounts = this.getReactionCounts(history)
 					}
 
 					if (shownHistory) {
-						const indices = this.getIndices(shownHistory.pages, checkedPages)
-						indices.sort((a, b) => b - a)
-						for (const index of indices) {
-							shownHistory.pages.splice(index, 1)
-						}
+						this.removeFromHistory(shownHistory, checkedPageUrlsSet)
 					}
 				} catch (serviceError) {
 					this.errorHandler.showError({ serviceError })
@@ -143,6 +167,44 @@ class History extends React.Component<unknown, {
 		}
 	}
 
+	private onClickedReaction(reaction: string) {
+		const { reactionsFilter, searchText } = this.state
+		let shownHistory
+		if (reactionsFilter.has(reaction)) {
+			reactionsFilter.delete(reaction)
+			shownHistory = this.getSearchResults(this.state.history!, searchText, reactionsFilter)
+		} else {
+			reactionsFilter.add(reaction)
+			shownHistory = this.getSearchResults(this.state.shownHistory!, searchText, reactionsFilter)
+		}
+
+		this.setState({ reactionsFilter, shownHistory })
+	}
+
+	// TODO Move to a more common utils place.
+	private anyInIntersection(a: Set<string>, b: string[]): boolean {
+		for (const item of b) {
+			if (a.has(item)) {
+				return true
+			}
+		}
+		return false
+	}
+
+	private getSearchResults(history: ReactionHistory, searchText: string | undefined, reactionsFilter: Set<string>): ReactionHistory {
+		if (searchText || reactionsFilter.size > 0) {
+			return {
+				pages: history.pages.filter(page => {
+					return (searchText === undefined
+						|| page.pageUrl.toLocaleLowerCase().indexOf(searchText) > -1)
+						&& (reactionsFilter.size === 0 || this.anyInIntersection(reactionsFilter, page.currentReactions))
+				})
+			}
+		} else {
+			return history
+		}
+	}
+
 	render(): React.ReactNode {
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
@@ -150,13 +212,12 @@ class History extends React.Component<unknown, {
 				{getMessage('historyPageTitle') || "History"}
 			</Typography>
 
-
 			{this.state.history !== undefined && this.state.history.pages.length > 0 && <div>
 				<Grid container spacing={2}>
 					{this.state.reactionCounts?.map(({ reaction, count }) =>
 						<Grid item key={reaction} xs={6} sm={4} md={3} lg={1}>
-							{/* TODO Make toggleable to search. */}
-							<Card className={classes.card} raised={true}>
+							<Card className={classes.card} raised={true}
+								onClick={() => this.onClickedReaction(reaction)}>
 								<CardContent>
 									<Typography className={classes.center} variant="h6">
 										{reaction}
@@ -169,33 +230,21 @@ class History extends React.Component<unknown, {
 						</Grid>)}
 				</Grid>
 
-
-
-
-
 				<Button className={classes.deleteButton}
-					disabled={this.state.checkedPages.length === 0}
+					disabled={this.state.checkedPageUrls.length === 0}
 					color="secondary"
 					variant="contained"
 					onClick={this.deletePages}>
-					{getMessage('deleteSelectedPages', this.state.checkedPages.length)}
+					{getMessage('deleteSelectedPages', this.state.checkedPageUrls.length)}
 				</Button>
 
 				<TextField className={classes.search}
 					label="Enter a URL or emoji to search" variant="outlined"
 					onChange={(event: ChangeEvent<any>) => {
-						const text = (event.target.value || "").toLocaleLowerCase()
-						if (text) {
-							this.setState({
-								shownHistory: {
-									pages: this.state.history!.pages.filter(page => {
-										return page.pageUrl.toLocaleLowerCase().indexOf(text) > -1 || page.currentReactions.indexOf(text) > -1
-									})
-								}
-							})
-						} else {
-							this.setState({ shownHistory: this.state.history })
-						}
+						const { reactionsFilter } = this.state
+						const searchText = (event.target.value || "").toLocaleLowerCase()
+						const shownHistory = this.getSearchResults(searchText, reactionsFilter)
+						this.setState({ shownHistory })
 					}}
 				/>
 			</div>}
@@ -221,7 +270,7 @@ class History extends React.Component<unknown, {
 								<Grid container spacing={0} alignItems="center">
 									<Grid item xs={1}>
 										<Checkbox color="secondary"
-											checked={this.state.checkedPages.indexOf(page.pageUrl) > -1}
+											checked={this.state.checkedPageUrls.indexOf(page.pageUrl) > -1}
 											onChange={this.handleDeleteCheckbox}
 											// Can't get custom props working.
 											name={page.pageUrl}
