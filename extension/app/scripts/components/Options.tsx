@@ -58,6 +58,10 @@ class Options extends React.Component<unknown, {
 		this.setUserId = this.setUserId.bind(this)
 	}
 
+	componentWillMount(): void {
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('optionsPageTitle') || "Options")
+	}
+
 	componentDidMount(): void {
 		setupUserSettings(['emojit', 'userId', 'serviceUrl', 'updateIconTextWithTopPageReaction', 'themePreference']).then((userSettings) => {
 			const emojit = userSettings.emojit

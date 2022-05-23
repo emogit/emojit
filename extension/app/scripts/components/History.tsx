@@ -81,6 +81,10 @@ class History extends React.Component<unknown, State> {
 		this.handleDeleteCheckbox = this.handleDeleteCheckbox.bind(this)
 	}
 
+	componentWillMount(): void {
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('historyPageTitle') || "History")
+	}
+
 	async componentDidMount() {
 		const { emojit } = await setupUserSettings(['emojit'])
 		try {

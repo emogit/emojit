@@ -24,6 +24,10 @@ class Badges extends React.Component<unknown, {
 		}
 	}
 
+	componentWillMount(): void {
+		document.title = (getMessage('appName') || "Emojit") + " - " + (getMessage('badgesPageTitle') || "Your Badges")
+	}
+
 	async componentDidMount() {
 		const { emojit } = await setupUserSettings(['emojit'])
 		try {
@@ -50,7 +54,7 @@ class Badges extends React.Component<unknown, {
 
 		return <Container>
 			<Typography className={classes.title} component="h4" variant="h4">
-				{getMessage('badgesPageTitle') || "🏆 Badges 🎉"}
+				{getMessage('badgesPageTitle') || "🏆 Your Badges 🎉"}
 			</Typography>
 			{this.state.badges === undefined && this.state.errorGettingBadges === undefined && <div className={classes.center}>
 				<CircularProgress size={70} style={{ color: progressSpinnerColor }}
@@ -110,7 +114,7 @@ class Badges extends React.Component<unknown, {
 										{badge.currentReactions.join("")}
 									</span>
 								</Typography>}
-								{badge.time && <Typography variant="body2" component="p">
+								{badge.time && <Typography variant="body2" component="p" color="textSecondary">
 									{getMessage('earnedTimeIdentifier') || "📅 "}{new Date(badge.time).toString()}
 								</Typography>}
 							</CardContent>
