@@ -10,6 +10,10 @@ You can install our extension in various browsers:
 * [Chrome/Brave/Edge](https://chrome.google.com/webstore/detail/fdaopifdchifnfaiammaknlaniecbdmo)
 * [Firefox](https://addons.mozilla.org/addon/emojit)
 
+Want the bleeding edge latest build?
+You can install an artifact from a build [here](https://github.com/emogit/emojit/actions/workflows/build.yml?query=branch%3Amain+is%3Asuccess).
+The build reports checksums in the "Extension: Build" step.
+
 # Code
 [![Build](https://github.com/emogit/emojit/actions/workflows/build.yml/badge.svg)](https://github.com/emogit/emojit/actions/workflows/build.yml)
 
