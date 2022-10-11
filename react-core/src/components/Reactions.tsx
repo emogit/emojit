@@ -16,7 +16,7 @@ const MAX_NUM_EMOJIS = 5
 interface Props {
 	emojitClient: EmojitClient
 	pageUrl: string
-	themePreference: ThemePreferenceType
+	themePreference?: ThemePreferenceType
 
 	getMessage: GetMessage
 
@@ -49,7 +49,7 @@ class Reactions extends React.Component<Props, {
 	async componentDidMount() {
 		this.errorHandler = new ErrorHandler(this.props.getMessage, document.getElementById('error-text'))
 		this.loadReactions()
-		this.setUpEmojiPicker(this.props.themePreference)
+		this.setUpEmojiPicker(this.props.themePreference || 'device')
 	}
 
 	setUpEmojiPicker(themePreference: ThemePreferenceType): void {
