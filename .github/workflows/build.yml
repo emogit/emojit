@@ -103,6 +103,7 @@ jobs:
         run: |
           set -ex
           yarn build
+          yarn copy-files
         working-directory: react-core
 
       - name: "React Core: Publish"

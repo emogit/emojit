@@ -36,7 +36,7 @@
 	},
 	"dependencies": {
 		"@emogit/emojit-core": "^0.1.0",
-		"@emogit/emojit-react-core": "^0.1.0",
+		"@emogit/emojit-react-core": "^0.2.0",
 		"@joeattardi/emoji-button": "^4.6.2",
 		"@types/jquery": "^3.5.5",
 		"@types/react": "^17.0.40",
