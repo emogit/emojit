@@ -22,8 +22,19 @@ interface Props {
 
 	/**
 	 * Runs when the current reactions for the page are updated.
+	 * E.g. when the reactions are first loaded and also after the user's reaction is processed.
 	 */
 	onPageReactions?: (reactions?: PageReaction[]) => void
+
+	/**
+	 * Runs after the reaction picker has been opened.
+	 */
+	onReactionPickerOpened?: () => void
+
+	/**
+	 * Runs after the reaction picker has been closed.
+	 */
+	onReactionPickerClosed?: () => void
 }
 
 /**
@@ -74,32 +85,14 @@ class Reactions extends React.Component<Props, {
 			this.addEmoji(selection.emoji)
 		})
 
-		this.picker!.on('hidden', () => {
-			this.condensePopup()
+		this.picker.on('hidden', () => {
+			this.props.onReactionPickerClosed && this.props.onReactionPickerClosed()
 		})
 
 		trigger!.addEventListener('click', () => {
-			this.expandPopup()
+			this.props.onReactionPickerOpened && this.props.onReactionPickerOpened()
 			this.picker!.togglePicker(trigger!)
 		})
-	}
-
-	/**
-	 * Condense the size of the popup for the extension.
-	 * TODO Move to the extension code.
-	 */
-	condensePopup(): void {
-		// TODO Get original size in componentDidMount.
-		document.getElementById('main-popup')!.style.height = '320px'
-	}
-
-	/**
-	 * Increase the size of the popup for the extension.
-	 * TODO Move to the extension code.
-	 */
-	expandPopup(): void {
-		// TODO Add to current size if less than a certain amount.
-		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
 	async loadReactions(): Promise<void> {

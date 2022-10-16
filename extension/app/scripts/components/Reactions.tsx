@@ -72,6 +72,22 @@ class Reactions extends React.Component<unknown, {
 		})
 	}
 
+	/**
+	 * Increase the size of the popup for the extension.
+	 */
+	expandPopup(): void {
+		// TODO Add to current size if less than a certain amount.
+		document.getElementById('main-popup')!.style.height = '500px'
+	}
+
+	/**
+	 * Condense the size of the popup for the extension.
+	 */
+	condensePopup(): void {
+		// TODO Get original size in componentDidMount.
+		document.getElementById('main-popup')!.style.height = '320px'
+	}
+
 	render(): React.ReactNode {
 		const { emojit, pageUrl, tab, themePreference } = this.state
 
@@ -104,6 +120,9 @@ class Reactions extends React.Component<unknown, {
 
 					getMessage={BrowserGetMessage}
 					onPageReactions={this.updateBadgeText}
+
+					onReactionPickerOpened={this.expandPopup}
+					onReactionPickerClosed={this.condensePopup}
 				/>
 			</div>)
 		}
