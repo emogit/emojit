@@ -40,6 +40,7 @@ jobs:
       - name: "Root: Install"
         run: |
           set -ex
+          echo $CI
           yarn install
 
       - name: "Lint"

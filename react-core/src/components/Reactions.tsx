@@ -86,11 +86,15 @@ class Reactions extends React.Component<Props, {
 		})
 
 		this.picker.on('hidden', () => {
-			this.props.onReactionPickerClosed && this.props.onReactionPickerClosed()
+			if (this.props.onReactionPickerClosed) {
+				this.props.onReactionPickerClosed()
+			}
 		})
 
 		trigger!.addEventListener('click', () => {
-			this.props.onReactionPickerOpened && this.props.onReactionPickerOpened()
+			if (this.props.onReactionPickerOpened) {
+				this.props.onReactionPickerOpened()
+			}
 			this.picker!.togglePicker(trigger!)
 		})
 	}
