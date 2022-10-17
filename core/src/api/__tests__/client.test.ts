@@ -4,8 +4,17 @@ import { EmojitError, ErrorCode } from '../../error/error'
 import { EmojitClient, ReactionModification, ReactRequest } from '../client'
 
 describe("Client", () => {
+	const e = new EmojitClient('7e577e57-7e57-4e57-be57-7e577e577e57')
+
+	describe("Unit Tests", () => {
+		it('normalizeUrl', () => {
+			expect(e.normalizeUrl('')).to.be.equal('')
+			expect(e.normalizeUrl('https://emojit.site')).to.be.equal('https://emojit.site')
+			expect(e.normalizeUrl('https://emojit.site/')).to.be.equal('https://emojit.site')
+		})
+	})
+
 	describe("Integration", () => {
-		const e = new EmojitClient('7e577e57-7e57-4e57-be57-7e577e577e57')
 
 		beforeEach(async () => {
 			await e.deleteUser()

@@ -142,6 +142,16 @@ export class EmojitClient {
 		})
 	}
 
+	normalizeUrl(pageUrl: string): string {
+		if (pageUrl) {
+			while (pageUrl.endsWith('/')) {
+				pageUrl = pageUrl.replace(/\/$/, '')
+			}
+		}
+
+		return pageUrl
+	}
+
 	deleteUser(): Promise<DeleteUserResponse> {
 		const request = { userId: this.userId }
 		return axios({
@@ -160,6 +170,7 @@ export class EmojitClient {
 	}
 
 	deleteUserReactions(pageUrls: string[]): Promise<DeleteUserPageReactionsResponse> {
+		pageUrls = pageUrls.map(this.normalizeUrl)
 		const request = { userId: this.userId, pageUrls }
 		return axios({
 			method: 'DELETE',
@@ -176,6 +187,7 @@ export class EmojitClient {
 	}
 
 	getPageReactions(pageUrl: string): Promise<PageReactionsResponse> {
+		pageUrl = this.normalizeUrl(pageUrl)
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return axios({
@@ -194,6 +206,8 @@ export class EmojitClient {
 	}
 
 	getUserPageReactions(pageUrl: string): Promise<UserPageReactionResponse> {
+		// FIXME If we normalize now, then we won't show old data.
+		pageUrl = this.normalizeUrl(pageUrl)
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return axios({
@@ -231,6 +245,7 @@ export class EmojitClient {
 	}
 
 	react(request: ReactRequest): Promise<ReactResponse> {
+		request.pageUrl = this.normalizeUrl(request.pageUrl)
 		return this.checkUrl(request.pageUrl).then(() => {
 			request.userId = this.userId
 			return axios({
