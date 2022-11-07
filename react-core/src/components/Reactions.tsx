@@ -104,11 +104,10 @@ class Reactions extends React.Component<Props, {
 
 		try {
 			const { userReactions, pageReactions } = await this.props.emojitClient.getUserPageReactions(this.props.pageUrl)
-			this.setState({ userReactions, pageReactions }, () => {
-				if (this.props.onPageReactions) {
-					this.props.onPageReactions(pageReactions)
-				}
-			})
+			this.setState({ userReactions, pageReactions })
+			if (this.props.onPageReactions) {
+				this.props.onPageReactions(pageReactions)
+			}
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
 			this.setState({ userReactions: [], pageReactions: [] })
@@ -228,21 +227,20 @@ class Reactions extends React.Component<Props, {
 			pageReactions.push(modification)
 		}
 		// Purposely do not re-sort to avoid jumpiness.
-
-		this.setState({ pageReactions }, () => {
-			if (this.props.onPageReactions) {
-				this.props.onPageReactions(this.state.pageReactions)
-			}
-		})
+		this.setState({ pageReactions })
+		if (this.props.onPageReactions) {
+			this.props.onPageReactions(pageReactions)
+		}
 	}
 
 	render(): React.ReactNode {
 		// `this.state.pageReactions` already includes the user's reactions.
+		const { pageReactions, showReactingLoader, userReactions } = this.state
 
 		return (<>
 			<EmojitTheme themePreference={this.props.themePreference}>
 				<div className={classes.reactingLoader}>
-					{this.state.showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					{showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
 				</div>
 				<div className={classes.gridDiv}>
 					<Grid container
@@ -253,11 +251,11 @@ class Reactions extends React.Component<Props, {
 						spacing={1}
 					>
 						{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
-						{this.state.pageReactions === undefined && <div>
+						{pageReactions === undefined && <div>
 							<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
 						</div>}
-						{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-							const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+						{pageReactions !== undefined && pageReactions.map(pageReaction => {
+							const isPicked = userReactions && userReactions.indexOf(pageReaction.reaction) > -1
 							return <Grid key={`reaction-${pageReaction.reaction}`}
 								container item xs
 								justifyContent="center">
