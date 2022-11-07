@@ -1,6 +1,7 @@
 import { createNewUserId, EmojitClient, getMessage } from '@emogit/emojit-core'
 import { ReactionsComponent } from '@emogit/emojit-react-core'
 import React from 'react'
+import classes from '../styles/Widget.module.css'
 
 function Widget() {
 	const parentUrl = document.referrer
@@ -15,12 +16,14 @@ function Widget() {
 		localStorage.setItem('userId', userId)
 	}
 	const emojit = new EmojitClient(userId)
-	return (<ReactionsComponent
-		emojitClient={emojit}
-		pageUrl={parentUrl}
+	return (<div className={classes.widgetDiv}>
+		<ReactionsComponent
+			emojitClient={emojit}
+			pageUrl={parentUrl}
 
-		getMessage={getMessage}
-	/>)
+			getMessage={getMessage}
+		/>
+	</div>)
 }
 
 export default Widget
