@@ -10,5 +10,5 @@ export interface GetMessage {
 
 export const getMessage: GetMessage = (key: string, substitutions?: any): string | undefined => {
 	// TODO Move localization files from the extension to here and use them.
-	return key
+	return `${key} ${JSON.stringify(substitutions)}`
 }
