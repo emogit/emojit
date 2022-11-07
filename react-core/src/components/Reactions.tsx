@@ -16,14 +16,25 @@ const MAX_NUM_EMOJIS = 5
 interface Props {
 	emojitClient: EmojitClient
 	pageUrl: string
-	themePreference: ThemePreferenceType
+	themePreference?: ThemePreferenceType
 
 	getMessage: GetMessage
 
 	/**
 	 * Runs when the current reactions for the page are updated.
+	 * E.g. when the reactions are first loaded and also after the user's reaction is processed.
 	 */
 	onPageReactions?: (reactions?: PageReaction[]) => void
+
+	/**
+	 * Runs after the reaction picker has been opened.
+	 */
+	onReactionPickerOpened?: () => void
+
+	/**
+	 * Runs after the reaction picker has been closed.
+	 */
+	onReactionPickerClosed?: () => void
 }
 
 /**
@@ -49,7 +60,7 @@ class Reactions extends React.Component<Props, {
 	async componentDidMount() {
 		this.errorHandler = new ErrorHandler(this.props.getMessage, document.getElementById('error-text'))
 		this.loadReactions()
-		this.setUpEmojiPicker(this.props.themePreference)
+		this.setUpEmojiPicker(this.props.themePreference || 'device')
 	}
 
 	setUpEmojiPicker(themePreference: ThemePreferenceType): void {
@@ -74,32 +85,18 @@ class Reactions extends React.Component<Props, {
 			this.addEmoji(selection.emoji)
 		})
 
-		this.picker!.on('hidden', () => {
-			this.condensePopup()
+		this.picker.on('hidden', () => {
+			if (this.props.onReactionPickerClosed) {
+				this.props.onReactionPickerClosed()
+			}
 		})
 
 		trigger!.addEventListener('click', () => {
-			this.expandPopup()
+			if (this.props.onReactionPickerOpened) {
+				this.props.onReactionPickerOpened()
+			}
 			this.picker!.togglePicker(trigger!)
 		})
-	}
-
-	/**
-	 * Condense the size of the popup for the extension.
-	 * TODO Move to the extension code.
-	 */
-	condensePopup(): void {
-		// TODO Get original size in componentDidMount.
-		document.getElementById('main-popup')!.style.height = '320px'
-	}
-
-	/**
-	 * Increase the size of the popup for the extension.
-	 * TODO Move to the extension code.
-	 */
-	expandPopup(): void {
-		// TODO Add to current size if less than a certain amount.
-		document.getElementById('main-popup')!.style.height = '500px'
 	}
 
 	async loadReactions(): Promise<void> {
@@ -107,11 +104,10 @@ class Reactions extends React.Component<Props, {
 
 		try {
 			const { userReactions, pageReactions } = await this.props.emojitClient.getUserPageReactions(this.props.pageUrl)
-			this.setState({ userReactions, pageReactions }, () => {
-				if (this.props.onPageReactions) {
-					this.props.onPageReactions(pageReactions)
-				}
-			})
+			this.setState({ userReactions, pageReactions })
+			if (this.props.onPageReactions) {
+				this.props.onPageReactions(pageReactions)
+			}
 		} catch (serviceError) {
 			this.errorHandler!.showError({ serviceError })
 			this.setState({ userReactions: [], pageReactions: [] })
@@ -231,21 +227,20 @@ class Reactions extends React.Component<Props, {
 			pageReactions.push(modification)
 		}
 		// Purposely do not re-sort to avoid jumpiness.
-
-		this.setState({ pageReactions }, () => {
-			if (this.props.onPageReactions) {
-				this.props.onPageReactions(this.state.pageReactions)
-			}
-		})
+		this.setState({ pageReactions })
+		if (this.props.onPageReactions) {
+			this.props.onPageReactions(pageReactions)
+		}
 	}
 
 	render(): React.ReactNode {
 		// `this.state.pageReactions` already includes the user's reactions.
+		const { pageReactions, showReactingLoader, userReactions } = this.state
 
 		return (<>
 			<EmojitTheme themePreference={this.props.themePreference}>
 				<div className={classes.reactingLoader}>
-					{this.state.showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
+					{showReactingLoader && <CircularProgress size={20} thickness={5} style={{ color: progressSpinnerColor }} />}
 				</div>
 				<div className={classes.gridDiv}>
 					<Grid container
@@ -256,11 +251,11 @@ class Reactions extends React.Component<Props, {
 						spacing={1}
 					>
 						{/* Keep spinner in here so that the emoji button doesn't jump too much. */}
-						{this.state.pageReactions === undefined && <div>
+						{pageReactions === undefined && <div>
 							<CircularProgress size={60} style={{ color: progressSpinnerColor }} />
 						</div>}
-						{this.state.pageReactions !== undefined && this.state.pageReactions.map(pageReaction => {
-							const isPicked = this.state.userReactions && this.state.userReactions.indexOf(pageReaction.reaction) > -1
+						{pageReactions !== undefined && pageReactions.map(pageReaction => {
+							const isPicked = userReactions && userReactions.indexOf(pageReaction.reaction) > -1
 							return <Grid key={`reaction-${pageReaction.reaction}`}
 								container item xs
 								justifyContent="center">

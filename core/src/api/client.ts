@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { URL } from 'url'
 import { EmojitError, ErrorCode } from '../error/error'
 import { isValidUserId } from '../user'
 import { Badge, BadgeAssignerResponse, BadgeInfo } from './badge'
@@ -142,6 +143,17 @@ export class EmojitClient {
 		})
 	}
 
+	normalizeUrl(pageUrl: string): string {
+		if (pageUrl) {
+			// Make sure "/" is added to the end like the extension did originally.
+			// This ensures that the widget which was getting URLs with no "/" at the end from
+			// `document.referrer` or `document.location.ancestorOrigins` will find the same data as the extension.
+			return new URL(pageUrl).toString()
+		}
+
+		return pageUrl
+	}
+
 	deleteUser(): Promise<DeleteUserResponse> {
 		const request = { userId: this.userId }
 		return axios({
@@ -160,6 +172,7 @@ export class EmojitClient {
 	}
 
 	deleteUserReactions(pageUrls: string[]): Promise<DeleteUserPageReactionsResponse> {
+		pageUrls = pageUrls.map(this.normalizeUrl)
 		const request = { userId: this.userId, pageUrls }
 		return axios({
 			method: 'DELETE',
@@ -176,6 +189,7 @@ export class EmojitClient {
 	}
 
 	getPageReactions(pageUrl: string): Promise<PageReactionsResponse> {
+		pageUrl = this.normalizeUrl(pageUrl)
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return axios({
@@ -194,6 +208,7 @@ export class EmojitClient {
 	}
 
 	getUserPageReactions(pageUrl: string): Promise<UserPageReactionResponse> {
+		pageUrl = this.normalizeUrl(pageUrl)
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()
 			return axios({
@@ -231,6 +246,7 @@ export class EmojitClient {
 	}
 
 	react(request: ReactRequest): Promise<ReactResponse> {
+		request.pageUrl = this.normalizeUrl(request.pageUrl)
 		return this.checkUrl(request.pageUrl).then(() => {
 			request.userId = this.userId
 			return axios({

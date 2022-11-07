@@ -4,8 +4,25 @@ import { EmojitError, ErrorCode } from '../../error/error'
 import { EmojitClient, ReactionModification, ReactRequest } from '../client'
 
 describe("Client", () => {
+	const e = new EmojitClient('7e577e57-7e57-4e57-be57-7e577e577e57')
+
+	describe("Unit Tests", () => {
+		it('normalizeUrl', () => {
+			expect(e.normalizeUrl('')).to.be.equal('')
+			expect(e.normalizeUrl('https://emojit.site')).to.be.equal('https://emojit.site/')
+			expect(e.normalizeUrl('https://emojit.site/')).to.be.equal('https://emojit.site/')
+			expect(e.normalizeUrl('https://emojit.site?test=3')).to.be.equal('https://emojit.site/?test=3')
+			expect(e.normalizeUrl('https://emojit.site/?test=3')).to.be.equal('https://emojit.site/?test=3')
+			expect(e.normalizeUrl('https://emojit.site/page')).to.be.equal('https://emojit.site/page')
+			expect(e.normalizeUrl('https://emojit.site/page?test=3')).to.be.equal('https://emojit.site/page?test=3')
+
+			// The extra "/" after "page" don't matter as much here, so these are mainly to prevent regressions.
+			expect(e.normalizeUrl('https://emojit.site/page/')).to.be.equal('https://emojit.site/page/')
+			expect(e.normalizeUrl('https://emojit.site/page/?test=3')).to.be.equal('https://emojit.site/page/?test=3')
+		})
+	})
+
 	describe("Integration", () => {
-		const e = new EmojitClient('7e577e57-7e57-4e57-be57-7e577e577e57')
 
 		beforeEach(async () => {
 			await e.deleteUser()

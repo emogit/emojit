@@ -8,7 +8,7 @@ on:
     - '.gitignore'
     - '.gitattributes'
     - '*.md'
-    - '*.txt'
+    - 'LICENSE.txt'
     - '*/*.md'
     - '*/.gitignore'
   pull_request:
@@ -18,7 +18,7 @@ on:
     - '.gitignore'
     - '.gitattributes'
     - '*.md'
-    - '*.txt'
+    - 'LICENSE.txt'
     - '*/*.md'
     - '*/.gitignore'
 
@@ -103,6 +103,7 @@ jobs:
         run: |
           set -ex
           yarn build
+          yarn copy-files
         working-directory: react-core
 
       - name: "React Core: Publish"
