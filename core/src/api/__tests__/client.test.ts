@@ -13,6 +13,12 @@ describe("Client", () => {
 			expect(e.normalizeUrl('https://emojit.site/')).to.be.equal('https://emojit.site/')
 			expect(e.normalizeUrl('https://emojit.site?test=3')).to.be.equal('https://emojit.site/?test=3')
 			expect(e.normalizeUrl('https://emojit.site/?test=3')).to.be.equal('https://emojit.site/?test=3')
+			expect(e.normalizeUrl('https://emojit.site/page')).to.be.equal('https://emojit.site/page')
+			expect(e.normalizeUrl('https://emojit.site/page?test=3')).to.be.equal('https://emojit.site/page?test=3')
+
+			// The extra "/" after "page" don't matter as much here, so these are mainly to prevent regressions.
+			expect(e.normalizeUrl('https://emojit.site/page/')).to.be.equal('https://emojit.site/page/')
+			expect(e.normalizeUrl('https://emojit.site/page/?test=3')).to.be.equal('https://emojit.site/page/?test=3')
 		})
 	})
 
