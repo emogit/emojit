@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { URL } from 'url'
 import { EmojitError, ErrorCode } from '../error/error'
 import { isValidUserId } from '../user'
 import { Badge, BadgeAssignerResponse, BadgeInfo } from './badge'
@@ -144,9 +145,10 @@ export class EmojitClient {
 
 	normalizeUrl(pageUrl: string): string {
 		if (pageUrl) {
-			while (pageUrl.endsWith('/')) {
-				pageUrl = pageUrl.replace(/\/$/, '')
-			}
+			// Make sure "/" is added to the end like the extension did originally.
+			// This ensures that the widget which was getting URLs with no "/" at the end from
+			// `document.referrer` or `document.location.ancestorOrigins` will find the same data as the extension.
+			return new URL(pageUrl).toString()
 		}
 
 		return pageUrl
@@ -206,7 +208,6 @@ export class EmojitClient {
 	}
 
 	getUserPageReactions(pageUrl: string): Promise<UserPageReactionResponse> {
-		// FIXME If we normalize now, then we won't show old data.
 		pageUrl = this.normalizeUrl(pageUrl)
 		return this.checkUrl(pageUrl).then(() => {
 			const startTime = new Date()

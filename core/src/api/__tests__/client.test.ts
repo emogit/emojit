@@ -9,8 +9,10 @@ describe("Client", () => {
 	describe("Unit Tests", () => {
 		it('normalizeUrl', () => {
 			expect(e.normalizeUrl('')).to.be.equal('')
-			expect(e.normalizeUrl('https://emojit.site')).to.be.equal('https://emojit.site')
-			expect(e.normalizeUrl('https://emojit.site/')).to.be.equal('https://emojit.site')
+			expect(e.normalizeUrl('https://emojit.site')).to.be.equal('https://emojit.site/')
+			expect(e.normalizeUrl('https://emojit.site/')).to.be.equal('https://emojit.site/')
+			expect(e.normalizeUrl('https://emojit.site?test=3')).to.be.equal('https://emojit.site/?test=3')
+			expect(e.normalizeUrl('https://emojit.site/?test=3')).to.be.equal('https://emojit.site/?test=3')
 		})
 	})
 
