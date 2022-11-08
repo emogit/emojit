@@ -166,3 +166,19 @@ jobs:
           path: extension/packages/*firefox*
           if-no-files-found: error
 
+      # Site
+      - name: "Site: Install"
+        run: yarn install
+        working-directory: site
+
+      - name: "Site: Lint"
+        # Split Lint into a separate task so that it can always run even if the tests fail.
+        run: yarn lint
+        working-directory: site
+        if: success() || failure()
+
+      # TODO Test the site. It fails because of jest and TypeScript issues.
+
+      - name: "Site: Build"
+        run: yarn build
+        working-directory: site
