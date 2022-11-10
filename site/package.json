@@ -1,7 +1,7 @@
 {
   "name": "emojit-site",
   "version": "0.1.0",
-  "description": "Rate any web page.",
+  "description": "The site for Emojit, the tool to rate any web page.",
   "repository": {
     "url": "git+https://github.com/emogit/emojit.git",
     "type": "git"
