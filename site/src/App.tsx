@@ -8,6 +8,8 @@ import Widget from './components/Widget'
 function App() {
 	return (<BrowserRouter>
 		<Routes>
+			{/* Default to the widget, mainly so that it works on GitHub pages. */}
+			{/* We can look into ways to load different pages, but for now having the default work for the widget is fine. */}
 			<Route path="/" element={<Widget />} />
 			<Route path="/widget" element={<Widget />} />
 			<Route path="/home" element={<Layout />}>

@@ -4,9 +4,12 @@ import React from 'react'
 import classes from '../styles/Widget.module.css'
 
 function Widget() {
-	const parentUrl = document.referrer
-	console.debug("Emojit: parentUrl", parentUrl)
-	if (!parentUrl) {
+	// Prefer the iframe's referrer, otherwise default to the current page, mainly for debugging.
+	// TODO Only default to current page's URL if we're not in an iframe.
+	const url = document.referrer || document.location.href
+	console.debug("Emojit: document.referrer:", document.referrer)
+	console.debug("Emojit: url:", url)
+	if (!url) {
 		return <>{"Error getting the page's URL."}</>
 	}
 	const userIdKey = 'userId'
@@ -19,7 +22,7 @@ function Widget() {
 	return (<div className={classes.widgetDiv}>
 		<ReactionsComponent
 			emojitClient={emojit}
-			pageUrl={parentUrl}
+			pageUrl={url}
 
 			getMessage={getMessage}
 		/>
