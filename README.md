@@ -14,6 +14,20 @@ Want the bleeding edge latest build?
 You can install an artifact from a build [here](https://github.com/emogit/emojit/actions/workflows/build.yml?query=branch%3Amain+is%3Asuccess).
 The build reports checksums in the "Extension: Build" step.
 
+# Widget
+Embed the Emojit widget in your site and let users react to the page:
+```html
+<iframe src="https://emojit.site" title="Emojit reaction picker"
+    referrerpolicy="unsafe-url"
+    width="400px" height="500px" style="border:none;">
+</iframe>
+```
+
+`referrerpolicy="unsafe-url"` allows the code in the iframe to get the referring URL.
+If someone has security concerns, then create an issue on GitHub and we can discuss other options.
+There are a bunch of suggestions at https://stackoverflow.com/questions/3420004, but we shouldn't do something that passes the full URL as a URL parameter to the iframe since that's not secure because someone could easily fake it.
+Maybe we could use `postMessage` and verify the origin.
+
 # Code
 [![Build](https://github.com/emogit/emojit/actions/workflows/build.yml/badge.svg)](https://github.com/emogit/emojit/actions/workflows/build.yml)
 
@@ -48,8 +62,9 @@ const userId = createNewUserId()
 const client = new EmojitClient(userId)
 
 // Add a reaction to a page.
+const url = 'https://mysite.site/page'
 const reactResponse = await client.react(new ReactRequest(
-    'https://emojit.site/test',
+    url,
     [
         new ReactionModification('💕', 1),
         new ReactionModification('🤓', 1),
@@ -58,7 +73,7 @@ const reactResponse = await client.react(new ReactRequest(
 // { reactions: ['💕', '🤓'] }
 
 // Check the reactions on a page.
-const pageReactions = await client.getPageReactions('https://emojit.site/test')
+const pageReactions = await client.getPageReactions(url)
 // pageReactions has the reactions for all users for the URL:
 // { reactions: [{ reaction: '👨‍💻', count: 3 }, { reaction: '💕', count: 2 }, { reaction: '🤓', count: 1 }, ...]}
 ```
