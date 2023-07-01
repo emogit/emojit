@@ -81,6 +81,8 @@ const pageReactions = await client.getPageReactions(url)
 See [client.ts](./core/src/api/client.ts) for full details.
 
 # Development
+Use Node 16 because Node 18 has issues with webpack 4.
+
 Some helpful commands from the root:
 * Install all subprojects: `./scripts/run-all.sh yarn install`
 * Lint all: `./scripts/run-all.sh yarn lint`
